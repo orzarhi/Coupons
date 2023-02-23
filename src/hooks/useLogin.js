@@ -19,7 +19,7 @@ export const useLogin = (employeeName) => {
 			const isSysAdmin = decodeToken(data.data)?.isSysAdmin;
 
 			if (type === PersonType.EMPLOYEE.label && isSysAdmin)
-				navigate("/registration-define");
+				navigate("/employees");
 			else if (type === PersonType.EMPLOYEE.label) navigate("/employees");
 			else if (type === PersonType.SUPPLIER.label) navigate("/suppliers");
 			else navigate("/");

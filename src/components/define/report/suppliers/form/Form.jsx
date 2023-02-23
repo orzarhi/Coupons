@@ -1,10 +1,11 @@
 import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
-import { InputMonth } from "~/components/define/_logic/InputMonth";
+import { InputMonth } from "~/components/define/_logic/DatesInput";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
 import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useSuppliers } from "~/hooks/useSuppliers";
+import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 
 export const Form = ({
@@ -77,7 +78,12 @@ export const Form = ({
 						isLoading={isLoadingSuppliers}
 					/>
 
-					<InputMonth ref={monthAndYearInputRef} />
+					<InputMonth
+						ref={monthAndYearInputRef}
+						// It's true because it's year and month
+						// It's false because it's not an initial date
+						defaultValue={getDates(true, false)}
+					/>
 
 					<RadioButtons
 						title={"שליחה למייל"}

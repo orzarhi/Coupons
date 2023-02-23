@@ -126,7 +126,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				{open.title === "assign" ? (
 					<SelectInput
 						action={open.title}
-						type={"הנהלה"}
+						type={"חברות"}
 						selectedValue={selectedValue}
 						setSelectedValue={setSelectedValue}
 						data={dataCompanies?.map(

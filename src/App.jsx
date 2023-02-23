@@ -12,7 +12,7 @@ import { useAuthStore } from "./store/auth";
 function App() {
 	const navigate = useNavigate();
 
-	const { isLoggedIn, type, isSysAdmin } = useAuthStore();
+	const { isLoggedIn, isSysAdmin } = useAuthStore();
 
 	const queryClient = new QueryClient({
 		refetchOnMount: false,
@@ -39,13 +39,14 @@ function App() {
 				pauseOnHover
 				theme="light"
 			/>
-			{isSysAdmin && <Header />}
-			{isSysAdmin && <Navigator />}
-			{isSysAdmin && <Footer />}
-			{/* <Header /> */}
-			{/* <Navigator /> */}
+			{window.innerWidth > 700 && (
+				<>
+					{isSysAdmin && <Header />}
+					{isSysAdmin && <Navigator />}
+					{isSysAdmin && <Footer />}
+				</>
+			)}
 			<Routers />
-			{/* <Footer /> */}
 			<ReactQueryDevtools />
 		</QueryClientProvider>
 	);

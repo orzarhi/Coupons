@@ -1,12 +1,11 @@
 import { IconButton } from "@mui/material";
-import { useState } from "react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { InputDates } from "~/components/define/_logic/DatesInput";
 import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useCompanies } from "~/hooks/useCompanies";
+import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
-import { InputText } from "./InputText";
 
 export const Form = ({
 	title,
@@ -81,6 +80,9 @@ export const Form = ({
 							title={title}
 							action={"עריכת נתונים"}
 							ref={fromDateInputRef}
+							// It's false because it's not year and month
+							// It's true because it's an initial date
+							defaultValue={getDates(false, true)}
 						/>
 
 						<label className="text-base mr-5">עד תאריך:</label>
@@ -88,6 +90,7 @@ export const Form = ({
 							title={title}
 							action={"עריכת נתונים"}
 							ref={toDateInputRef}
+							defaultValue={getDates()}
 						/>
 					</div>
 				</div>

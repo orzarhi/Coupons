@@ -31,7 +31,7 @@ export const Shifts = () => {
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
 
-			<div className="relative bottom-2 w-10/12 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-2">
+			<div className="relative bottom-2 w-9/12 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-2">
 				{data && (
 					<DataGrid
 						rows={data}

@@ -1,15 +1,16 @@
 import { IconButton } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
+import { InputDates } from "~/components/define/_logic/DatesInput";
 import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useCoupons } from "~/hooks/useCoupons";
 import { useEmployeeReport } from "~/hooks/useReport";
 import { useAddTransaction } from "~/hooks/useTransactions";
-import { Pdf } from "../report/Pdf";
 import { useAuthStore } from "~/store/auth";
+import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
-import { InputText } from "./InputText";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { Pdf } from "../report/Pdf";
 
 const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 	const { token } = useAuthStore();
@@ -95,17 +96,21 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 					<>
 						<div className="flex justify-center items-center ml-5 w-5/6 sm:grid sm:justify-center">
 							<label className="text-base ml-2">מתאריך:</label>
-							<InputText
+							<InputDates
 								title={title}
 								action={"עריכת נתונים"}
 								ref={fromDateInputRef}
+								// It's false because it's not year and month
+								// It's true because it's an initial date
+								defaultValue={getDates(false, true)}
 							/>
 
 							<label className="text-base mr-5">עד תאריך:</label>
-							<InputText
+							<InputDates
 								title={title}
 								action={"עריכת נתונים"}
 								ref={toDateInputRef}
+								defaultValue={getDates()}
 							/>
 						</div>
 					</>

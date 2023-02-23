@@ -1,13 +1,13 @@
 import { IconButton } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
-import { useSupplierReport } from "~/hooks/useReport";
-import { Pdf } from "../report/Pdf";
-import { useAuthStore } from "~/store/auth";
-import * as toastMessages from "~/utils/notification/index";
-import { InputText } from "./InputText";
+import { InputMonth } from "~/components/define/_logic/DatesInput";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
+import { useSupplierReport } from "~/hooks/useReport";
+import { getDates } from "~/utils/date";
+import * as toastMessages from "~/utils/notification/index";
+import { Pdf } from "../report/Pdf";
 
 export const Form = ({ title, setOpen, open, dataSupplier }) => {
 	const [radioButtons, setRadioButtons] = useState("");
@@ -58,10 +58,11 @@ export const Form = ({ title, setOpen, open, dataSupplier }) => {
 				<>
 					<div className="flex justify-center items-center ml-5 w-5/6 sm:grid sm:justify-center">
 						<label className="text-base ml-2">תאריך:</label>
-						<InputText
-							title={"month"}
-							action={"עריכת נתונים"}
+						<InputMonth
 							ref={monthAndYearInputRef}
+							// It's true because it's year and month
+							// It's false because it's not an initial date
+							defaultValue={getDates(true, false)}
 						/>
 					</div>
 					<RadioButtons

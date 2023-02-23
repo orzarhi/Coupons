@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { DataGrid, heIL } from "@mui/x-data-grid";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
@@ -9,6 +10,9 @@ import { columns } from "./columns";
 const Registration = () => {
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
+	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
+	const [checkedboxIsSysAdmin, setCheckedboxIsSysAdmin] = useState(false);
+
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -20,6 +24,10 @@ const Registration = () => {
 	const data = dataUsers?.filter((user) =>
 		user.username.toLowerCase().includes(inputSearch.toLowerCase())
 	);
+
+	const dataCheckedIsActive = dataUsers?.filter((user) => user.isActive);
+	const dataCheckedIsSysAdmin = dataUsers?.filter((user) => user.isSysAdmin);
+
 	const columnsResult = columns(setOpen, open, setInfo);
 
 	if (isLoading) return <Spinner />;
@@ -34,10 +42,32 @@ const Registration = () => {
 				label="משתמש"
 				showBtn={false}
 			/>
+			<div className="flex justify-center">
+				<FormControlLabel
+					className="!relative right-56"
+					control={<Checkbox defaultValue={false} />}
+					label="פעיל"
+					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
+				/>
+				<FormControlLabel
+					className="!relative right-56"
+					control={<Checkbox defaultValue={false} />}
+					label="הרשאת מנהל"
+					onClick={() =>
+						setCheckedboxIsSysAdmin(!checkedboxIsSysAdmin)
+					}
+				/>
+			</div>
 			<div className="relative bottom-4 w-2/5 block m-auto p-5 sm:w-full xl:w-3/6 xl:relative xl:bottom-4">
 				{dataUsers && (
 					<DataGrid
-						rows={data}
+						rows={
+							checkedboxIsActive
+								? dataCheckedIsActive
+								: checkedboxIsSysAdmin
+								? dataCheckedIsSysAdmin
+								: data
+						}
 						columns={columnsResult}
 						pageSize={25}
 						rowsPerPageOptions={[25]}

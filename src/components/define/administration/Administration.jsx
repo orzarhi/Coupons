@@ -17,7 +17,6 @@ const Administration = () => {
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
-
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -37,6 +36,8 @@ const Administration = () => {
 	const dataCheckedIsActive = dataAdministrations?.filter(
 		(administration) => administration.isActive
 	);
+	const dataResult = checkedboxIsActive ? dataCheckedIsActive : data;
+
 	if (isLoading) return <Spinner />;
 
 	return (
@@ -72,7 +73,7 @@ const Administration = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{data?.map((row) => (
+								{dataResult?.map((row) => (
 									<Rows
 										key={row.code}
 										row={row}

@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,6 +16,7 @@ import Rows from "./Rows";
 const Companies = () => {
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
+	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -31,6 +33,11 @@ const Companies = () => {
 	const data = dataCompanies?.filter((company) =>
 		company.companyName.toLowerCase().includes(inputSearch.toLowerCase())
 	);
+	const dataCheckedIsActive = dataCompanies?.filter(
+		(companie) => companie.isActive
+	);
+	const dataResult = checkedboxIsActive ? dataCheckedIsActive : data;
+
 	if (isLoadingCompanies) return <Spinner />;
 
 	return (
@@ -44,7 +51,13 @@ const Companies = () => {
 				label="חברה"
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
-
+			<div className="flex justify-center mt-4">
+				<FormControlLabel
+					control={<Checkbox defaultValue={false} />}
+					label="פעיל"
+					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
+				/>
+			</div>
 			<div className="relative bottom-4 w-3/4 block m-auto p-5 xl:w-9/12 xl:relative xl:bottom-4">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 550 }}>
@@ -65,7 +78,7 @@ const Companies = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{data?.map((row) => (
+								{dataResult?.map((row) => (
 									<Rows
 										key={row.companyCode}
 										row={row}

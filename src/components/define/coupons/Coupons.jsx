@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Checkbox, FormControlLabel } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,8 +15,11 @@ import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const Coupons = () => {
+	const { token } = useAuthStore();
+
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
+	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -25,13 +28,16 @@ const Coupons = () => {
 		code: "",
 	});
 
-	const { token } = useAuthStore();
-
 	const { data: dataCoupons, refetch, isLoading } = useCoupons(token);
 
 	const data = dataCoupons?.filter((coupons) =>
 		coupons?.couponName.toLowerCase().includes(inputSearch.toLowerCase())
 	);
+
+	const dataCheckedIsActive = dataCoupons?.filter(
+		(coupon) => coupon.isActive
+	);
+	const dataResult = checkedboxIsActive ? dataCheckedIsActive : data;
 
 	if (isLoading) return <Spinner />;
 
@@ -47,6 +53,13 @@ const Coupons = () => {
 				label="קופון"
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
+			<div className="flex justify-center mt-4">
+				<FormControlLabel
+					control={<Checkbox defaultValue={false} />}
+					label="פעיל"
+					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
+				/>
+			</div>
 			<div className="relative bottom-2 w-10/12 block m-auto p-5 xl:w-10/12 xl:relative xl:bottom-2">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
@@ -71,7 +84,7 @@ const Coupons = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{data?.map((row) => (
+								{dataResult?.map((row) => (
 									<Rows
 										key={row.couponCode}
 										row={row}

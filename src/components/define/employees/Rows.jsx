@@ -50,6 +50,9 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">{row.departmentName}</TableCell>
 				<TableCell align="right">{row.maxMealsPerDay}</TableCell>
 				<TableCell align="right">
+					{convertBoolean(row.canCreateGuestCoupon)}
+				</TableCell>
+				<TableCell align="right">
 					<IconButton
 						title="assign"
 						onClick={() =>

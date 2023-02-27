@@ -6,13 +6,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { DataGrid, heIL } from "@mui/x-data-grid";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
-import { columns } from "./columns";
 import Rows from "./Rows";
 
 const Suppliers = () => {
@@ -20,6 +18,7 @@ const Suppliers = () => {
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
 	const [checkedboxIsMeals, setCheckedboxIsMeals] = useState(false);
+	const [checkedboxIsVarious, setCheckedboxIsVarious] = useState(false);
 
 	const [open, setOpen] = useState({
 		action: false,
@@ -42,8 +41,16 @@ const Suppliers = () => {
 		(supplier) => supplier.isMeals
 	);
 
-	const columnsResult = columns(setOpen, open, setInfo);
-
+	const dataCheckedIsVarious = dataSuppliers?.filter(
+		(supplier) => supplier.isVarious
+	);
+	const dataResults = checkedboxIsActive
+		? dataCheckedIsActive
+		: checkedboxIsMeals
+		? dataCheckedIsMeals
+		: checkedboxIsVarious
+		? dataCheckedIsVarious
+		: data;
 	if (isLoading) return <Spinner />;
 
 	return (
@@ -67,6 +74,11 @@ const Suppliers = () => {
 					control={<Checkbox defaultValue={false} />}
 					label="ספק ארוחות"
 					onClick={() => setCheckedboxIsMeals(!checkedboxIsMeals)}
+				/>
+				<FormControlLabel
+					control={<Checkbox defaultValue={false} />}
+					label="ספק שונות"
+					onClick={() => setCheckedboxIsVarious(!checkedboxIsVarious)}
 				/>
 			</div>
 			<div className="relative bottom-4 w-3/4 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-4">
@@ -98,7 +110,7 @@ const Suppliers = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{data?.map((row) => (
+								{dataResults?.map((row) => (
 									<Rows
 										key={row.supplierCode}
 										row={row}

@@ -30,6 +30,11 @@ const Registration = () => {
 
 	const columnsResult = columns(setOpen, open, setInfo);
 
+	const dataResult = checkedboxIsActive
+		? dataCheckedIsActive
+		: checkedboxIsSysAdmin
+		? dataCheckedIsSysAdmin
+		: data;
 	if (isLoading) return <Spinner />;
 
 	return (
@@ -59,13 +64,7 @@ const Registration = () => {
 			<div className="relative bottom-4 w-2/5 block m-auto p-5 sm:w-full xl:w-3/6 xl:relative xl:bottom-4">
 				{dataUsers && (
 					<DataGrid
-						rows={
-							checkedboxIsActive
-								? dataCheckedIsActive
-								: checkedboxIsSysAdmin
-								? dataCheckedIsSysAdmin
-								: data
-						}
+						rows={dataResult}
 						columns={columnsResult}
 						pageSize={25}
 						rowsPerPageOptions={[25]}

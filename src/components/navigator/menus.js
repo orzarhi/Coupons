@@ -92,6 +92,24 @@ export const menus = [
 		icon: TbReportSearch,
 	},
 	{
+		name: "הנהלת חשבונות",
+		title: "הנהלת-חשבונות",
+		link: "/report-bookkeeping-define",
+		icon: TbReportSearch,
+	},
+	{
+		name: "חילן",
+		title: "דוחות-חילן",
+		link: "/report-hilan-define",
+		icon: TbReportSearch,
+	},
+	{
+		name: "מנהלה",
+		title: "דוחות-מנהלה",
+		link: "/report-administration-define",
+		icon: TbReportSearch,
+	},
+	{
 		name: "הגדרות",
 		title: "הגדרות",
 		link: "/settings-define",

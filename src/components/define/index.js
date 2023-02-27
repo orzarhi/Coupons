@@ -12,6 +12,9 @@ import { Shifts } from "./shifts/Shifts";
 import { ReportEmployees } from "./report/employees/ReportEmployees";
 import { ReportCompanys } from "./report/companys/ReportCompanys";
 import { ReportSuppliers } from "./report/suppliers/ReportSuppliers";
+import { ReportBookkeeping } from "./report/bookkeeping/ReportBookkeeping";
+import { ReportHilan } from "./report/hilan/ReportHilan";
+import { ReportAdministration } from "./report/administration/ReportAdministration";
 
 export {
 	Suppliers,
@@ -28,4 +31,7 @@ export {
 	ReportEmployees,
 	ReportCompanys,
 	ReportSuppliers,
+	ReportBookkeeping,
+	ReportHilan,
+	ReportAdministration,
 };

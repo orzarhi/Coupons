@@ -7,6 +7,7 @@ import {
 	useAssignCouponToCompany,
 	useUpdateCoupon,
 } from "~/hooks/useCoupons";
+import { useSuppliers } from "~/hooks/useSuppliers";
 import * as toastMessages from "~/utils/notification/index";
 import { SelectInput } from "../../_logic/SelectInput";
 
@@ -17,22 +18,28 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
+	const [radioButtonsCouponType, setRadioButtonsCouponType] = useState("");
 	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
 
 	const couponNameInputRef = useRef();
 	const couponDescInputRef = useRef();
 	const debitAmountInputRef = useRef();
-	const couponTypeInputRef = useRef();
+	// const couponTypeInputRef = useRef();
 	const experationHoursInputRef = useRef();
+	const supplierPriceInputRef = useRef();
 
 	const clearInputs = () => {
 		couponNameInputRef.current.value = "";
 		couponDescInputRef.current.value = "";
 		debitAmountInputRef.current.value = "";
-		// supplierPriceInputRef.current.value = "";
-		couponTypeInputRef.current.value = "";
+		supplierPriceInputRef.current.value = "";
+		// couponTypeInputRef.current.value = "";
 		experationHoursInputRef.current.value = "";
 	};
+
+	const { data: dataSuppliers, isLoading: isLoadingSuppliers } =
+		useSuppliers();
 
 	const { data: dataCompanies, isLoading: isLoadingCompanies } =
 		useCompanies();
@@ -62,8 +69,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		const couponName = couponNameInputRef?.current?.value;
 		const couponDesc = couponDescInputRef?.current?.value;
 		const debitAmount = debitAmountInputRef?.current?.value;
-		const couponType = couponTypeInputRef?.current?.value;
 		const experationHours = experationHoursInputRef?.current?.value;
+		const supplierPrice = supplierPriceInputRef?.current?.value;
 
 		try {
 			if (open.title === "add") {
@@ -71,20 +78,23 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					!couponName ||
 					!couponDesc ||
 					!debitAmount ||
-					!couponType ||
-					!experationHours
+					!experationHours ||
+					!supplierPrice ||
+					!selectedValueSuppliers
 				) {
 					toastMessages.infoMessage("נא למלא את כל השדות");
+				} else {
+					const newCoupon = {
+						couponName,
+						couponDesc,
+						debitAmount,
+						couponType: radioButtonsCouponType === "true" ? 2 : 1,
+						experationHours,
+						supplierCode: selectedValueSuppliers,
+						supplierPrice,
+					};
+					addMutateCoupon(newCoupon);
 				}
-				const newCoupon = {
-					couponName,
-					couponDesc,
-					debitAmount,
-					couponType,
-					experationHours,
-				};
-
-				addMutateCoupon(newCoupon);
 			} else if (open.title === "edit") {
 				const editCoupon = {
 					couponCode: info?.couponCode,
@@ -92,7 +102,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					couponDesc,
 					debitAmount,
 					couponType,
-					experationDays: experationHours,
+					experationHours,
 					supplierCode,
 					isActive: radioButtons === "false" ? true : false,
 				};
@@ -115,14 +125,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
+
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				{/* <InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.couponCode}
-					originalText={"קוד"}
-					ref={couponCodeInputRef}
-				/> */}
 				{open.title === "assign" ? (
 					<SelectInput
 						action={open.title}
@@ -147,7 +151,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							originalText={"שם"}
 							ref={couponNameInputRef}
 						/>
-
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}
@@ -155,26 +158,30 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							originalText={"תיאור"}
 							ref={couponDescInputRef}
 						/>
+						{open.title === "add" && (
+							<>
+								<SelectInput
+									action={open.title}
+									type={"ספק"}
+									selectedValue={selectedValueSuppliers}
+									setSelectedValue={setSelectedValueSuppliers}
+									data={dataSuppliers?.map(
+										({ supplierCode, supplierName }) => ({
+											key: supplierCode,
+											code: supplierCode,
+											name: supplierName,
+										})
+									)}
+									isLoading={isLoadingSuppliers}
+								/>
+							</>
+						)}
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}
 							info={info?.debitAmount}
 							originalText={"סכום החיוב"}
 							ref={debitAmountInputRef}
-						/>
-						{/* <InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.supplierPrice}
-					originalText={"מחיר ספק"}
-					ref={supplierPriceInputRef}
-				/> */}
-						<InputText
-							title={title}
-							action={"עריכת נתונים"}
-							info={info?.couponTypeName}
-							originalText={"סוג"}
-							ref={couponTypeInputRef}
 						/>
 						<InputText
 							title={title}
@@ -183,15 +190,29 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							originalText={"תוקף"}
 							ref={experationHoursInputRef}
 						/>
-
-						<div className="grid justify-items-center w-full">
-							{title === "עריכת נתונים" && (
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.experationDays}
+							originalText={"מחיר ספק"}
+							ref={supplierPriceInputRef}
+						/>
+						{open.title === "add" && (
+							<RadioButtons
+								defaultValue={null}
+								title={"קופון שונות:"}
+								setRadioButtons={setRadioButtonsCouponType}
+							/>
+						)}
+						{open.title === "edit" && (
+							<div className="w-3/5 flex justify-center">
 								<RadioButtons
+									defaultValue={info?.isActive}
 									title={"פעיל:"}
-									setRadioButtons={setRadioButtons}
+									setRadioButtons={setRadioButtonsCouponType}
 								/>
-							)}
-						</div>
+							</div>
+						)}
 					</>
 				)}
 			</div>
@@ -217,3 +238,22 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 };
 
 export default Form;
+
+{
+	/* <InputText
+					title={title}
+					action={"עריכת נתונים"}
+					info={info?.supplierPrice}
+					originalText={"מחיר ספק"}
+					ref={supplierPriceInputRef}
+				/> */
+}
+{
+	/* <InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.couponTypeName}
+							originalText={"סוג"}
+							ref={couponTypeInputRef}
+						/> */
+}

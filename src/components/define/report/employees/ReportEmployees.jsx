@@ -6,6 +6,7 @@ import { useEmployeeReport } from "~/hooks/useReport";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
 import { Pdf } from "./pdf/Pdf";
+import { Xls } from "./xls/Xls";
 
 export const ReportEmployees = () => {
 	const [showReport, setShowReport] = useState(false);
@@ -34,6 +35,13 @@ export const ReportEmployees = () => {
 				className="!bg-blue-700 !text-white hover:!bg-blue-600 !w-60 !text-sm"
 				showTextField={false}
 			/>
+			{data && (
+				<Xls
+					data={data}
+					title={"EmployeesReport"}
+					content={"ייצא לקובץ לאקסל"}
+				/>
+			)}
 			{showReport &&
 				(data ? (
 					<PDFDownloadLink

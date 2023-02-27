@@ -102,6 +102,21 @@ const Routers = () => {
 									element={<Defines.ReportCompanys />}
 									exact
 								/>
+								<Route
+									path="/report-bookkeeping-define"
+									element={<Defines.ReportBookkeeping />}
+									exact
+								/>
+								<Route
+									path="/report-hilan-define"
+									element={<Defines.ReportHilan />}
+									exact
+								/>
+								<Route
+									path="/report-administration-define"
+									element={<Defines.ReportAdministration />}
+									exact
+								/>
 							</>
 						)}
 					</>

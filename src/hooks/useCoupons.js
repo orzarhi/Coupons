@@ -2,9 +2,11 @@ import { useMutation, useQuery } from "react-query";
 import {
 	addCoupon,
 	assignCouponToCompany,
+	assignCouponToSupplier,
 	deleteCoupon,
 	getCoupons,
 	unassignCouponToCompany,
+	unassignCouponToSupplier,
 	updateCoupon,
 } from "~/api/coupons/coupons";
 import { queryKeys } from "~/constants/queryKeys";
@@ -58,6 +60,28 @@ export const useAssignCouponToCompany = (setOpen, open, refetch) =>
 
 export const useUnassignCouponToCompany = (setOpen, open, refetch) =>
 	useMutation((companyCode) => unassignCouponToCompany(companyCode), {
+		onSuccess: (data) => {
+			success(data, setOpen, open, refetch);
+		},
+		onError: (data) => {
+			error(data);
+		},
+	});
+
+//TODO: added new Mutation
+export const useAssignCouponToSupplier = (setOpen, open, refetch) =>
+	useMutation(assignCouponToSupplier, {
+		onSuccess: (data) => {
+			success(data, setOpen, open, refetch);
+		},
+		onError: (data) => {
+			error(data);
+		},
+	});
+
+//TODO: added new Mutation
+export const useUnassignCouponToSupplier = (setOpen, open, refetch) =>
+	useMutation((supplierCode) => unassignCouponToSupplier(supplierCode), {
 		onSuccess: (data) => {
 			success(data, setOpen, open, refetch);
 		},

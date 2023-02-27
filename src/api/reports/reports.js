@@ -1,6 +1,7 @@
 import axios from "../axios";
 
-export const getBookkeepingReport = async (month, year, sendMail) => {
+export const getBookkeepingReport = async (request) => {
+	const { month, year, sendMail } = request;
 	const { data } = await axios.get(
 		`/reports/getBookkeepingReport?month=${month}&year=${year}&isSendMail=${sendMail}`
 	);
@@ -17,7 +18,8 @@ export const getSupplierReport = async (request) => {
 	return data;
 };
 
-export const getHilanMonthlyReport = async (month, year, sendMail) => {
+export const getHilanMonthlyReport = async (request) => {
+	const { month, year, sendMail } = request;
 	const { data } = await axios.get(
 		`/reports/getHilanMonthlyReport?month=${month}&year=${year}&isSendMail=${sendMail}`
 	);
@@ -34,11 +36,8 @@ export const getCompanyReport = async (request) => {
 	return data;
 };
 
-export const getAdministrationReport = async (
-	administrationCode,
-	fromDate,
-	toDate
-) => {
+export const getAdministrationReport = async (request) => {
+	const { administrationCode, fromDate, toDate } = request;
 	const { data } = await axios.get(
 		`/reports/getAdministrationReport?administrationCode=${administrationCode}&fromDate=${fromDate}&toDate=${toDate}`
 	);

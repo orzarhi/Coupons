@@ -1,18 +1,19 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useAdministrationReport } from "~/hooks/useReport";
 import { DataGrid, heIL } from "@mui/x-data-grid";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import Details from "../../_logic/Details";
-import { columns } from "./columns";
-import { useSupplierReport } from "~/hooks/useReport";
+import Details from "~/components/define/_logic/Details";
 import Actions from "./actions/Actions";
+import { columns } from "./columns";
 import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
 
-export const ReportSuppliers = () => {
+export const ReportAdministration = () => {
 	const [showReport, setShowReport] = useState(false);
-	const [year, setYear] = useState("");
-	const [month, setMonth] = useState("");
+	const [dates, setDates] = useState({
+		fromDate: "",
+		toDate: "",
+	});
 
 	const [open, setOpen] = useState({
 		action: false,
@@ -20,14 +21,15 @@ export const ReportSuppliers = () => {
 		modalDialog: false,
 		title: "",
 	});
-	const [data, fetchReport] = useSupplierReport();
+
+	const [data, fetchReport] = useAdministrationReport();
 
 	return (
 		<>
 			<Details
-				title="דוחות ספקים"
+				title="דוחות מנהלה"
 				identification="report"
-				textBtn="בחר/י ספק להצגת הדוח"
+				textBtn="בחר/י מנהלה להצגת הדוח"
 				setOpen={setOpen}
 				open={open}
 				className="!bg-blue-700 !text-white hover:!bg-blue-600 !w-60 !text-sm"
@@ -36,7 +38,7 @@ export const ReportSuppliers = () => {
 			{data && (
 				<Xls
 					data={data}
-					title={"SuppliersReport"}
+					title={"AdministrationReport"}
 					content={"ייצא לקובץ לאקסל"}
 				/>
 			)}
@@ -45,12 +47,16 @@ export const ReportSuppliers = () => {
 					<PDFDownloadLink
 						document={
 							<Pdf
-								title={`${data[0]?.usedUsername} - דוח קופונים לספק`}
-								dates={`${year} - ${month}`}
+								title={"דוח  למנהלה"}
+								dates={`${new Date(
+									dates.toDate
+								).toLocaleDateString()} - ${new Date(
+									dates.fromDate
+								).toLocaleDateString()}`}
 								data={data}
 							/>
 						}
-						filename="SupplierReport.pdf"
+						filename="CouponReport.pdf"
 					>
 						{({ loading }) =>
 							loading ? (
@@ -71,7 +77,7 @@ export const ReportSuppliers = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-2/6 block m-auto p-5 xl:w-2/5 xl:relative xl:bottom-2 sm:w-10/12">
+			<div className="relative bottom-2 w-3/6 block m-auto p-5 xl:w-3/4 xl:relative xl:bottom-2 sm:w-10/12">
 				{data && (
 					<DataGrid
 						rows={data}
@@ -94,8 +100,8 @@ export const ReportSuppliers = () => {
 					setOpen={setOpen}
 					fetchReport={fetchReport}
 					setShowReport={setShowReport}
-					setMonth={setMonth}
-					setYear={setYear}
+					setDates={setDates}
+					dates={dates}
 				/>
 			)}
 		</>

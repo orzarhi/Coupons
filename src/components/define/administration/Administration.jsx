@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,6 +16,8 @@ import Rows from "./Rows";
 const Administration = () => {
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
+	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
+
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -31,6 +34,9 @@ const Administration = () => {
 	const data = dataAdministrations?.filter((administration) =>
 		administration.name.toLowerCase().includes(inputSearch.toLowerCase())
 	);
+	const dataCheckedIsActive = dataAdministrations?.filter(
+		(administration) => administration.isActive
+	);
 	if (isLoading) return <Spinner />;
 
 	return (
@@ -44,7 +50,13 @@ const Administration = () => {
 				label="מנהלה"
 				textBtn="הוספת מנהלה חדשה"
 			/>
-
+			<div className="flex justify-center mt-4">
+				<FormControlLabel
+					control={<Checkbox defaultValue={false} />}
+					label="פעיל"
+					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
+				/>
+			</div>
 			<div className="relative bottom-4 w-3/4 block m-auto p-5 xl:w-9/12 xl:relative xl:bottom-4">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>

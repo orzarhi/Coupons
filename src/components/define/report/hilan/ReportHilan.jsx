@@ -1,15 +1,15 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useHilanMonthlyReport } from "~/hooks/useReport";
 import { DataGrid, heIL } from "@mui/x-data-grid";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Details from "../../_logic/Details";
-import { columns } from "./columns";
-import { useSupplierReport } from "~/hooks/useReport";
-import Actions from "./actions/Actions";
 import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
+import { Button } from "@mui/material";
+import Actions from "./actions/Actions";
+import { columns } from "./columns";
 
-export const ReportSuppliers = () => {
+export const ReportHilan = () => {
 	const [showReport, setShowReport] = useState(false);
 	const [year, setYear] = useState("");
 	const [month, setMonth] = useState("");
@@ -20,14 +20,15 @@ export const ReportSuppliers = () => {
 		modalDialog: false,
 		title: "",
 	});
-	const [data, fetchReport] = useSupplierReport();
+
+	const [data, fetchReport] = useHilanMonthlyReport();
 
 	return (
 		<>
 			<Details
-				title="דוחות ספקים"
+				title="דוחות חילן"
 				identification="report"
-				textBtn="בחר/י ספק להצגת הדוח"
+				textBtn="בחר/י תאריך להצגת הדוח"
 				setOpen={setOpen}
 				open={open}
 				className="!bg-blue-700 !text-white hover:!bg-blue-600 !w-60 !text-sm"
@@ -36,7 +37,7 @@ export const ReportSuppliers = () => {
 			{data && (
 				<Xls
 					data={data}
-					title={"SuppliersReport"}
+					title={"HilangReport"}
 					content={"ייצא לקובץ לאקסל"}
 				/>
 			)}
@@ -45,22 +46,22 @@ export const ReportSuppliers = () => {
 					<PDFDownloadLink
 						document={
 							<Pdf
-								title={`${data[0]?.usedUsername} - דוח קופונים לספק`}
+								title={" דוח הנהלת חשבונות"}
 								dates={`${year} - ${month}`}
 								data={data}
 							/>
 						}
-						filename="SupplierReport.pdf"
+						filename="BookkeepingReport.pdf"
 					>
 						{({ loading }) =>
 							loading ? (
 								<div className="flex justify-center text-xl capitalize mt-6">
-									<button>טוען...</button>
+									<Button>טוען...</Button>
 								</div>
 							) : (
 								<>
-									<div className="flex justify-center items-center text-xl mt-6">
-										<button>הורדת המסמך</button>
+									<div className="flex justify-center items-center text-xl mt-4">
+										<button>הורדת המסמך כ PDF</button>
 									</div>
 								</>
 							)
@@ -71,7 +72,7 @@ export const ReportSuppliers = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-2/6 block m-auto p-5 xl:w-2/5 xl:relative xl:bottom-2 sm:w-10/12">
+			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2 sm:w-10/12">
 				{data && (
 					<DataGrid
 						rows={data}
@@ -81,7 +82,7 @@ export const ReportSuppliers = () => {
 							height: 550,
 							direction: "ltr",
 						}}
-						getRowId={(rows) => rows.usedDate}
+						getRowId={(rows) => rows.employeeCode}
 						localeText={
 							heIL.components.MuiDataGrid.defaultProps.localeText
 						}

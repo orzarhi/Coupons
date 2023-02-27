@@ -44,3 +44,20 @@ export const unassignCouponToCompany = async (companyCode) => {
 
 	return data;
 };
+
+export const assignCouponToSupplier = async (supplierCode) => {
+	const { data } = await axios.post(
+		"/coupons/assignCouponToSupplier",
+		supplierCode
+	);
+
+	return data;
+};
+
+export const unassignCouponToSupplier = async (supplierCode) => {
+	const { data } = await axios.delete("/coupons/unassignCouponToSupplier", {
+		data: supplierCode,
+	});
+
+	return data;
+};

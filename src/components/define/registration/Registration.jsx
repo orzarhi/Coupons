@@ -42,15 +42,13 @@ const Registration = () => {
 				label="משתמש"
 				showBtn={false}
 			/>
-			<div className="flex justify-center">
+			<div className="flex justify-center mt-4">
 				<FormControlLabel
-					className="!relative right-56"
 					control={<Checkbox defaultValue={false} />}
 					label="פעיל"
 					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
 				/>
 				<FormControlLabel
-					className="!relative right-56"
 					control={<Checkbox defaultValue={false} />}
 					label="הרשאת מנהל"
 					onClick={() =>

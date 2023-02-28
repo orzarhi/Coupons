@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { Autocomplete, IconButton, TextField } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { useCompanies } from "~/hooks/useCompanies";
@@ -9,6 +9,7 @@ import {
 } from "~/hooks/useCoupons";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import * as toastMessages from "~/utils/notification/index";
+import { AutocompleteInput } from "../../_logic/autocompleteInput";
 import { SelectInput } from "../../_logic/SelectInput";
 
 import InputText from "./InputText";
@@ -20,6 +21,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	);
 	const [radioButtonsCouponType, setRadioButtonsCouponType] = useState("");
 	const [selectedValue, setSelectedValue] = useState("");
+	// const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
+
 	const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
 
 	const couponNameInputRef = useRef();
@@ -63,6 +66,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		refetch
 	);
 
+	const onAtuoCompleteChange = (value) => {
+		setSelectedValueSuppliers(value);
+	};
 	const submitAddHandler = async (e) => {
 		e.preventDefault();
 
@@ -93,6 +99,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						supplierCode: selectedValueSuppliers,
 						supplierPrice,
 					};
+					console.log("🚀newCoupon:", newCoupon);
 					addMutateCoupon(newCoupon);
 				}
 			} else if (open.title === "edit") {
@@ -158,24 +165,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							originalText={"תיאור"}
 							ref={couponDescInputRef}
 						/>
-						{open.title === "add" && (
-							<>
-								<SelectInput
-									action={open.title}
-									type={"ספק"}
-									selectedValue={selectedValueSuppliers}
-									setSelectedValue={setSelectedValueSuppliers}
-									data={dataSuppliers?.map(
-										({ supplierCode, supplierName }) => ({
-											key: supplierCode,
-											code: supplierCode,
-											name: supplierName,
-										})
-									)}
-									isLoading={isLoadingSuppliers}
-								/>
-							</>
-						)}
+
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}
@@ -198,11 +188,39 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							ref={supplierPriceInputRef}
 						/>
 						{open.title === "add" && (
-							<RadioButtons
-								defaultValue={null}
-								title={"קופון שונות:"}
-								setRadioButtons={setRadioButtonsCouponType}
-							/>
+							<>
+								<AutocompleteInput
+									options={dataSuppliers?.map((supplier) => ({
+										label: supplier.supplierName,
+										id: supplier.supplierCode,
+									}))}
+									onChange={onAtuoCompleteChange}
+									label={"ספקים"}
+								/>
+								{/* <SelectInput
+									action={open.title}
+									type={"ספק"}
+									selectedValue={selectedValueSuppliers}
+									setSelectedValue={setSelectedValueSuppliers}
+									data={dataSuppliers?.map(
+										({ supplierCode, supplierName }) => ({
+											key: supplierCode,
+											code: supplierCode,
+											name: supplierName,
+										})
+									)}
+									isLoading={isLoadingSuppliers}
+								/> */}
+							</>
+						)}
+						{open.title === "add" && (
+							<div className="w-2/5 flex justify-center">
+								<RadioButtons
+									defaultValue={null}
+									title={"קופון שונות:"}
+									setRadioButtons={setRadioButtonsCouponType}
+								/>
+							</div>
 						)}
 						{open.title === "edit" && (
 							<div className="w-3/5 flex justify-center">

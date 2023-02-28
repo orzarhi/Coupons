@@ -8,8 +8,12 @@ export const AutocompleteInput = ({ options, onChange, label }) => {
 			id="combo-box-demo"
 			options={options}
 			onChange={(_, value) => onChange(value)}
-			sx={{ width: 300 }}
+			isOptionEqualToValue={(option, value) =>
+				option.id === value.supplierCode
+			}
+			sx={{ width: 200 }}
 			renderInput={(params) => <TextField {...params} label={label} />}
 		/>
 	);
 };
+

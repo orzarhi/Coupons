@@ -58,9 +58,9 @@ const Companies = () => {
 					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
 				/>
 			</div>
-			<div className="relative bottom-4 w-3/4 block m-auto p-5 xl:w-9/12 xl:relative xl:bottom-4">
+			<div className="relative bottom-4 w-4/5 block m-auto p-5 xl:w-9/12 xl:relative xl:bottom-4">
 				{data && (
-					<TableContainer component={Paper} sx={{ height: 550 }}>
+					<TableContainer component={Paper} sx={{ height: 600 }}>
 						<Table aria-label="collapsible table">
 							<TableHead>
 								<TableRow>

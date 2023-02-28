@@ -1,13 +1,12 @@
 import { Button, Switch } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { actionRow } from "~/components/define/_logic/actionRow";
-import { CuponType } from "~/constants/CuponType";
-import { useAuthStore } from "~/store/auth";
 import {
 	useAddTransaction,
 	useEmployeeByUsername,
 	useTransactions,
 } from "~/hooks/useTransactions";
+import { useAuthStore } from "~/store/auth";
 import Spinner from "../ui/spinner/Spinner";
 import Actions from "./actions/Actions";
 
@@ -81,7 +80,7 @@ const Transactions = () => {
 						})
 					}
 				>
-					הוספת קופון - ארוחת צהריים
+					הוספת קופון - אוכל
 				</Button>
 				<Button
 					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
@@ -111,13 +110,13 @@ const Transactions = () => {
 			</div>
 
 			{checked ? (
-				<div className="flex justify-center items-center mt-10 lg:flex lg:flex-col">
+				<div className=" grid grid-cols-4 gap-2 justify-between mt-10 lg:flex lg:flex-col">
 					{transactions
 						?.filter((transaction) => !transaction.isGuest)
 						?.map((transaction) => (
 							<div
 								key={transaction.id}
-								className="max-w-sm p-6 m-3 w-1/5 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:w-11/12"
+								className=" max-w-sm p-6 m-3 w-4/5 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:w-11/12"
 							>
 								<span className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 									{transaction?.couponName}

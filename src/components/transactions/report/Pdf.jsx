@@ -104,7 +104,7 @@ export const Pdf = ({ title, data, dates }) => {
 						{countIsUsed} סך הכל מימושים:
 					</Text>
 					<View style={styles.table}>
-						<Text style={styles.tableHeader}>תאריך מימוש</Text>
+						<Text style={styles.tableHeader}>מימוש</Text>
 						<Text style={styles.tableHeader}>שם ספק</Text>
 						<Text style={styles.tableHeader}>קופון</Text>
 						<Text style={styles.tableHeader}>קוד עובד</Text>
@@ -114,9 +114,12 @@ export const Pdf = ({ title, data, dates }) => {
 							<Text style={styles.tableRowCell}>
 								{new Date(report.usedDate).getFullYear() >
 									2000 &&
-									new Date(
+									`${new Date(
 										report.usedDate
-									).toLocaleDateString()}
+									).toLocaleDateString()}-${
+										report.usedDate !== null &&
+										report.usedDate?.slice(11, 19)
+									}`}
 							</Text>
 							<Text style={styles.tableRowCell}>
 								{report.supplierName

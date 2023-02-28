@@ -6,7 +6,13 @@ import {
 	RadioGroup,
 } from "@mui/material";
 
-export const RadioButtons = ({ title, defaultValue = "", setRadioButtons }) => {
+export const RadioButtons = ({
+	title,
+	defaultValue = "",
+	firstLabel = "כן",
+	secondeLabel = "לא",
+	setRadioButtons,
+}) => {
 	const handleChange = (e) => {
 		const value = e.target.value;
 		setRadioButtons(value);
@@ -28,11 +34,15 @@ export const RadioButtons = ({ title, defaultValue = "", setRadioButtons }) => {
 				required
 				defaultValue={defaultValue}
 			>
-				<FormControlLabel value="true" control={<Radio />} label="כן" />
+				<FormControlLabel
+					value="true"
+					control={<Radio />}
+					label={firstLabel}
+				/>
 				<FormControlLabel
 					value="false"
 					control={<Radio />}
-					label="לא"
+					label={secondeLabel}
 				/>
 			</RadioGroup>
 		</FormControl>

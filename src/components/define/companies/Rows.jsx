@@ -169,6 +169,72 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					</Collapse>
 				</TableCell>
 			</TableRow>
+			<TableRow>
+				<TableCell
+					style={{ paddingBottom: 0, paddingTop: 0 }}
+					colSpan={6}
+				>
+					<Collapse in={openTable} timeout="auto" unmountOnExit>
+						<Box sx={{ margin: 1 }}>
+							<Typography
+								variant="h6"
+								gutterBottom
+								component="div"
+							>
+								קופונים משויכים - {row?.coupons?.length}
+							</Typography>
+							<Table size="small" aria-label="purchases">
+								<TableHead>
+									<TableRow>
+										<TableCell align="right">שם</TableCell>
+										<TableCell align="right">
+											תיאור
+										</TableCell>
+
+										<TableCell align="right">
+											מחיר
+										</TableCell>
+										<TableCell align="right">
+											תוקף - שעות
+										</TableCell>
+										<TableCell align="right">סוג</TableCell>
+										<TableCell align="right">
+											פעיל
+										</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{row?.coupons?.map((orderRow) => (
+										<TableRow key={orderRow.couponCode}>
+											<TableCell align="right">
+												{orderRow.couponName}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.couponDesc}
+											</TableCell>
+
+											<TableCell align="right">
+												₪{orderRow.debitAmount}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.experationHours}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.couponTypeName}
+											</TableCell>
+											<TableCell align="right">
+												{convertBoolean(
+													orderRow.isActive
+												)}
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</Box>
+					</Collapse>
+				</TableCell>
+			</TableRow>
 		</Fragment>
 	);
 };

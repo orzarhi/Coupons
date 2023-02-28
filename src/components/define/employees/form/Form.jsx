@@ -1,5 +1,5 @@
 import { IconButton } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { useCompanies } from "~/hooks/useCompanies";
 import { useDepartments } from "~/hooks/useDepartments";
@@ -11,7 +11,14 @@ import {
 } from "~/hooks/useEmployees";
 import { PersonType } from "~/constants/PersonType";
 import * as toastMessages from "~/utils/notification/index";
-import { InputText, SelectInputCompanyandDepartment } from "./InputText";
+import {
+	CompanyAutocompleteInput,
+	CompanyAutocompleteInputEdit,
+	DepartmentAutocompleteInput,
+	DepartmentAutocompleteInputEdit,
+	InputText,
+	SelectInputCompanyandDepartment,
+} from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useAdministrations } from "~/hooks/useAdministrations";
@@ -31,6 +38,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		company: "",
 		department: "",
 	});
+	const [selectedValueCompany, setSelectedValueCompany] = useState("");
+	const [selectedValueDepartment, setSelectedValueDepartment] = useState("");
 
 	const [selectedAdministration, setSelectedAdministration] = useState("");
 
@@ -77,8 +86,20 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const { mutate: assignMutateAdminToAdministration } =
 		useAssignAdminToAdministration(setOpen, open, clearInputs, refetch);
 
-	const { mutate: unassignAdminFromAdministration } =
-		useUnassignAdminFromAdministration(setOpen, open, refetch);
+	const onCompanyAtuoCompleteChange = (value) => {
+		setSelectedValueCompany(value);
+	};
+	const onDepartmentAtuoCompleteChange = (value) => {
+		setSelectedValueDepartment(value);
+	};
+
+	const departmentsInCompany = dataCompanies?.filter(
+		(company) => company?.companyName === selectedValueCompany?.label
+	);
+
+	const dataDepartmentsInCompany = departmentsInCompany?.map(
+		(departments) => departments?.departments
+	);
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -103,41 +124,40 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					!maxMealsPerDay
 				) {
 					toastMessages.infoMessage("נא למלא את כל השדות");
+				} else {
+					const newEmployee = {
+						employeeCode,
+						employeeName,
+						employeeId,
+						companyCode: selectedValueCompany.id,
+						departmentCode: selectedValueDepartment.id,
+						phoneNumber,
+						maxMealsPerDay,
+						username,
+						password,
+						canUseInFreeShift:
+							radioButtonsAdd.allowed === "true" ? true : false,
+						isAdministrationAdmin:
+							radioButtonsAdd.isAdministrationAdmin === "true"
+								? true
+								: false,
+						type: PersonType.EMPLOYEE.id,
+					};
+					addMutateEmployee(newEmployee);
 				}
-
-				const newEmployee = {
-					employeeCode,
-					employeeName,
-					employeeId,
-					companyCode: selectedValue.company,
-					departmentCode: selectedValue.department,
-					phoneNumber,
-					maxMealsPerDay,
-					username,
-					password,
-					canUseInFreeShift:
-						radioButtonsAdd.allowed === "true" ? true : false,
-					isAdministrationAdmin:
-						radioButtonsAdd.isAdministrationAdmin === "true"
-							? true
-							: false,
-					type: PersonType.EMPLOYEE.id,
-				};
-
-				addMutateEmployee(newEmployee);
 			} else if (open.title === "edit") {
 				const updateEmployee = {
 					employeeCode: info?.employeeCode,
 					employeeName,
 					employeeId,
 					departmentCode:
-						selectedValue.department === ""
+						selectedValueDepartment === ""
 							? info?.departmentCode
-							: selectedValue.department,
+							: selectedValueDepartment.id,
 					companyCode:
-						selectedValue.company === ""
+						selectedValueCompany === ""
 							? info?.companyCode
-							: selectedValue.company,
+							: selectedValueCompany.id,
 					phoneNumber,
 					maxMealsPerDay,
 					username,
@@ -222,35 +242,64 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							originalText={"מספר זהות"}
 							ref={idInputRef}
 						/>
-						<SelectInputCompanyandDepartment
-							title={"company"}
-							action={open.title}
-							type={"חברה"}
-							defaultValue={info?.companyName}
-							selectedValue={selectedValue}
-							setSelectedValue={setSelectedValue}
-							data={dataCompanies?.map(
-								({ companyCode, companyName }) => ({
-									code: companyCode,
-									name: companyName,
-								})
-							)}
-							isLoading={isLoadingCompanies}
-						/>
-						<SelectInputCompanyandDepartment
-							title={"department"}
-							action={open.title}
-							type={"מחלקה"}
-							defaultValue={info?.departmentName}
-							selectedValue={selectedValue}
-							setSelectedValue={setSelectedValue}
-							data={dataDepartments?.map(({ code, name }) => ({
-								code,
-								name,
-							}))}
-							isLoading={isLoadingDepartments}
-						/>
+						{open.title === "add" && (
+							<>
+								<CompanyAutocompleteInput
+									options={dataCompanies?.map((companie) => ({
+										label: companie.companyName,
+										id: companie.companyCode,
+									}))}
+									onChange={onCompanyAtuoCompleteChange}
+									defaultLabel={info?.companyName}
+									defaultCode={info?.companyCode}
+									label={"חברות"}
+								/>
 
+								{selectedValueCompany && (
+									<DepartmentAutocompleteInput
+										options={dataDepartmentsInCompany[0]?.map(
+											(department) => ({
+												label: department?.name,
+												id: department?.code,
+											})
+										)}
+										onChange={
+											onDepartmentAtuoCompleteChange
+										}
+										defaultLabel={info?.departmentName}
+										defaultCode={info?.departmentCode}
+										label={"מחלקות"}
+									/>
+								)}
+							</>
+						)}
+
+						{open.title === "edit" && (
+							<>
+								<CompanyAutocompleteInputEdit
+									options={dataCompanies?.map((companie) => ({
+										label: companie.companyName,
+										id: companie.companyCode,
+									}))}
+									onChange={onCompanyAtuoCompleteChange}
+									defaultLabel={info?.companyName}
+									defaultCode={info?.companyCode}
+									label={"חברות"}
+								/>
+								<DepartmentAutocompleteInputEdit
+									options={dataDepartments?.map(
+										(department) => ({
+											label: department?.name,
+											id: department?.code,
+										})
+									)}
+									onChange={onDepartmentAtuoCompleteChange}
+									defaultLabel={info?.departmentName}
+									defaultCode={info?.departmentCode}
+									label={"מחלקות"}
+								/>
+							</>
+						)}
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}

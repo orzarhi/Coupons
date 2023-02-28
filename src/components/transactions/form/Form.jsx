@@ -84,11 +84,13 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 						setSelectedValue={setSelectedValue}
 						data={dataCoupons
 							?.filter((coupons) => coupons.couponCode !== 1)
-							?.map(({ couponCode, couponName }) => ({
-								key: couponCode,
-								code: couponCode,
-								name: couponName,
-							}))}
+							?.map(
+								({ couponCode, couponName, debitAmount }) => ({
+									key: couponCode,
+									code: couponCode,
+									name: `${couponName} - ₪${debitAmount}`,
+								})
+							)}
 						isLoading={isLoadingCoupons}
 					/>
 				)}

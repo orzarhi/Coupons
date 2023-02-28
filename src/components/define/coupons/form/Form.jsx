@@ -9,21 +9,27 @@ import {
 } from "~/hooks/useCoupons";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import * as toastMessages from "~/utils/notification/index";
-import { AutocompleteInput } from "../../_logic/autocompleteInput";
+// import { AutocompleteInput } from "../../_logic/AutocompleteInput";
 import { SelectInput } from "../../_logic/SelectInput";
 
-import InputText from "./InputText";
+import {
+	CompanyCodeAutocompleteInput,
+	InputText,
+	SupplierAutocompleteInput,
+} from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
+	const [radioButtonsAssign, setRadioButtonsAssign] = useState("");
 	const [radioButtonsCouponType, setRadioButtonsCouponType] = useState("");
 	const [selectedValue, setSelectedValue] = useState("");
 	// const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
 
 	const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
+	const [selectedValueCompany, setSelectedValueCompany] = useState("");
 
 	const couponNameInputRef = useRef();
 	const couponDescInputRef = useRef();
@@ -66,8 +72,11 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		refetch
 	);
 
-	const onAtuoCompleteChange = (value) => {
+	const onSupplierAtuoCompleteChange = (value) => {
 		setSelectedValueSuppliers(value);
+	};
+	const onCompanyAtuoCompleteChange = (value) => {
+		setSelectedValueCompany(value);
 	};
 	const submitAddHandler = async (e) => {
 		e.preventDefault();
@@ -96,7 +105,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						debitAmount,
 						couponType: radioButtonsCouponType === "true" ? 2 : 1,
 						experationHours,
-						supplierCode: selectedValueSuppliers,
+						supplierCode: selectedValueSuppliers?.id,
 						supplierPrice,
 					};
 					console.log("🚀newCoupon:", newCoupon);
@@ -115,12 +124,25 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				updateMutateCoupon(editCoupon);
-			} else if (open.title === "assign") {
+			} else if (
+				open.title === "assign" &&
+				radioButtonsAssign === "true"
+			) {
 				const assignCouponToCompany = {
 					couponCode: info?.couponCode,
-					companyCode: selectedValue,
+					companyCode: selectedValueCompany?.id,
 				};
 				assignMutateCouponToCompany(assignCouponToCompany);
+			} else if (
+				open.title === "assign" &&
+				radioButtonsAssign === "false"
+			) {
+				const assignCouponToSupplier = {
+					supplierCode: selectedValueSuppliers.id,
+					companyCode: 0,
+					supplierPrice: 0,
+				};
+				assignMutateCouponToCompany(assignCouponToSupplier);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;
@@ -128,27 +150,67 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			else toastMessages.errorMessage("שגיאה: בעיית התחברות לשרת");
 		}
 	};
+	const dataResuls = dataSuppliers?.filter(
+		(suppliers) => suppliers.isMeals.toString() !== radioButtonsCouponType
+	);
 
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
 
+			{open.title === "add" && (
+				<div className="w-full flex justify-center items-center">
+					<RadioButtons
+						defaultValue={null}
+						title={"קופון:"}
+						firstLabel={"שונות"}
+						secondeLabel={"אוכל"}
+						setRadioButtons={setRadioButtonsCouponType}
+					/>
+				</div>
+			)}
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
 				{open.title === "assign" ? (
-					<SelectInput
-						action={open.title}
-						type={"חברות"}
-						selectedValue={selectedValue}
-						setSelectedValue={setSelectedValue}
-						data={dataCompanies?.map(
-							({ companyCode, companyName }) => ({
-								key: companyCode,
-								code: companyCode,
-								name: companyName,
-							})
+					<>
+						<div className="w-3/5 flex justify-center">
+							<RadioButtons
+								firstLabel={"לחברה"}
+								secondeLabel={"לספק"}
+								title={"שיוך:"}
+								setRadioButtons={setRadioButtonsAssign}
+							/>
+						</div>
+						{radioButtonsAssign === "true" && (
+							<CompanyCodeAutocompleteInput
+								options={dataCompanies?.map((companie) => ({
+									label: companie.companyName,
+									id: companie.companyCode,
+								}))}
+								onChange={onCompanyAtuoCompleteChange}
+								label={"חברות"}
+							/>
 						)}
-						isLoading={isLoadingCompanies}
-					/>
+						{radioButtonsAssign === "false" && (
+							<>
+								<SupplierAutocompleteInput
+									options={dataSuppliers?.map((supplier) => ({
+										label: supplier.supplierName,
+										id: supplier.supplierCode,
+									}))}
+									onChange={onSupplierAtuoCompleteChange}
+									label={"ספקים"}
+								/>
+
+								<InputText
+									title={title}
+									action={"עריכת נתונים"}
+									info={info?.debitAmount}
+									originalText={"סכום החיוב"}
+									ref={debitAmountInputRef}
+								/>
+							</>
+						)}
+					</>
 				) : (
 					<>
 						<InputText
@@ -176,52 +238,31 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}
-							info={info?.experationDays}
+							info={info?.experationHours}
 							originalText={"תוקף"}
 							ref={experationHoursInputRef}
 						/>
-						<InputText
-							title={title}
-							action={"עריכת נתונים"}
-							info={info?.experationDays}
-							originalText={"מחיר ספק"}
-							ref={supplierPriceInputRef}
-						/>
+
 						{open.title === "add" && (
 							<>
-								<AutocompleteInput
-									options={dataSuppliers?.map((supplier) => ({
+								<SupplierAutocompleteInput
+									options={dataResuls?.map((supplier) => ({
 										label: supplier.supplierName,
 										id: supplier.supplierCode,
 									}))}
-									onChange={onAtuoCompleteChange}
+									onChange={onSupplierAtuoCompleteChange}
 									label={"ספקים"}
 								/>
-								{/* <SelectInput
-									action={open.title}
-									type={"ספק"}
-									selectedValue={selectedValueSuppliers}
-									setSelectedValue={setSelectedValueSuppliers}
-									data={dataSuppliers?.map(
-										({ supplierCode, supplierName }) => ({
-											key: supplierCode,
-											code: supplierCode,
-											name: supplierName,
-										})
-									)}
-									isLoading={isLoadingSuppliers}
-								/> */}
+								<InputText
+									title={title}
+									action={"עריכת נתונים"}
+									info={info?.experationDays}
+									originalText={"מחיר ספק"}
+									ref={supplierPriceInputRef}
+								/>
 							</>
 						)}
-						{open.title === "add" && (
-							<div className="w-2/5 flex justify-center">
-								<RadioButtons
-									defaultValue={null}
-									title={"קופון שונות:"}
-									setRadioButtons={setRadioButtonsCouponType}
-								/>
-							</div>
-						)}
+
 						{open.title === "edit" && (
 							<div className="w-3/5 flex justify-center">
 								<RadioButtons

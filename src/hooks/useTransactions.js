@@ -36,13 +36,16 @@ export const useAddTransaction = (setOpen, open, refetch) =>
 		},
 	});
 
-export const useUpdateTransaction = () =>
+export const useUpdateTransaction = (setCounter, setError, setIsError) =>
 	useMutation(updateCouponQr, {
 		onSuccess: (data) => {
+			setCounter((prev) => prev + 1);
 			new Audio(correct).play();
 			toastMessages.successMessage(data.Message);
 		},
 		onError: (data) => {
+			setIsError(true);
+			setError(data);
 			new Audio(incorrect).play();
 			error(data);
 		},

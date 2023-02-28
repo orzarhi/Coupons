@@ -11,6 +11,9 @@ import Actions from "./actions/Actions";
 const Suppliers = () => {
 	const [counter, setCounter] = useState(0);
 	const [data, setData] = useState("");
+	const [error, setError] = useState("");
+	const [isError, setIsError] = useState(false);
+
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -25,10 +28,10 @@ const Suppliers = () => {
 
 	const {
 		mutate: updateMutateTransaction,
-		isError,
-		error,
+		// isError,
+		// error,
 		isLoading,
-	} = useUpdateTransaction();
+	} = useUpdateTransaction(setCounter, setError, setIsError);
 
 	useEffect(() => {
 		if (!data || !data === "") return;
@@ -39,8 +42,9 @@ const Suppliers = () => {
 				supplierUsername: dataSupplier?.username,
 			};
 			updateMutateTransaction(updateTransaction);
-			setCounter((prev) => prev + 1);
 			await delay(5000);
+			setError("");
+			setIsError(true);
 			setData("");
 		};
 		updated();
@@ -88,13 +92,13 @@ const Suppliers = () => {
 			{!isLoading ? (
 				<div className="flex flex-col justify-center items-center text-3xl mt-5">
 					{isError && <span>{error?.response?.data?.Message}</span>}
+					{data === "" && <span>ממתין לסריקה</span>}
 					{!isError && !error && (
 						<span>
-							{data
-								? ` נסרק בהצלחה - ${JSON.stringify(
-										decrypt(data)?.username
-								  )}`
-								: `ממתין לסריקה`}
+							{data &&
+								` נסרק בהצלחה - ${JSON.stringify(
+									decrypt(data)?.username?.toString()
+								)}`}
 						</span>
 					)}
 				</div>

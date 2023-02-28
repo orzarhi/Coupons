@@ -1,4 +1,5 @@
 import {
+	Autocomplete,
 	Box,
 	FormControl,
 	InputLabel,
@@ -100,5 +101,88 @@ export const SelectInputCompanyandDepartment = ({
 				</Select>
 			</FormControl>
 		</Box>
+	);
+};
+
+export const CompanyAutocompleteInput = ({ options, onChange, label }) => {
+	return (
+		<Autocomplete
+			disablePortal
+			id="combo-box-demo"
+			getOptionLabel={(option) => option.label || ""}
+			options={options}
+			onChange={(_, value) => onChange(value)}
+			isOptionEqualToValue={(option, value) =>
+				option.id === value.companyCode
+			}
+			sx={{ width: 200 }}
+			renderInput={(params) => <TextField {...params} label={label} />}
+		/>
+	);
+};
+export const DepartmentAutocompleteInput = ({
+	options,
+	onChange,
+
+	label,
+}) => {
+	return (
+		<Autocomplete
+			disablePortal
+			id="combo-box-demo"
+			options={options}
+			getOptionLabel={(option) => option.label || ""}
+			onChange={(_, value) => onChange(value)}
+			isOptionEqualToValue={(option, value) => option.id === value.code}
+			sx={{ width: 200 }}
+			renderInput={(params) => <TextField {...params} label={label} />}
+		/>
+	);
+};
+
+export const CompanyAutocompleteInputEdit = ({
+	options,
+	onChange,
+	defaultLabel,
+	defaultCode,
+	label,
+}) => {
+	console.log("🎶 options:", options);
+	return (
+		<Autocomplete
+			disablePortal
+			id="combo-box-demo"
+			getOptionLabel={(option) => option.label || ""}
+			defaultValue={{ label: defaultLabel, id: defaultCode }}
+			options={options}
+			onChange={(_, value) => onChange(value)}
+			isOptionEqualToValue={(option, value) =>
+				option.id === value.companyCode
+			}
+			sx={{ width: 200 }}
+			renderInput={(params) => <TextField {...params} label={label} />}
+		/>
+	);
+};
+export const DepartmentAutocompleteInputEdit = ({
+	options,
+	onChange,
+	defaultLabel,
+	defaultCode,
+	label,
+}) => {
+	console.log("✔ options:", options);
+	return (
+		<Autocomplete
+			disablePortal
+			id="combo-box-demo"
+			options={options}
+			getOptionLabel={(option) => option.label || ""}
+			defaultValue={{ label: defaultLabel, id: defaultCode }}
+			onChange={(_, value) => onChange(value)}
+			isOptionEqualToValue={(option, value) => option.id === value.code}
+			sx={{ width: 200 }}
+			renderInput={(params) => <TextField {...params} label={label} />}
+		/>
 	);
 };

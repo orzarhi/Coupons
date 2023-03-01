@@ -1,8 +1,8 @@
 import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
+import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { InputDates } from "~/components/define/_logic/DatesInput";
-import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useCompanies } from "~/hooks/useCompanies";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
@@ -21,8 +21,7 @@ export const Form = ({
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
 
-	const { data: dataCompanies, isLoading: isLoadingCompanies } =
-		useCompanies();
+	const { data: dataCompanies } = useCompanies();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -34,11 +33,11 @@ export const Form = ({
 
 		try {
 			if (open.title === "report") {
-				if (!fromDate || !toDate || !selectedCompany) {
+				if (!fromDate || !toDate || !selectedCompany.id) {
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportCompany = {
-						companyCode: selectedCompany,
+						companyCode: selectedCompany.id,
 						fromDate,
 						toDate,
 					};
@@ -53,6 +52,10 @@ export const Form = ({
 			else toastMessages.errorMessage("שגיאה: בעיית התחברות לשרת");
 		}
 	};
+
+	const onCompanieAtuoCompleteChange = (value) => {
+		setSelectedCompany(value);
+	};
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2 sm:mt-2 sm:text-xl">
@@ -60,28 +63,23 @@ export const Form = ({
 			</span>
 			{open.title === "report" && (
 				<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-					<SelectInput
-						action={open.title}
-						type={"חברות"}
-						selectedValue={selectedCompany}
-						setSelectedValue={setSelectedCompany}
-						data={dataCompanies?.map(
-							({ companyCode, companyName }) => ({
-								key: companyCode,
-								code: companyCode,
-								name: companyName,
-							})
-						)}
-						isLoading={isLoadingCompanies}
+					<AutocompleteInput
+						options={dataCompanies?.map((companie) => ({
+							label: companie.companyName,
+							id: companie.companyCode,
+						}))}
+						onChange={onCompanieAtuoCompleteChange}
+						label={"חברות"}
 					/>
+
 					<div className="flex justify-center items-center ml-5 w-5/6 sm:grid sm:justify-center">
 						<label className="text-base ml-2">מתאריך:</label>
 						<InputDates
 							title={title}
 							action={"עריכת נתונים"}
 							ref={fromDateInputRef}
-							// It's false because it's not year and month
-							// It's true because it's an initial date
+							// It's false because not year and month
+							// It's true because an initial date
 							defaultValue={getDates(false, true)}
 						/>
 

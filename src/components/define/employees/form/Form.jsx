@@ -27,20 +27,13 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		isAdministrationAdmin: "false",
 	});
 
-	const [selectedValue, setSelectedValue] = useState({
-		company: "",
-		department: "",
-	});
 	const [selectedValueCompany, setSelectedValueCompany] = useState("");
 	const [selectedValueDepartment, setSelectedValueDepartment] = useState("");
-
 	const [selectedAdministration, setSelectedAdministration] = useState("");
 
-	const { data: dataDepartments, isLoading: isLoadingDepartments } =
-		useDepartments();
+	const { data: dataDepartments } = useDepartments();
 
-	const { data: dataCompanies, isLoading: isLoadingCompanies } =
-		useCompanies();
+	const { data: dataCompanies } = useCompanies();
 
 	const { data: dataAdministrations, isLoading: isLoadingAdministrations } =
 		useAdministrations();
@@ -86,6 +79,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		setSelectedValueDepartment(value);
 	};
 
+	const onAdministrationsAtuoCompleteChange = (value) => {
+		setSelectedAdministration(value);
+	};
 	const departmentsInCompany = dataCompanies?.filter(
 		(company) => company?.companyName === selectedValueCompany?.label
 	);
@@ -167,7 +163,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			} else if (open.title === "assign") {
 				const assignAdminToAdministration = {
 					employeeCode: info?.employeeCode,
-					administrationCode: 1,
+					administrationCode: selectedAdministration.id,
 				};
 
 				assignMutateAdminToAdministration(assignAdminToAdministration);
@@ -184,17 +180,13 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			<span className="block text-center text-2xl mb-2">{title}</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
 				{open.title === "assign" && (
-					<SelectInput
-						action={open.title}
-						type={"הנהלה"}
-						selectedValue={selectedAdministration}
-						setSelectedValue={setSelectedAdministration}
-						data={dataAdministrations?.map(({ code, name }) => ({
-							key: code,
-							code,
-							name,
+					<AutocompleteInput
+						options={dataAdministrations?.map((administration) => ({
+							label: administration.name,
+							id: administration.code,
 						}))}
-						isLoading={isLoadingAdministrations}
+						onChange={onAdministrationsAtuoCompleteChange}
+						label={"מנהלה"}
 					/>
 				)}
 				{open.title !== "assign" && (

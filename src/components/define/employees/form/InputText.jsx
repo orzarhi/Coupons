@@ -50,55 +50,55 @@ export const InputText = forwardRef((props, ref) => {
 	);
 });
 
-export const SelectInputCompanyandDepartment = ({
-	title,
-	action,
-	type,
-	defaultValue,
-	selectedValue,
-	setSelectedValue,
-	data,
-	isLoading,
-}) => {
-	const handleChange = (e) => {
-		const value = e.target.value;
+// export const SelectInputCompanyandDepartment = ({
+// 	title,
+// 	action,
+// 	type,
+// 	defaultValue,
+// 	selectedValue,
+// 	setSelectedValue,
+// 	data,
+// 	isLoading,
+// }) => {
+// 	const handleChange = (e) => {
+// 		const value = e.target.value;
 
-		if (title === "company")
-			setSelectedValue({ ...selectedValue, company: value });
-		else if (title === "department")
-			setSelectedValue({ ...selectedValue, department: value });
-	};
+// 		if (title === "company")
+// 			setSelectedValue({ ...selectedValue, company: value });
+// 		else if (title === "department")
+// 			setSelectedValue({ ...selectedValue, department: value });
+// 	};
 
-	return (
-		<Box className="!w-2/5">
-			<FormControl fullWidth>
-				<InputLabel
-					id="demo-simple-select-label"
-					sx={{ direction: "rtl" }}
-				>
-					{action === "edit" ? defaultValue : type}
-				</InputLabel>
-				<Select
-					labelId="demo-simple-select-label"
-					id="demo-simple-select"
-					value={
-						title === "company"
-							? selectedValue.company
-							: selectedValue.department
-					}
-					label={action === "edit" ? defaultValue : type}
-					onChange={handleChange}
-					required
-					defaultValue={action === "edit" ? defaultValue : type}
-				>
-					{!isLoading &&
-						data?.map((type) => (
-							<MenuItem key={type?.code} value={type?.code}>
-								{type?.name}
-							</MenuItem>
-						))}
-				</Select>
-			</FormControl>
-		</Box>
-	);
-};
+// 	return (
+// 		<Box className="!w-2/5">
+// 			<FormControl fullWidth>
+// 				<InputLabel
+// 					id="demo-simple-select-label"
+// 					sx={{ direction: "rtl" }}
+// 				>
+// 					{action === "edit" ? defaultValue : type}
+// 				</InputLabel>
+// 				<Select
+// 					labelId="demo-simple-select-label"
+// 					id="demo-simple-select"
+// 					value={
+// 						title === "company"
+// 							? selectedValue.company
+// 							: selectedValue.department
+// 					}
+// 					label={action === "edit" ? defaultValue : type}
+// 					onChange={handleChange}
+// 					required
+// 					defaultValue={action === "edit" ? defaultValue : type}
+// 				>
+// 					{!isLoading &&
+// 						data?.map((type) => (
+// 							<MenuItem key={type?.code} value={type?.code}>
+// 								{type?.name}
+// 							</MenuItem>
+// 						))}
+// 				</Select>
+// 			</FormControl>
+// 		</Box>
+// 	);
+// };

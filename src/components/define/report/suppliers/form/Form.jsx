@@ -1,9 +1,9 @@
 import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
+import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { InputMonth } from "~/components/define/_logic/DatesInput";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
-import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
@@ -22,8 +22,7 @@ export const Form = ({
 
 	const monthAndYearInputRef = useRef();
 
-	const { data: dataSuppliers, isLoading: isLoadingSuppliers } =
-		useSuppliers();
+	const { data: dataSuppliers } = useSuppliers();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -36,11 +35,11 @@ export const Form = ({
 
 		try {
 			if (open.title === "report") {
-				if (!monthAndYear || !selectedSupplier || !radioButtons) {
+				if (!monthAndYear || !selectedSupplier.id || !radioButtons) {
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportSupplier = {
-						supplierCode: selectedSupplier,
+						supplierCode: selectedSupplier.id,
 						month,
 						year,
 						isSendMail: radioButtons === "true" ? true : false,
@@ -56,6 +55,11 @@ export const Form = ({
 			else toastMessages.errorMessage("שגיאה: בעיית התחברות לשרת");
 		}
 	};
+
+	const onSupplierAtuoCompleteChange = (value) => {
+		setSelectedSupplier(value);
+	};
+
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2 sm:mt-2 sm:text-xl">
@@ -63,25 +67,18 @@ export const Form = ({
 			</span>
 			{open.title === "report" && (
 				<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-					<SelectInput
-						action={open.title}
-						type={"חברות"}
-						selectedValue={selectedSupplier}
-						setSelectedValue={setSelectedSupplier}
-						data={dataSuppliers?.map(
-							({ supplierCode, supplierName }) => ({
-								key: supplierCode,
-								code: supplierCode,
-								name: supplierName,
-							})
-						)}
-						isLoading={isLoadingSuppliers}
+					<AutocompleteInput
+						options={dataSuppliers?.map((supplier) => ({
+							label: supplier.supplierName,
+							id: supplier.supplierCode,
+						}))}
+						onChange={onSupplierAtuoCompleteChange}
+						label={"ספקים"}
 					/>
-
 					<InputMonth
 						ref={monthAndYearInputRef}
-						// It's true because it's year and month
-						// It's false because it's not an initial date
+						// It's true because year and month
+						// It's false because not an initial date
 						defaultValue={getDates(true, false)}
 					/>
 

@@ -1,22 +1,17 @@
-import { Autocomplete, IconButton, TextField } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { useCompanies } from "~/hooks/useCompanies";
 import {
 	useAddCoupon,
 	useAssignCouponToCompany,
+	useAssignCouponToSupplier,
 	useUpdateCoupon,
 } from "~/hooks/useCoupons";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import * as toastMessages from "~/utils/notification/index";
-// import { AutocompleteInput } from "../../_logic/AutocompleteInput";
-import { SelectInput } from "../../_logic/SelectInput";
-
-import {
-	CompanyCodeAutocompleteInput,
-	InputText,
-	SupplierAutocompleteInput,
-} from "./InputText";
+import { AutocompleteInput } from "../../_logic/AutocompleteInput";
+import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
@@ -25,16 +20,12 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	);
 	const [radioButtonsAssign, setRadioButtonsAssign] = useState("");
 	const [radioButtonsCouponType, setRadioButtonsCouponType] = useState("");
-	const [selectedValue, setSelectedValue] = useState("");
-	// const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
-
 	const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
 	const [selectedValueCompany, setSelectedValueCompany] = useState("");
 
 	const couponNameInputRef = useRef();
 	const couponDescInputRef = useRef();
 	const debitAmountInputRef = useRef();
-	// const couponTypeInputRef = useRef();
 	const experationHoursInputRef = useRef();
 	const supplierPriceInputRef = useRef();
 
@@ -43,15 +34,12 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		couponDescInputRef.current.value = "";
 		debitAmountInputRef.current.value = "";
 		supplierPriceInputRef.current.value = "";
-		// couponTypeInputRef.current.value = "";
 		experationHoursInputRef.current.value = "";
 	};
 
-	const { data: dataSuppliers, isLoading: isLoadingSuppliers } =
-		useSuppliers();
+	const { data: dataSuppliers } = useSuppliers();
 
-	const { data: dataCompanies, isLoading: isLoadingCompanies } =
-		useCompanies();
+	const { data: dataCompanies } = useCompanies();
 
 	const { mutate: addMutateCoupon } = useAddCoupon(
 		setOpen,
@@ -67,6 +55,12 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	);
 
 	const { mutate: assignMutateCouponToCompany } = useAssignCouponToCompany(
+		setOpen,
+		open,
+		refetch
+	);
+
+	const { mutate: assignMutateCouponToSupplier } = useAssignCouponToSupplier(
 		setOpen,
 		open,
 		refetch
@@ -108,7 +102,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						supplierCode: selectedValueSuppliers?.id,
 						supplierPrice,
 					};
-					console.log("🚀newCoupon:", newCoupon);
 					addMutateCoupon(newCoupon);
 				}
 			} else if (open.title === "edit") {
@@ -139,10 +132,10 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			) {
 				const assignCouponToSupplier = {
 					supplierCode: selectedValueSuppliers.id,
-					companyCode: 0,
-					supplierPrice: 0,
+					couponCode: info?.couponCode,
+					supplierPrice: debitAmount,
 				};
-				assignMutateCouponToCompany(assignCouponToSupplier);
+				assignMutateCouponToSupplier(assignCouponToSupplier);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;
@@ -181,7 +174,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							/>
 						</div>
 						{radioButtonsAssign === "true" && (
-							<CompanyCodeAutocompleteInput
+							<AutocompleteInput
 								options={dataCompanies?.map((companie) => ({
 									label: companie.companyName,
 									id: companie.companyCode,
@@ -192,7 +185,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						)}
 						{radioButtonsAssign === "false" && (
 							<>
-								<SupplierAutocompleteInput
+								<AutocompleteInput
 									options={dataSuppliers?.map((supplier) => ({
 										label: supplier.supplierName,
 										id: supplier.supplierCode,
@@ -245,7 +238,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 
 						{open.title === "add" && (
 							<>
-								<SupplierAutocompleteInput
+								<AutocompleteInput
 									options={dataResuls?.map((supplier) => ({
 										label: supplier.supplierName,
 										id: supplier.supplierCode,

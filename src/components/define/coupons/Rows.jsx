@@ -91,7 +91,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								gutterBottom
 								component="div"
 							>
-								חברות - {row?.companies?.length}
+								מחלקות - {row?.companies?.length}
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>
@@ -117,12 +117,12 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								</TableHead>
 								<TableBody>
 									{row?.companies?.map((orderRow) => (
-										<TableRow key={orderRow.companyCode}>
+										<TableRow key={orderRow.departmentCode}>
 											<TableCell align="right">
-												{orderRow.companyCode}
+												{orderRow.departmentCode}
 											</TableCell>
 											<TableCell align="right">
-												{orderRow.companyName}
+												{`${orderRow.companyName} - ${orderRow.departmentName}`}
 											</TableCell>
 											<TableCell align="right">
 												{orderRow.email}
@@ -150,6 +150,111 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 															row,
 															"delete-unassign",
 															orderRow.companyCode
+														)
+													}
+												>
+													<MdRemoveCircleOutline />
+												</IconButton>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</Box>
+					</Collapse>
+				</TableCell>
+			</TableRow>
+			<TableRow>
+				<TableCell
+					style={{ paddingBottom: 0, paddingTop: 0 }}
+					colSpan={6}
+				>
+					<Collapse in={openTable} timeout="auto" unmountOnExit>
+						<Box sx={{ margin: 1 }}>
+							<Typography
+								variant="h6"
+								gutterBottom
+								component="div"
+							>
+								ספקים - {row?.suppliers?.length}
+							</Typography>
+							<Table size="small" aria-label="purchases">
+								<TableHead>
+									<TableRow>
+										<TableCell align="right">קוד</TableCell>
+										<TableCell align="right">שם</TableCell>
+										<TableCell align="right">
+											שם משתמש
+										</TableCell>
+										<TableCell align="right">
+											מייל
+										</TableCell>
+										<TableCell align="right">
+											מספר פלאפון
+										</TableCell>
+										<TableCell align="right">ח.פ</TableCell>
+										<TableCell align="right">
+											פעיל
+										</TableCell>
+										<TableCell align="right">
+											ספק ארוחות
+										</TableCell>
+
+										<TableCell align="right">
+											ספק שונות
+										</TableCell>
+										<TableCell align="right">
+											הסר שיווך
+										</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{row?.suppliers?.map((orderRow) => (
+										<TableRow key={orderRow.supplierCode}>
+											<TableCell align="right">
+												{orderRow.supplierCode}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.supplierName}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.username}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.email}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.phoneNumber}
+											</TableCell>
+											<TableCell align="right">
+												{orderRow.businessNumber}
+											</TableCell>
+											<TableCell align="right">
+												{convertBoolean(
+													orderRow.isActive
+												)}
+											</TableCell>
+											<TableCell align="right">
+												{convertBoolean(
+													orderRow.isMeals
+												)}
+											</TableCell>
+											<TableCell align="right">
+												{convertBoolean(
+													orderRow.isVarious
+												)}
+											</TableCell>
+											<TableCell align="right">
+												<IconButton
+													title="Remove"
+													onClick={() =>
+														actionRow(
+															setOpen,
+															open,
+															setInfo,
+															row,
+															"delete-unassignToSupplier",
+															orderRow.supplierCode
 														)
 													}
 												>

@@ -128,7 +128,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 											</TableCell>
 
 											<TableCell align="right">
-												{orderRow.debitAmount}
+												₪{orderRow.debitAmount}
 											</TableCell>
 
 											<TableCell align="right">

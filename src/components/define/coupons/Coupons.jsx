@@ -60,7 +60,7 @@ const Coupons = () => {
 					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
 				/>
 			</div>
-			<div className="relative bottom-2 w-10/12 block m-auto p-5 xl:w-10/12 xl:relative xl:bottom-2">
+			<div className="relative bottom-2 w-11/12 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-2">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
 						<Table aria-label="collapsible table">

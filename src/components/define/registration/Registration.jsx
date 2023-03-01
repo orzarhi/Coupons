@@ -12,6 +12,8 @@ const Registration = () => {
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
 	const [checkedboxIsSysAdmin, setCheckedboxIsSysAdmin] = useState(false);
+	const [checkedboxUserEmployee, setCheckedboxUserEmployee] = useState(false);
+	const [checkedboxUserSupliers, setCheckedboxUserSupliers] = useState(false);
 
 	const [open, setOpen] = useState({
 		action: false,
@@ -27,13 +29,22 @@ const Registration = () => {
 
 	const dataCheckedIsActive = dataUsers?.filter((user) => user.isActive);
 	const dataCheckedIsSysAdmin = dataUsers?.filter((user) => user.isSysAdmin);
-
+	const dataCheckedUserEmployee = dataUsers?.filter(
+		(user) => user.typeDescription === "עובד"
+	);
+	const dataCheckedUsercSupliers = dataUsers?.filter(
+		(user) => user.typeDescription === "עסק"
+	);
 	const columnsResult = columns(setOpen, open, setInfo);
 
 	const dataResult = checkedboxIsActive
 		? dataCheckedIsActive
 		: checkedboxIsSysAdmin
 		? dataCheckedIsSysAdmin
+		: checkedboxUserEmployee
+		? dataCheckedUserEmployee
+		: checkedboxUserSupliers
+		? dataCheckedUsercSupliers
 		: data;
 	if (isLoading) return <Spinner />;
 
@@ -48,6 +59,20 @@ const Registration = () => {
 				showBtn={false}
 			/>
 			<div className="flex justify-center mt-4">
+				<FormControlLabel
+					control={<Checkbox defaultValue={false} />}
+					label="עובד"
+					onClick={() =>
+						setCheckedboxUserEmployee(!checkedboxUserEmployee)
+					}
+				/>
+				<FormControlLabel
+					control={<Checkbox defaultValue={false} />}
+					label="עסק"
+					onClick={() =>
+						setCheckedboxUserSupliers(!checkedboxUserSupliers)
+					}
+				/>
 				<FormControlLabel
 					control={<Checkbox defaultValue={false} />}
 					label="פעיל"

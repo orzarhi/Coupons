@@ -1,5 +1,5 @@
-import { TextField, Autocomplete } from "@mui/material";
-import React, { forwardRef } from "react";
+import { TextField } from "@mui/material";
+import { forwardRef } from "react";
 
 export const InputText = forwardRef((props, ref) => {
 	return (
@@ -34,37 +34,3 @@ export const InputText = forwardRef((props, ref) => {
 		</>
 	);
 });
-
-export const SupplierAutocompleteInput = ({ options, onChange, label }) => {
-	return (
-		<Autocomplete
-			disablePortal
-			id="combo-box-demo"
-			options={options}
-			getOptionLabel={(option) => option.label || ""}
-			onChange={(_, value) => onChange(value)}
-			isOptionEqualToValue={(option, value) =>
-				option.id === value.supplierCode
-			}
-			sx={{ width: 200 }}
-			renderInput={(params) => <TextField {...params} label={label} />}
-		/>
-	);
-};
-
-export const CompanyCodeAutocompleteInput = ({ options, onChange, label }) => {
-	return (
-		<Autocomplete
-			disablePortal
-			id="combo-box-demo"
-			options={options}
-			getOptionLabel={(option) => option.label || ""}
-			onChange={(_, value) => onChange(value)}
-			isOptionEqualToValue={(option, value) =>
-				option.id === value.companyCode
-			}
-			sx={{ width: 200 }}
-			renderInput={(params) => <TextField {...params} label={label} />}
-		/>
-	);
-};

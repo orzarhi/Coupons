@@ -1,27 +1,20 @@
 import { IconButton } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
+import { SelectInput } from "~/components/define/_logic/SelectInput";
+import { PersonType } from "~/constants/PersonType";
+import { useAdministrations } from "~/hooks/useAdministrations";
 import { useCompanies } from "~/hooks/useCompanies";
 import { useDepartments } from "~/hooks/useDepartments";
 import {
 	useAddEmployee,
 	useAssignAdminToAdministration,
-	useUnassignAdminFromAdministration,
 	useUpdateEmployee,
 } from "~/hooks/useEmployees";
-import { PersonType } from "~/constants/PersonType";
 import * as toastMessages from "~/utils/notification/index";
-import {
-	CompanyAutocompleteInput,
-	CompanyAutocompleteInputEdit,
-	DepartmentAutocompleteInput,
-	DepartmentAutocompleteInputEdit,
-	InputText,
-	SelectInputCompanyandDepartment,
-} from "./InputText";
+import { AutocompleteInput } from "../../_logic/AutocompleteInput";
+import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
-import { SelectInput } from "~/components/define/_logic/SelectInput";
-import { useAdministrations } from "~/hooks/useAdministrations";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState({
@@ -244,19 +237,19 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						/>
 						{open.title === "add" && (
 							<>
-								<CompanyAutocompleteInput
+								<AutocompleteInput
 									options={dataCompanies?.map((companie) => ({
 										label: companie.companyName,
 										id: companie.companyCode,
 									}))}
 									onChange={onCompanyAtuoCompleteChange}
-									defaultLabel={info?.companyName}
-									defaultCode={info?.companyCode}
+									// defaultLabel={info?.companyName}
+									// defaultCode={info?.companyCode}
 									label={"חברות"}
 								/>
 
 								{selectedValueCompany && (
-									<DepartmentAutocompleteInput
+									<AutocompleteInput
 										options={dataDepartmentsInCompany[0]?.map(
 											(department) => ({
 												label: department?.name,
@@ -266,8 +259,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										onChange={
 											onDepartmentAtuoCompleteChange
 										}
-										defaultLabel={info?.departmentName}
-										defaultCode={info?.departmentCode}
+										// defaultLabel={info?.departmentName}
+										// defaultCode={info?.departmentCode}
 										label={"מחלקות"}
 									/>
 								)}
@@ -276,17 +269,17 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 
 						{open.title === "edit" && (
 							<>
-								<CompanyAutocompleteInputEdit
+								<AutocompleteInput
 									options={dataCompanies?.map((companie) => ({
 										label: companie.companyName,
 										id: companie.companyCode,
 									}))}
 									onChange={onCompanyAtuoCompleteChange}
-									defaultLabel={info?.companyName}
-									defaultCode={info?.companyCode}
-									label={"חברות"}
+									// defaultLabel={info?.companyName}
+									// defaultCode={info?.companyCode}
+									label={info?.companyName}
 								/>
-								<DepartmentAutocompleteInputEdit
+								<AutocompleteInput
 									options={dataDepartments?.map(
 										(department) => ({
 											label: department?.name,
@@ -294,9 +287,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										})
 									)}
 									onChange={onDepartmentAtuoCompleteChange}
-									defaultLabel={info?.departmentName}
-									defaultCode={info?.departmentCode}
-									label={"מחלקות"}
+									// defaultLabel={info?.departmentName}
+									// defaultCode={info?.departmentCode}
+									label={info?.departmentName}
 								/>
 							</>
 						)}

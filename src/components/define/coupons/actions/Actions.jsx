@@ -3,6 +3,7 @@ import PopUp from "~/components/ui/popUp/PopUp";
 import {
 	useDeleteCoupon,
 	useUnassignCouponToCompany,
+	useUnassignCouponToSupplier,
 } from "~/hooks/useCoupons";
 import Form from "../form/Form";
 
@@ -16,6 +17,9 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 	const { mutate: unassignMutateCouponToCompany } =
 		useUnassignCouponToCompany(setOpen, open, refetch);
 
+	const { mutate: unassignMutateCouponToSupplier } =
+		useUnassignCouponToSupplier(setOpen, open, refetch);
+
 	const submitHandler = () => {
 		if (open.title === "delete") {
 			deleteMutateCoupon(info?.couponCode);
@@ -24,9 +28,14 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 				couponCode: info?.couponCode,
 				companyCode: open?.code,
 			};
-
-			console.log("🚀 unassignCouponToCompany", unassignCouponToCompany);
 			unassignMutateCouponToCompany(unassignCouponToCompany);
+		} else if (open.title === "delete-unassignToSupplier") {
+			const unassignCouponToSupplier = {
+				couponCode: info?.couponCode,
+				supplierCode: open?.code,
+			};
+
+			unassignMutateCouponToSupplier(unassignCouponToSupplier);
 		}
 	};
 	return (

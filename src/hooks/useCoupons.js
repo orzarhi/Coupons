@@ -68,7 +68,6 @@ export const useUnassignCouponToCompany = (setOpen, open, refetch) =>
 		},
 	});
 
-//TODO: added new Mutation
 export const useAssignCouponToSupplier = (setOpen, open, refetch) =>
 	useMutation(assignCouponToSupplier, {
 		onSuccess: (data) => {
@@ -79,7 +78,6 @@ export const useAssignCouponToSupplier = (setOpen, open, refetch) =>
 		},
 	});
 
-//TODO: added new Mutation
 export const useUnassignCouponToSupplier = (setOpen, open, refetch) =>
 	useMutation((supplierCode) => unassignCouponToSupplier(supplierCode), {
 		onSuccess: (data) => {

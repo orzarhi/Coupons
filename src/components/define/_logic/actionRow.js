@@ -20,6 +20,14 @@ export const actionRow = (setOpen, open, setInfo, row, title, code = "") => {
 			title: "delete-unassign",
 			code: code,
 		});
+	} else if (title === "delete-unassignToSupplier") {
+		setOpen({
+			...open,
+			modalDialog: true,
+			action: true,
+			title: "delete-unassignToSupplier",
+			code: code,
+		});
 	}
 	setInfo(row);
 };

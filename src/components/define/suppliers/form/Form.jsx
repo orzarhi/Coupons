@@ -25,6 +25,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const supplierNameInputRef = useRef();
 	const usernameInputRef = useRef();
 	const passwordInputRef = useRef();
+	const supplierMealPriceInputRef = useRef();
 
 	const clearInputs = () => {
 		emailInputRef.current.value = "";
@@ -33,6 +34,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		supplierNameInputRef.current.value = "";
 		usernameInputRef.current.value = "";
 		passwordInputRef.current.value = "";
+		supplierMealPriceInputRef.current.value = "";
 	};
 	const { mutate: addMutateSupplier } = useAddSupplier(
 		setOpen,
@@ -56,6 +58,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		const supplierName = supplierNameInputRef?.current?.value;
 		const username = usernameInputRef?.current?.value;
 		const password = passwordInputRef?.current?.value;
+		const supplierMealPrice = supplierMealPriceInputRef?.current?.value;
+		console.log("🚀supplierMealPrice:", addRadioButtons);
 
 		try {
 			if (open.title === "add") {
@@ -67,6 +71,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					!username ||
 					!password ||
 					!addRadioButtons.isMeals ||
+					!supplierMealPrice ||
 					!addRadioButtons.isVarious
 				) {
 					toastMessages.infoMessage("נא למלא את כל השדות");
@@ -78,6 +83,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						supplierName,
 						username,
 						password,
+						supplierMealPrice,
 						type: PersonType.SUPPLIER.id,
 						isMeals:
 							addRadioButtons.isMeals === "true" ? true : false,
@@ -158,9 +164,17 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					originalText={"ח.פ"}
 					ref={businessNumberInputRef}
 				/>
-
 				{open.title === "add" && (
-					<>
+					<InputText
+						title={title}
+						action={"עריכת נתונים"}
+						info={info?.supplierMealPrice}
+						originalText={"מחיר"}
+						ref={supplierMealPriceInputRef}
+					/>
+				)}
+				{open.title === "add" && (
+					<div className="w-3/5">
 						<RadioButtons
 							title={"ספק ארוחות:"}
 							identification={"meals"}
@@ -177,7 +191,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							// defaultValue={info?.isVarious}
 							type={open.title}
 						/>
-					</>
+					</div>
 				)}
 				<div className="flex flex-wrap justify-center w-full gap-12">
 					{open.title === "edit" && (

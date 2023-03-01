@@ -75,7 +75,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 				{title}
 			</span>
 
-			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3 ">
+			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
 				{open.title === "add-various" && (
 					<SelectInput
 						action={open.title}
@@ -102,8 +102,8 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 								title={title}
 								action={"עריכת נתונים"}
 								ref={fromDateInputRef}
-								// It's false because it's not year and month
-								// It's true because it's an initial date
+								// It's false because not year and month
+								// It's true because an initial date
 								defaultValue={getDates(false, true)}
 							/>
 
@@ -119,7 +119,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 				)}
 			</div>
 
-			<div className="flex items-end flex-col p-2">
+			<div className="flex items-end flex-col p-2 sm:relative top-28">
 				{open.title === "add-various" && (
 					<IconButton
 						className="!text-white !bg-green-700 !text-3xl"

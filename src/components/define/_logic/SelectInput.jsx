@@ -13,7 +13,7 @@ export const SelectInput = ({
 	};
 
 	return (
-		<Box className="!w-2/5">
+		<Box className="!w-2/5 sm:!w-full">
 			<FormControl fullWidth>
 				<InputLabel
 					id="demo-simple-select-label"

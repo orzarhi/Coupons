@@ -110,7 +110,7 @@ const Transactions = () => {
 			</div>
 
 			{checked ? (
-				<div className=" grid grid-cols-4 gap-2 justify-between mt-10 lg:flex lg:flex-col">
+				<div className="grid grid-cols-4 gap-2 justify-between mt-10 lg:flex lg:flex-col">
 					{transactions
 						?.filter((transaction) => !transaction.isGuest)
 						?.map((transaction) => (

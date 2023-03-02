@@ -59,7 +59,10 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 						title={
 							open.title === "edit"
 								? "עריכת נתונים"
-								: open.title === "assign"
+								: open.title ===
+								  "assignAdministrationToCompanies"
+								? `שיוך מנהלה - ${info.name}`
+								: open.title === "assignAdministrationToAdmin"
 								? `שיוך מנהלה - ${info.name}`
 								: "הוספת מנהלה חדשה"
 						}

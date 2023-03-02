@@ -92,6 +92,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								הנהלות משוכיות - {row?.administrations?.length}
 								<IconButton
 									title="assign"
+									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(
 											setOpen,

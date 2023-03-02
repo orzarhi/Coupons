@@ -36,6 +36,22 @@ export const actionRow = (setOpen, open, setInfo, row, title, code = "") => {
 			title: "delete-unassignToEmployee",
 			code: code,
 		});
+	} else if (title === "assignAdministrationToCompanies") {
+		setOpen({
+			...open,
+			popUp: true,
+			action: true,
+			title: "assignAdministrationToCompanies",
+			code: code,
+		});
+	} else if (title === "assignAdministrationToAdmin") {
+		setOpen({
+			...open,
+			popUp: true,
+			action: true,
+			title: "assignAdministrationToAdmin",
+			code: code,
+		});
 	}
 	setInfo(row);
 };

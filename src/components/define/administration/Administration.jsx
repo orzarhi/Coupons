@@ -68,8 +68,6 @@ const Administration = () => {
 									<TableCell align="right">קוד</TableCell>
 									<TableCell align="right">שם</TableCell>
 									<TableCell align="right">פעיל</TableCell>
-									{/* <TableCell align="right">שיוך</TableCell> */}
-									<TableCell align="right">שיוך</TableCell>
 									<TableCell align="right">פעולות</TableCell>
 								</TableRow>
 							</TableHead>

@@ -7,7 +7,6 @@ import {
 } from "~/hooks/useAdministrations";
 import * as toastMessages from "~/utils/notification/index";
 import { InputText } from "./InputText";
-// import { RadioButtons } from "./RadioButtons";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
 import {
 	useAssignCompanyToAdministration,
@@ -25,7 +24,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	);
 	const nameInputRef = useRef();
 
-	const [assignRadioButtons, setAssignRadioButtons] = useState("");
 	const [selectedValueCompany, setSelectedValueCompany] = useState("");
 	const [selectedValueEmployee, setSelectedValueEmployee] = useState("");
 
@@ -90,10 +88,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				updateMutateAdministration(updateAdministration);
-			} else if (
-				open.title === "assign" &&
-				assignRadioButtons == "true"
-			) {
+			} else if (open.title === "assignAdministrationToCompanies") {
 				const assignAdministrationToCompany = {
 					companyCode: selectedValueCompany?.id,
 					administrationCode: info?.code,
@@ -102,10 +97,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				assignMutateCompanyToAdministration(
 					assignAdministrationToCompany
 				);
-			} else if (
-				open.title === "assign" &&
-				assignRadioButtons == "false"
-			) {
+			} else if (open.title === "assignAdministrationToAdmin") {
 				const assignAdminToAdministration = {
 					administrationCode: info?.code,
 					employeeCode: selectedValueEmployee?.id,
@@ -122,15 +114,16 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				{open.title === "assign" && (
-					<RadioButtons
-						title={"שיוך:"}
-						setRadioButtons={setAssignRadioButtons}
-						labelTrue={"לחברה"}
-						labelFalse={"למנהל"}
+				{open.title === "add" && (
+					<InputText
+						title={title}
+						action={"עריכת נתונים"}
+						info={info?.name}
+						originalText={"שם"}
+						ref={nameInputRef}
 					/>
 				)}
-				{open.title !== "assign" && (
+				{open.title === "edit" && (
 					<InputText
 						title={title}
 						action={"עריכת נתונים"}
@@ -149,7 +142,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					)}
 				</div>
 
-				{assignRadioButtons === "true" && (
+				{open.title === "assignAdministrationToCompanies" && (
 					<AutocompleteInput
 						options={dataCompanies?.map((companie) => ({
 							label: companie.companyName,
@@ -160,7 +153,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						label={"חברות"}
 					/>
 				)}
-				{assignRadioButtons === "false" && (
+				{open.title === "assignAdministrationToAdmin" && (
 					<AutocompleteInput
 						options={employeeAdministrationAdmin?.map(
 							(employee) => ({

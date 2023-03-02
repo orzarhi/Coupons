@@ -45,26 +45,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					{convertBoolean(row.isActive)}
 				</TableCell>
 
-				{/* <TableCell align="right">
-					<IconButton
-						title="assign"
-						onClick={() =>
-							actionRow(setOpen, open, setInfo, row, "assign")
-						}
-					>
-						<RiAddFill />
-					</IconButton>
-				</TableCell> */}
-				<TableCell align="right">
-					<IconButton
-						title="assign"
-						onClick={() =>
-							actionRow(setOpen, open, setInfo, row, "assign")
-						}
-					>
-						<RiAddFill />
-					</IconButton>
-				</TableCell>
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -97,12 +77,26 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								חברות - {row?.companies?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-500 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assignAdministrationToCompanies"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 
 							<Table size="small" aria-label="purchases">
 								<TableHead>
 									<TableRow>
-										<TableCell align="right">קוד</TableCell>
 										<TableCell align="right">שם</TableCell>
 										<TableCell align="right">
 											מייל
@@ -125,9 +119,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								<TableBody>
 									{row?.companies?.map((orderRow) => (
 										<TableRow key={orderRow.companyCode}>
-											<TableCell align="right">
-												{orderRow.companyCode}
-											</TableCell>
 											<TableCell align="right">
 												{orderRow.companyName}
 											</TableCell>
@@ -184,6 +175,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								מנהלים - {row?.admins?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-500 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assignAdministrationToAdmin"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>

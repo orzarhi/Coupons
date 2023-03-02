@@ -97,7 +97,7 @@ const Registration = () => {
 					}
 				/>
 			</div>
-			<div className="relative bottom-4 w-2/5 block m-auto p-5 xl:w-3/6 xl:relative xl:bottom-4 lg:w-4/6 md:w-5/6 sm:w-4/5">
+			<div className="relative bottom-4 w-2/5 block m-auto p-5 xl:w-4/6 xl:relative xl:bottom-4 lg:w-4/6 md:w-5/6 sm:w-4/5">
 				{dataUsers && (
 					<DataGrid
 						rows={dataResult}

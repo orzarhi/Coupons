@@ -9,11 +9,14 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useEmployees } from "~/hooks/useEmployees";
+import { useAuthStore } from "~/store/auth";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const Employees = () => {
+	const { token } = useAuthStore();
+
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
@@ -33,7 +36,7 @@ const Employees = () => {
 		code: "",
 	});
 
-	const { data: dataEmployees, refetch, isLoading } = useEmployees();
+	const { data: dataEmployees, refetch, isLoading } = useEmployees(token);
 
 	const data = dataEmployees?.filter((employee) =>
 		employee.employeeName.toLowerCase().includes(inputSearch.toLowerCase())
@@ -96,7 +99,7 @@ const Employees = () => {
 					}
 				/>
 			</div>
-			<div className="relative bottom-4 w-5/6 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-4">
+			<div className="relative bottom-4 w-5/6 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-4 lg:w-11/12">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
 						<Table aria-label="collapsible table">

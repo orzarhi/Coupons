@@ -43,7 +43,7 @@ export const Shifts = () => {
 				/>
 			</div>
 
-			<div className="relative bottom-2 w-9/12 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-2">
+			<div className="relative bottom-2 w-9/12 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-2 lg:w-11/12 md:w-10/12">
 				{data && (
 					<DataGrid
 						rows={checkedboxIsActive ? dataCheckedIsActive : data}

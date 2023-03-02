@@ -11,8 +11,10 @@ import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
 
-export const useDepartments = () =>
-	useQuery([queryKeys.departments], getDepartments);
+export const useDepartments = (token) =>
+	useQuery([queryKeys.departments], () => getDepartments(token), {
+		enabled: !!token,
+	});
 
 export const useAddDepartment = (setOpen, open, refetch, clearInputs) =>
 	useMutation(addDepartment, {

@@ -11,7 +11,10 @@ import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
 
-export const useEmployees = () => useQuery([queryKeys.employees], getEmployees);
+export const useEmployees = (token) =>
+	useQuery([queryKeys.employees], () => getEmployees(token), {
+		enabled: !!token,
+	});
 
 export const useAddEmployee = (setOpen, open, refetch, clearInputs) =>
 	useMutation(addEmployee, {

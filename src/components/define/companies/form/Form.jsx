@@ -9,26 +9,26 @@ import {
 	useUpdateCompany,
 } from "~/hooks/useCompanies";
 import { useCompanyReport } from "~/hooks/useReport";
+import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
+	const { token } = useAuthStore();
+
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
 	const [selectedAdministrations, setSelectedAdministrations] = useState("");
 
 	const { data: dataAdministrations, isLoadingAdministrations } =
-		useAdministrations();
+		useAdministrations(token);
 
 	const companyNameInputRef = useRef();
 	const emailInputRef = useRef();
 	const phoneNumberInputRef = useRef();
 	const logoFileInputRef = useRef();
-
-	const fromDateInputRef = useRef();
-	const toDateInputRef = useRef();
 
 	const clearInputs = () => {
 		companyNameInputRef.current.value = "";
@@ -51,8 +51,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const { mutate: assignMutateCompanyToAdministration } =
 		useAssignCompanyToAdministration(setOpen, open, refetch);
 
-	const [data, fetchReport] = useCompanyReport();
-
 	const submitHandler = async (e) => {
 		e.preventDefault();
 
@@ -60,10 +58,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		const email = emailInputRef?.current?.value;
 		const phoneNumber = phoneNumberInputRef?.current?.value;
 		const logoFile = logoFileInputRef?.current?.value;
-
-		const fromDate = fromDateInputRef?.current?.value;
-		const toDate = toDateInputRef?.current?.value;
-
 		try {
 			if (open.title === "add") {
 				if (!companyName || !email || !phoneNumber || !logoFile) {
@@ -76,7 +70,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						logoFile,
 					};
 
-					addMutateCompany(newCompany);
+					addMutateCompany(newCompany, token);
 				}
 			} else if (open.title === "edit") {
 				const updateCompany = {
@@ -88,7 +82,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isActive: radioButtons === "true" ? true : false,
 				};
 
-				updateMutateCompany(updateCompany);
+				updateMutateCompany(updateCompany, token);
 			} else if (open.title === "assign") {
 				const assignCompanyToAdministrations = {
 					companyCode: info?.companyCode,
@@ -96,7 +90,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				assignMutateCompanyToAdministration(
-					assignCompanyToAdministrations
+					assignCompanyToAdministrations,
+					token
 				);
 			}
 		} catch (err) {

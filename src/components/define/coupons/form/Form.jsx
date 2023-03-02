@@ -9,12 +9,15 @@ import {
 	useUpdateCoupon,
 } from "~/hooks/useCoupons";
 import { useSuppliers } from "~/hooks/useSuppliers";
+import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import { AutocompleteInput } from "../../_logic/AutocompleteInput";
 import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
+	const { token } = useAuthStore();
+
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
@@ -37,9 +40,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		experationHoursInputRef.current.value = "";
 	};
 
-	const { data: dataSuppliers } = useSuppliers();
+	const { data: dataSuppliers } = useSuppliers(token);
 
-	const { data: dataCompanies } = useCompanies();
+	const { data: dataCompanies } = useCompanies(token);
 
 	const { mutate: addMutateCoupon } = useAddCoupon(
 		setOpen,
@@ -102,7 +105,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						supplierCode: selectedValueSuppliers?.id,
 						supplierPrice,
 					};
-					addMutateCoupon(newCoupon);
+					addMutateCoupon(newCoupon, token);
 				}
 			} else if (open.title === "edit") {
 				const editCoupon = {
@@ -116,7 +119,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isActive: radioButtons === "false" ? true : false,
 				};
 
-				updateMutateCoupon(editCoupon);
+				updateMutateCoupon(editCoupon, token);
 			} else if (
 				open.title === "assign" &&
 				radioButtonsAssign === "true"
@@ -125,7 +128,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					couponCode: info?.couponCode,
 					companyCode: selectedValueCompany?.id,
 				};
-				assignMutateCouponToCompany(assignCouponToCompany);
+				assignMutateCouponToCompany(assignCouponToCompany, token);
 			} else if (
 				open.title === "assign" &&
 				radioButtonsAssign === "false"
@@ -135,7 +138,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					couponCode: info?.couponCode,
 					supplierPrice: debitAmount,
 				};
-				assignMutateCouponToSupplier(assignCouponToSupplier);
+				assignMutateCouponToSupplier(assignCouponToSupplier, token);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;

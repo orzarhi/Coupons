@@ -8,8 +8,11 @@ import { Xls } from "./xls/Xls";
 import { Button } from "@mui/material";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
+import { useAuthStore } from "~/store/auth";
 
 export const ReportHilan = () => {
+	const { token } = useAuthStore();
+
 	const [showReport, setShowReport] = useState(false);
 	const [year, setYear] = useState("");
 	const [month, setMonth] = useState("");
@@ -21,7 +24,7 @@ export const ReportHilan = () => {
 		title: "",
 	});
 
-	const [data, fetchReport] = useHilanMonthlyReport();
+	const [data, fetchReport] = useHilanMonthlyReport(token);
 
 	return (
 		<>

@@ -1,31 +1,44 @@
 import axios from "../axios";
 
-export const getAdministrations = async () => {
-	const { data } = await axios.get("/administrations");
+export const getAdministrations = async (token) => {
+	const { data } = await axios.get("/administrations", {
+		headers: { token },
+	});
 
 	return data.data;
 };
 
-export const addAdministration = async (administration) => {
+export const addAdministration = async (administration, token) => {
 	const { data } = await axios.post(
 		"/administrations/addNew",
-		administration
+		administration,
+		{
+			headers: { token },
+		}
 	);
 
 	return data;
 };
 
-export const updateAdministration = async (administration) => {
+export const updateAdministration = async (administration, token) => {
 	const { data } = await axios.patch(
 		"/administrations/update",
-		administration
+		administration,
+		{
+			headers: { token },
+		}
 	);
 
 	return data;
 };
 
-export const deleteAdministration = async (code) => {
-	const { data } = await axios.delete(`/administrations/delete?code=${code}`);
+export const deleteAdministration = async (code, token) => {
+	const { data } = await axios.delete(
+		`/administrations/delete?code=${code}`,
+		{
+			headers: { token },
+		}
+	);
 
 	return data;
 };

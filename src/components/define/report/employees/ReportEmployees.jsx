@@ -3,12 +3,15 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useState } from "react";
 import Details from "~/components/define/_logic/Details";
 import { useEmployeeReport } from "~/hooks/useReport";
+import { useAuthStore } from "~/store/auth";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
 import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
 
 export const ReportEmployees = () => {
+	const { token } = useAuthStore();
+
 	const [showReport, setShowReport] = useState(false);
 	const [dates, setDates] = useState({
 		fromDate: "",
@@ -22,7 +25,7 @@ export const ReportEmployees = () => {
 		title: "",
 	});
 
-	const [data, fetchReport] = useEmployeeReport();
+	const [data, fetchReport] = useEmployeeReport(token);
 
 	return (
 		<>

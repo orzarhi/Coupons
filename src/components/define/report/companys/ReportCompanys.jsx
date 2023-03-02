@@ -2,6 +2,7 @@ import { DataGrid, heIL } from "@mui/x-data-grid";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import React, { useState } from "react";
 import { useCompanyReport } from "~/hooks/useReport";
+import { useAuthStore } from "~/store/auth";
 import Details from "../../_logic/Details";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
@@ -9,6 +10,8 @@ import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
 
 export const ReportCompanys = () => {
+	const { token } = useAuthStore();
+
 	const [showReport, setShowReport] = useState(false);
 	const [dates, setDates] = useState({
 		fromDate: "",

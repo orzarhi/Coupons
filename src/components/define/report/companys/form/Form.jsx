@@ -4,6 +4,7 @@ import { MdDone } from "react-icons/md";
 import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { InputDates } from "~/components/define/_logic/DatesInput";
 import { useCompanies } from "~/hooks/useCompanies";
+import { useAuthStore } from "~/store/auth";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 
@@ -16,12 +17,14 @@ export const Form = ({
 	setDates,
 	dates,
 }) => {
+	const { token } = useAuthStore();
+
 	const [selectedCompany, setSelectedCompany] = useState("");
 
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
 
-	const { data: dataCompanies } = useCompanies();
+	const { data: dataCompanies } = useCompanies(token);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -37,6 +40,7 @@ export const Form = ({
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportCompany = {
+						token,
 						companyCode: selectedCompany.id,
 						fromDate,
 						toDate,

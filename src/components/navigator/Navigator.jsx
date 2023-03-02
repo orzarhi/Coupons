@@ -7,7 +7,7 @@ import { menus } from "./menus";
 
 const Navigator = () => {
 	const { logoutStore } = useAuthStore();
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 
 	return (
 		<section className="flex gap-6 absolute top-0 z-50 xl:top-20">

@@ -8,8 +8,11 @@ import { useSupplierReport } from "~/hooks/useReport";
 import Actions from "./actions/Actions";
 import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
+import { useAuthStore } from "~/store/auth";
 
 export const ReportSuppliers = () => {
+	const { token } = useAuthStore();
+
 	const [showReport, setShowReport] = useState(false);
 	const [year, setYear] = useState("");
 	const [month, setMonth] = useState("");
@@ -20,7 +23,7 @@ export const ReportSuppliers = () => {
 		modalDialog: false,
 		title: "",
 	});
-	const [data, fetchReport] = useSupplierReport();
+	const [data, fetchReport] = useSupplierReport(token);
 
 	return (
 		<>

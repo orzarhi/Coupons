@@ -11,15 +11,18 @@ import {
 } from "~/hooks/useDepartments";
 import { useCompanies } from "~/hooks/useCompanies";
 import { SelectInput } from "../../_logic/SelectInput";
+import { useAuthStore } from "~/store/auth";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
+	const { token } = useAuthStore();
+
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
 
 	const [selectedValue, setSelectedValue] = useState("");
 	const { data: dataCompanies, isLoading: isLoadingCompanies } =
-		useCompanies();
+		useCompanies(token);
 
 	const nameInputRef = useRef();
 
@@ -55,21 +58,24 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				}
 				const newDepartment = { name };
 
-				addMutateDepartment(newDepartment);
+				addMutateDepartment(newDepartment, token);
 			} else if (open.title === "edit") {
 				const updateDepartment = {
 					code: info?.code,
 					name,
 					isActive: radioButtons === "true" ? true : false,
 				};
-				updateMutateDepartment(updateDepartment);
+				updateMutateDepartment(updateDepartment, token);
 			} else if (open.title === "assign") {
 				const assignDepartmentToCompany = {
 					departmentCode: info?.code,
 					companyCode: selectedValue,
 				};
 
-				assignMutateDepartmentToCompany(assignDepartmentToCompany);
+				assignMutateDepartmentToCompany(
+					assignDepartmentToCompany,
+					token
+				);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;

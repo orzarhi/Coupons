@@ -11,7 +11,10 @@ import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
 
-export const useCompanies = () => useQuery([queryKeys.companies], getCompany);
+export const useCompanies = (token) =>
+	useQuery([queryKeys.companies], () => getCompany(token), {
+		enabled: !!token,
+	});
 
 export const useAddCompany = (setOpen, open, refetch, clearInputs) =>
 	useMutation(addCompany, {

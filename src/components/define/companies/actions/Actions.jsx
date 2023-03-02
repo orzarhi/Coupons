@@ -13,7 +13,7 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 		<>
 			{open.modalDialog && (
 				<ModalDialog
-					onClick={() => deleteMutateCompany(info.companyCode)}
+					onClick={() => deleteMutateCompany(info.companyCode, token)}
 					title={"האם אתה בטוח ?"}
 					setOpen={setOpen}
 					open={open}

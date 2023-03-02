@@ -4,9 +4,12 @@ import {
 	useDeleteEmployee,
 	useUnassignAdminFromAdministration,
 } from "~/hooks/useEmployees";
+import { useAuthStore } from "~/store/auth";
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
+	const { token } = useAuthStore();
+
 	const { mutate: deleteMutateEmployee } = useDeleteEmployee(
 		setOpen,
 		open,
@@ -17,14 +20,15 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 
 	const submitHandler = () => {
 		if (open.title === "delete") {
-			deleteMutateEmployee(info.employeeCode);
+			deleteMutateEmployee(info.employeeCode, token);
 		} else if (open.title === "delete-unassign") {
 			const unassignAdminFromAdministration = {
 				employeeCode: info?.employeeCode,
 				administrationCode: open?.code,
 			};
 			unassignMutateAdminFromAdministration(
-				unassignAdminFromAdministration
+				unassignAdminFromAdministration,
+				token
 			);
 		}
 	};

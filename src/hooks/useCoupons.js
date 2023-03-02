@@ -13,10 +13,7 @@ import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
 
-export const useCoupons = (token) =>
-	useQuery([queryKeys.coupons], () => getCoupons(token), {
-		enabled: !!token,
-	});
+export const useCoupons = () => useQuery([queryKeys.coupons], getCoupons);
 
 export const useAddCoupon = (setOpen, open, refetch, clearInputs) =>
 	useMutation(addCoupon, {

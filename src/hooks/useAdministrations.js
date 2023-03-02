@@ -9,10 +9,8 @@ import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
 
-export const useAdministrations = (token) =>
-	useQuery([queryKeys.administrations], () => getAdministrations(token), {
-		enabled: !!token,
-	});
+export const useAdministrations = () =>
+	useQuery([queryKeys.administrations], getAdministrations);
 
 export const useAddAdministration = (setOpen, open, refetch, clearInputs) =>
 	useMutation(addAdministration, {

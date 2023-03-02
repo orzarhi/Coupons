@@ -9,10 +9,8 @@ import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
 
-export const useCouponsTypes = (token) =>
-	useQuery([queryKeys.couponsTypes], () => getCouponsTypes(token), {
-		enabled: !!token,
-	});
+export const useCouponsTypes = () =>
+	useQuery([queryKeys.couponsTypes], getCouponsTypes);
 
 export const useAddCouponType = (setOpen, open, refetch, clearInputs) =>
 	useMutation(addCouponType, {

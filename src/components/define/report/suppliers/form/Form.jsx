@@ -5,7 +5,6 @@ import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput"
 import { InputMonth } from "~/components/define/_logic/DatesInput";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
 import { useSuppliers } from "~/hooks/useSuppliers";
-import { useAuthStore } from "~/store/auth";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 
@@ -18,14 +17,12 @@ export const Form = ({
 	setMonth,
 	setYear,
 }) => {
-	const { token } = useAuthStore();
-
 	const [selectedSupplier, setSelectedSupplier] = useState("");
 	const [radioButtons, setRadioButtons] = useState("");
 
 	const monthAndYearInputRef = useRef();
 
-	const { data: dataSuppliers } = useSuppliers(token);
+	const { data: dataSuppliers } = useSuppliers();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -42,7 +39,6 @@ export const Form = ({
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportSupplier = {
-						token,
 						supplierCode: selectedSupplier.id,
 						month,
 						year,

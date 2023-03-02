@@ -8,22 +8,19 @@ import {
 	useAssignCompanyToAdministration,
 	useUpdateCompany,
 } from "~/hooks/useCompanies";
-import { useCompanyReport } from "~/hooks/useReport";
 import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
-	const { token } = useAuthStore();
-
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
 	const [selectedAdministrations, setSelectedAdministrations] = useState("");
 
 	const { data: dataAdministrations, isLoadingAdministrations } =
-		useAdministrations(token);
+		useAdministrations();
 
 	const companyNameInputRef = useRef();
 	const emailInputRef = useRef();
@@ -70,7 +67,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						logoFile,
 					};
 
-					addMutateCompany(newCompany, token);
+					addMutateCompany(newCompany);
 				}
 			} else if (open.title === "edit") {
 				const updateCompany = {
@@ -82,7 +79,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isActive: radioButtons === "true" ? true : false,
 				};
 
-				updateMutateCompany(updateCompany, token);
+				updateMutateCompany(updateCompany);
 			} else if (open.title === "assign") {
 				const assignCompanyToAdministrations = {
 					companyCode: info?.companyCode,
@@ -90,8 +87,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				assignMutateCompanyToAdministration(
-					assignCompanyToAdministrations,
-					token
+					assignCompanyToAdministrations
 				);
 			}
 		} catch (err) {

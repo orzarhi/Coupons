@@ -10,7 +10,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { Fragment, useState } from "react";
-import { MdDeleteForever, MdOutlineModeEdit } from "react-icons/md";
+import {
+	MdDeleteForever,
+	MdOutlineModeEdit,
+	MdRemoveCircleOutline,
+} from "react-icons/md";
 import { RiAddFill } from "react-icons/ri";
 import { convertBoolean } from "~/utils/convertBoolean";
 import { actionRow } from "../_logic/actionRow";
@@ -98,6 +102,9 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 										<TableCell align="right">
 											פעיל
 										</TableCell>
+										<TableCell align="right">
+											הסר שיוך
+										</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -113,6 +120,23 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 												{convertBoolean(
 													orderRow.isActive
 												)}
+											</TableCell>
+											<TableCell align="right">
+												<IconButton
+													title="Remove"
+													onClick={() =>
+														actionRow(
+															setOpen,
+															open,
+															setInfo,
+															row,
+															"delete-unassign",
+															orderRow.code
+														)
+													}
+												>
+													<MdRemoveCircleOutline />
+												</IconButton>
 											</TableCell>
 										</TableRow>
 									))}

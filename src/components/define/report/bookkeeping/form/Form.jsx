@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { InputMonth } from "~/components/define/_logic/DatesInput";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
-import { useAuthStore } from "~/store/auth";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 
@@ -16,8 +15,6 @@ export const Form = ({
 	setMonth,
 	setYear,
 }) => {
-	const { token } = useAuthStore();
-
 	const [radioButtons, setRadioButtons] = useState("");
 
 	const monthAndYearInputRef = useRef();
@@ -37,7 +34,6 @@ export const Form = ({
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportBookkeeping = {
-						token,
 						month,
 						year,
 						isSendMail: radioButtons === "true" ? true : false,

@@ -1,35 +1,26 @@
 import axios from "../axios";
 
-export const getCouponsTypes = async (token) => {
-	const { data } = await axios.get("/coupons/getCouponTypes", {
-		headers: { token },
-	});
+export const getCouponsTypes = async () => {
+	const { data } = await axios.get("/coupons/getCouponTypes");
 
 	return data.data;
 };
 
-export const addCouponType = async (couponType, token) => {
-	const { data } = await axios.post("/coupons/addCouponType", couponType, {
-		headers: { token },
-	});
+export const addCouponType = async (couponType) => {
+	const { data } = await axios.post("/coupons/addCouponType", couponType);
 
 	return data;
 };
 
-export const updateCouponType = async (couponType, token) => {
-	const { data } = await axios.patch(
-		"/coupons/updateCouponType",
-		couponType,
-		{ headers: { token } }
-	);
+export const updateCouponType = async (couponType) => {
+	const { data } = await axios.patch("/coupons/updateCouponType", couponType);
 
 	return data;
 };
 
-export const deleteCouponType = async (couponCodeType, token) => {
+export const deleteCouponType = async (couponCodeType) => {
 	const { data } = await axios.delete(
-		`/coupons/deleteCouponType?couponTypeCode=${couponCodeType}`,
-		{ headers: { token } }
+		`/coupons/deleteCouponType?couponTypeCode=${couponCodeType}`
 	);
 
 	return data;

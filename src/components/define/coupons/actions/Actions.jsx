@@ -5,12 +5,9 @@ import {
 	useUnassignCouponToCompany,
 	useUnassignCouponToSupplier,
 } from "~/hooks/useCoupons";
-import { useAuthStore } from "~/store/auth";
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
-	const { token } = useAuthStore();
-
 	const { mutate: deleteMutateCoupon } = useDeleteCoupon(
 		setOpen,
 		open,
@@ -25,20 +22,20 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 
 	const submitHandler = () => {
 		if (open.title === "delete") {
-			deleteMutateCoupon(info?.couponCode, token);
+			deleteMutateCoupon(info?.couponCode);
 		} else if (open.title === "delete-unassign") {
 			const unassignCouponToCompany = {
 				couponCode: info?.couponCode,
 				companyCode: open?.code,
 			};
-			unassignMutateCouponToCompany(unassignCouponToCompany, token);
+			unassignMutateCouponToCompany(unassignCouponToCompany);
 		} else if (open.title === "delete-unassignToSupplier") {
 			const unassignCouponToSupplier = {
 				couponCode: info?.couponCode,
 				supplierCode: open?.code,
 			};
 
-			unassignMutateCouponToSupplier(unassignCouponToSupplier, token);
+			unassignMutateCouponToSupplier(unassignCouponToSupplier);
 		}
 	};
 	return (

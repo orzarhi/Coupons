@@ -10,8 +10,6 @@ import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
 
 export const ReportCompanys = () => {
-	const { token } = useAuthStore();
-
 	const [showReport, setShowReport] = useState(false);
 	const [dates, setDates] = useState({
 		fromDate: "",

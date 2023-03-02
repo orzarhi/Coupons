@@ -2,14 +2,11 @@ import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { useAddCouponType, useUpdateCouponType } from "~/hooks/useCouponsTypes";
-import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import InputText from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
-	const { token } = useAuthStore();
-
 	const [radioButtons, setRadioButtons] = useState(info?.isMeal?.toString());
 	const [newRadioButtons, setNewRadioButtons] = useState("true");
 
@@ -50,7 +47,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isMeal: newRadioButtons === "true" ? true : false,
 				};
 
-				addMutateCouponType(newCoupon, token);
+				addMutateCouponType(newCoupon);
 			} else if (open.title === "edit") {
 				const editCouponType = {
 					couponTypeCode,
@@ -58,7 +55,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isMeal: radioButtons === "true" ? true : false,
 				};
 
-				updateMutateCouponType(editCouponType, token);
+				updateMutateCouponType(editCouponType);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;

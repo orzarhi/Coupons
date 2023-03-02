@@ -9,13 +9,11 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useAdministrations } from "~/hooks/useAdministrations";
-import { useAuthStore } from "~/store/auth";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const Administration = () => {
-	const { token } = useAuthStore();
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
@@ -30,7 +28,7 @@ const Administration = () => {
 		data: dataAdministrations,
 		refetch,
 		isLoading,
-	} = useAdministrations(token);
+	} = useAdministrations();
 
 	const data = dataAdministrations?.filter((administration) =>
 		administration.name.toLowerCase().includes(inputSearch.toLowerCase())

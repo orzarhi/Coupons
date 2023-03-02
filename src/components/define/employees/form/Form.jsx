@@ -11,15 +11,12 @@ import {
 	useAssignAdminToAdministration,
 	useUpdateEmployee,
 } from "~/hooks/useEmployees";
-import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import { AutocompleteInput } from "../../_logic/AutocompleteInput";
 import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
-	const { token } = useAuthStore();
-
 	const [radioButtons, setRadioButtons] = useState({
 		isActive: info?.isActive?.toString(),
 		allowed: info?.canUseInFreeShift?.toString(),
@@ -34,12 +31,12 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [selectedValueDepartment, setSelectedValueDepartment] = useState("");
 	const [selectedAdministration, setSelectedAdministration] = useState("");
 
-	const { data: dataDepartments } = useDepartments(token);
+	const { data: dataDepartments } = useDepartments();
 
-	const { data: dataCompanies } = useCompanies(token);
+	const { data: dataCompanies } = useCompanies();
 
 	const { data: dataAdministrations, isLoading: isLoadingAdministrations } =
-		useAdministrations(token);
+		useAdministrations();
 
 	const usernameInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -135,7 +132,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 								: false,
 						type: PersonType.EMPLOYEE.id,
 					};
-					addMutateEmployee(newEmployee, token);
+					addMutateEmployee(newEmployee);
 				}
 			} else if (open.title === "edit") {
 				const updateEmployee = {
@@ -162,17 +159,14 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							: false,
 				};
 
-				updateMutateEmployee(updateEmployee, token);
+				updateMutateEmployee(updateEmployee);
 			} else if (open.title === "assign") {
 				const assignAdminToAdministration = {
 					employeeCode: info?.employeeCode,
 					administrationCode: selectedAdministration.id,
 				};
 
-				assignMutateAdminToAdministration(
-					assignAdminToAdministration,
-					token
-				);
+				assignMutateAdminToAdministration(assignAdminToAdministration);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;

@@ -2,7 +2,6 @@ import { IconButton } from "@mui/material";
 import { useRef } from "react";
 import { MdDone } from "react-icons/md";
 import { InputDates } from "~/components/define/_logic/DatesInput";
-import { useAuthStore } from "~/store/auth";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 import { InputText } from "./InputText";
@@ -16,8 +15,6 @@ export const Form = ({
 	setDates,
 	dates,
 }) => {
-	const { token } = useAuthStore();
-
 	const administrationCodeInputRef = useRef();
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
@@ -35,7 +32,6 @@ export const Form = ({
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportAdministration = {
-						token,
 						administrationCode,
 						fromDate,
 						toDate,

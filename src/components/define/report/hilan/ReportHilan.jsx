@@ -11,8 +11,6 @@ import { columns } from "./columns";
 import { useAuthStore } from "~/store/auth";
 
 export const ReportHilan = () => {
-	const { token } = useAuthStore();
-
 	const [showReport, setShowReport] = useState(false);
 	const [year, setYear] = useState("");
 	const [month, setMonth] = useState("");
@@ -24,7 +22,7 @@ export const ReportHilan = () => {
 		title: "",
 	});
 
-	const [data, fetchReport] = useHilanMonthlyReport(token);
+	const [data, fetchReport] = useHilanMonthlyReport();
 
 	return (
 		<>

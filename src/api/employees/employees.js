@@ -1,52 +1,45 @@
 import axios from "../axios";
 
-export const getEmployees = async (token) => {
-	const { data } = await axios.get("/employees", { headers: { token } });
+export const getEmployees = async () => {
+	const { data } = await axios.get("/employees");
 
 	return data.data;
 };
 
-export const addEmployee = async (employee, token) => {
-	const { data } = await axios.post("/employees/addNew", employee, {
-		headers: { token },
-	});
+export const addEmployee = async (employee) => {
+	const { data } = await axios.post("/employees/addNew", employee);
 
 	return data;
 };
 
-export const updateEmployee = async (employee, token) => {
-	const { data } = await axios.patch("/employees/update", employee, {
-		headers: { token },
-	});
+export const updateEmployee = async (employee) => {
+	const { data } = await axios.patch("/employees/update", employee);
 
 	return data;
 };
 
-export const deleteEmployee = async (employeeCode, token) => {
+export const deleteEmployee = async (employeeCode) => {
 	const { data } = await axios.delete(
-		`/employees/delete?employeeCode=${employeeCode}`,
-		{ headers: { token } }
+		`/employees/delete?employeeCode=${employeeCode}`
 	);
 
 	return data;
 };
 
-export const assignAdminToAdministration = async (employee, token) => {
+export const assignAdminToAdministration = async (employee) => {
 	const { data } = await axios.post(
 		"/employees/assignAdminToAdministration",
-		employee,
-		{ headers: { token } }
+		employee
 	);
 
 	return data;
 };
 
-export const unassignAdminFromAdministration = async (employeeCode, token) => {
+export const unassignAdminFromAdministration = async (employeeCode) => {
 	const { data } = await axios.delete(
 		"/employees/unassignAdminFromAdministration",
 		{
 			data: employeeCode,
-			headers: { token },
 		}
 	);
 

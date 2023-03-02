@@ -5,14 +5,11 @@ import {
 	useAddAdministration,
 	useUpdateAdministration,
 } from "~/hooks/useAdministrations";
-import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
-	const { token } = useAuthStore();
-
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
@@ -47,7 +44,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				} else {
 					const newAdministration = { name };
 
-					addMutateAdministration(newAdministration, token);
+					addMutateAdministration(newAdministration);
 				}
 			} else if (open.title === "edit") {
 				const updateAdministration = {
@@ -56,7 +53,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isActive: radioButtons === "true" ? true : false,
 				};
 
-				updateMutateAdministration(updateAdministration, token);
+				updateMutateAdministration(updateAdministration);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;

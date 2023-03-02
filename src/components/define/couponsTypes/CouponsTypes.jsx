@@ -3,14 +3,11 @@ import { DataGrid, heIL } from "@mui/x-data-grid";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useCouponsTypes } from "~/hooks/useCouponsTypes";
-import { useAuthStore } from "~/store/auth";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
 
 const CouponsTypes = () => {
-	const { token } = useAuthStore();
-
 	const [info, setInfo] = useState({});
 	const [open, setOpen] = useState({
 		action: false,
@@ -19,7 +16,7 @@ const CouponsTypes = () => {
 		title: "",
 	});
 
-	const { data, refetch, isLoading } = useCouponsTypes(token);
+	const { data, refetch, isLoading } = useCouponsTypes();
 	const columnsResult = columns(setOpen, open, setInfo);
 
 	if (isLoading) return <Spinner />;

@@ -1,50 +1,44 @@
 import axios from "../axios";
 
-export const getDepartments = async (token) => {
-	const { data } = await axios.get("/departments", { headers: { token } });
+export const getDepartments = async () => {
+	const { data } = await axios.get("/departments");
 
 	return data.data;
 };
 
-export const addDepartment = async (department, token) => {
-	const { data } = await axios.post("/departments/addNew", department, {
-		headers: { token },
-	});
+export const addDepartment = async (department) => {
+	const { data } = await axios.post("/departments/addNew", department);
 
 	return data;
 };
 
-export const updateDepartment = async (department, token) => {
-	const { data } = await axios.patch("/departments/update", department, {
-		headers: { token },
-	});
+export const updateDepartment = async (department) => {
+	const { data } = await axios.patch("/departments/update", department);
 
 	return data;
 };
 
-export const deleteDepartment = async (departmentCode, token) => {
+export const deleteDepartment = async (departmentCode) => {
 	const { data } = await axios.delete(
-		`/departments/delete?code=${departmentCode}`,
-		{ headers: { token } }
+		`/departments/delete?code=${departmentCode}`
 	);
 
 	return data;
 };
 
-export const assignDepartmentToCompany = async (companyCode, token) => {
+export const assignDepartmentToCompany = async (companyCode) => {
 	const { data } = await axios.post(
 		"/departments/assignDepartmentToCompany",
-		companyCode,
-		{ headers: { token } }
+		companyCode
 	);
 
 	return data;
 };
 
-export const unassignDepartmentToCompany = async (companyCode, token) => {
+export const unassignDepartmentToCompany = async (companyCode) => {
 	const { data } = await axios.delete(
 		"/departments/unassignDepartmentFromCompany",
-		{ data: companyCode, headers: { token } }
+		{ data: companyCode }
 	);
 
 	return data;

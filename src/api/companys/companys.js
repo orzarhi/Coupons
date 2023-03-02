@@ -1,59 +1,44 @@
 import axios from "../axios";
 
-export const getCompany = async (token) => {
-	const { data } = await axios.get("/companies", {
-		headers: { token },
-	});
+export const getCompany = async () => {
+	const { data } = await axios.get("/companies");
 
 	return data.data;
 };
 
-export const addCompany = async (company, token) => {
-	const { data } = await axios.post("/companies/addNew", company, {
-		headers: { token },
-	});
+export const addCompany = async (company) => {
+	const { data } = await axios.post("/companies/addNew", company);
 
 	return data;
 };
 
-export const updateCompany = async (company, token) => {
-	const { data } = await axios.patch("/companies/update", company, {
-		headers: { token },
-	});
+export const updateCompany = async (company) => {
+	const { data } = await axios.patch("/companies/update", company);
 
 	return data;
 };
 
-export const deleteCompany = async (companyCode, token) => {
+export const deleteCompany = async (companyCode) => {
 	const { data } = await axios.delete(
-		`/companies/delete?companyCode=${companyCode}`,
-		{
-			headers: { token },
-		}
+		`/companies/delete?companyCode=${companyCode}`
 	);
 
 	return data;
 };
 
-export const assignCompanyToAdministration = async (company, token) => {
+export const assignCompanyToAdministration = async (company) => {
 	const { data } = await axios.post(
 		"/companies/assignCompanyToAdministration",
-		company,
-		{
-			headers: { token },
-		}
+		company
 	);
 
 	return data;
 };
 
-export const unassignCompanyFromAdministration = async (company, token) => {
+export const unassignCompanyFromAdministration = async (company) => {
 	const { data } = await axios.delete(
 		"/companies/unassignCompanyFromAdministration",
-		company,
-		{
-			headers: { token },
-		}
+		{ data: company }
 	);
 
 	return data;

@@ -9,14 +9,11 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useEmployees } from "~/hooks/useEmployees";
-import { useAuthStore } from "~/store/auth";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const Employees = () => {
-	const { token } = useAuthStore();
-
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
@@ -36,7 +33,7 @@ const Employees = () => {
 		code: "",
 	});
 
-	const { data: dataEmployees, refetch, isLoading } = useEmployees(token);
+	const { data: dataEmployees, refetch, isLoading } = useEmployees();
 
 	const data = dataEmployees?.filter((employee) =>
 		employee.employeeName.toLowerCase().includes(inputSearch.toLowerCase())

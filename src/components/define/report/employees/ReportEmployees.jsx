@@ -10,8 +10,6 @@ import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
 
 export const ReportEmployees = () => {
-	const { token } = useAuthStore();
-
 	const [showReport, setShowReport] = useState(false);
 	const [dates, setDates] = useState({
 		fromDate: "",
@@ -25,7 +23,7 @@ export const ReportEmployees = () => {
 		title: "",
 	});
 
-	const [data, fetchReport] = useEmployeeReport(token);
+	const [data, fetchReport] = useEmployeeReport();
 
 	return (
 		<>

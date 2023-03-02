@@ -1,19 +1,41 @@
 import ModalDialog from "~/components/ui/modalDialog/ModalDialog";
 import PopUp from "~/components/ui/popUp/PopUp";
-import { useDeleteCompany } from "~/hooks/useCompanies";
+import {
+	useDeleteCompany,
+	useUnassignCompanyFromAdministration,
+} from "~/hooks/useCompanies";
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
+	console.log("🚀  info:", info);
+	console.log("🚀  open:", open);
 	const { mutate: deleteMutateCompany } = useDeleteCompany(
 		setOpen,
 		open,
 		refetch
 	);
+
+	const { mutate: unassignMutateCompanyFromAdministration } =
+		useUnassignCompanyFromAdministration(setOpen, open, refetch);
+	const submitHandler = () => {
+		if (open.title === "delete") {
+			deleteMutateCompany(info.companyCode);
+		} else if (open.title === "delete-unassign") {
+			const unassignCompanyFromAdministration = {
+				companyCode: info?.companyCode,
+				administrationCode: open?.code,
+			};
+			unassignMutateCompanyFromAdministration(
+				unassignCompanyFromAdministration
+			);
+		}
+	};
+
 	return (
 		<>
 			{open.modalDialog && (
 				<ModalDialog
-					onClick={() => deleteMutateCompany(info.companyCode, token)}
+					onClick={submitHandler}
 					title={"האם אתה בטוח ?"}
 					setOpen={setOpen}
 					open={open}

@@ -12,6 +12,7 @@ import Actions from "./actions/Actions";
 
 const Transactions = () => {
 	const { username, logoutStore } = useAuthStore();
+
 	const [info, setInfo] = useState({});
 	const [checked, setChecked] = useState(true);
 	const [open, setOpen] = useState({
@@ -27,6 +28,7 @@ const Transactions = () => {
 
 	const { data: employee, isLoading: isLoadingEmployee } =
 		useEmployeeByUsername(username);
+	console.log("⛏ employee:", employee);
 
 	const {
 		data: transactions,

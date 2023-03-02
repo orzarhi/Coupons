@@ -13,7 +13,6 @@ import * as toastMessages from "~/utils/notification/index";
 import { Pdf } from "../report/Pdf";
 
 const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
-	const { token } = useAuthStore();
 	const [selectedValue, setSelectedValue] = useState("");
 	const [showReport, setShowReport] = useState(false);
 	const [dates, setDates] = useState({
@@ -24,8 +23,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
 
-	const { data: dataCoupons, isLoading: isLoadingCoupons } =
-		useCoupons(token);
+	const { data: dataCoupons, isLoading: isLoadingCoupons } = useCoupons();
 
 	const { mutate: addMutateTransaction } = useAddTransaction(
 		setOpen,

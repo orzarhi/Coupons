@@ -15,8 +15,6 @@ import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const Coupons = () => {
-	const { token } = useAuthStore();
-
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
@@ -28,7 +26,7 @@ const Coupons = () => {
 		code: "",
 	});
 
-	const { data: dataCoupons, refetch, isLoading } = useCoupons(token);
+	const { data: dataCoupons, refetch, isLoading } = useCoupons();
 
 	const data = dataCoupons?.filter((coupons) =>
 		coupons?.couponName.toLowerCase().includes(inputSearch.toLowerCase())

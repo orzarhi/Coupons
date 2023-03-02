@@ -11,8 +11,6 @@ import { Xls } from "./xls/Xls";
 import { useAuthStore } from "~/store/auth";
 
 export const ReportSuppliers = () => {
-	const { token } = useAuthStore();
-
 	const [showReport, setShowReport] = useState(false);
 	const [year, setYear] = useState("");
 	const [month, setMonth] = useState("");
@@ -23,7 +21,7 @@ export const ReportSuppliers = () => {
 		modalDialog: false,
 		title: "",
 	});
-	const [data, fetchReport] = useSupplierReport(token);
+	const [data, fetchReport] = useSupplierReport();
 
 	return (
 		<>

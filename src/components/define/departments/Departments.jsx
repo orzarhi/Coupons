@@ -9,14 +9,11 @@ import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useDepartments } from "~/hooks/useDepartments";
-import { useAuthStore } from "~/store/auth";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const Departments = () => {
-	const { token } = useAuthStore();
-
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
 	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
@@ -28,7 +25,7 @@ const Departments = () => {
 		code: "",
 	});
 
-	const { data: dataDepartments, refetch, isLoading } = useDepartments(token);
+	const { data: dataDepartments, refetch, isLoading } = useDepartments();
 
 	const data = dataDepartments?.filter((department) =>
 		department.name.toLowerCase().includes(inputSearch.toLowerCase())

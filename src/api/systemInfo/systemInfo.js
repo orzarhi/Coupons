@@ -1,9 +1,7 @@
 import axios from "../axios";
 
-export const getSystemInfo = async (token) => {
-	const { data } = await axios.get("/settings", {
-		headers: { token },
-	});
+export const getSystemInfo = async () => {
+	const { data } = await axios.get("/settings");
 
 	return data.data;
 };

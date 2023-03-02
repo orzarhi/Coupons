@@ -4,12 +4,9 @@ import {
 	useDeleteDepartment,
 	useUnassignDepartmentToCompanyt,
 } from "~/hooks/useDepartments";
-import { useAuthStore } from "~/store/auth";
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
-	const { token } = useAuthStore();
-
 	const { mutate: deleteMutateDepartment } = useDeleteDepartment(
 		setOpen,
 		open,
@@ -20,16 +17,13 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 
 	const submitHandler = () => {
 		if (open.title === "delete") {
-			deleteMutateDepartment(info.code, token);
+			deleteMutateDepartment(info.code);
 		} else if (open.title === "delete-unassign") {
 			const unassignDepartmentToCompanyt = {
 				companyCode: open?.code,
 				departmentCode: info?.code,
 			};
-			unassignMutateDepartmentToCompanyt(
-				unassignDepartmentToCompanyt,
-				token
-			);
+			unassignMutateDepartmentToCompanyt(unassignDepartmentToCompanyt);
 		}
 	};
 

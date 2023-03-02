@@ -13,9 +13,7 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 		<>
 			{open.modalDialog && (
 				<ModalDialog
-					onClick={() =>
-						deleteMutateCouponType(info.couponTypeCode, token)
-					}
+					onClick={() => deleteMutateCouponType(info.couponTypeCode)}
 					title={"האם אתה בטוח ?"}
 					setOpen={setOpen}
 					open={open}

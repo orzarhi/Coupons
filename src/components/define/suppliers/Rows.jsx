@@ -54,7 +54,16 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">
 					{convertBoolean(row.isVarious)}
 				</TableCell>
-
+				<TableCell align="right">
+					<IconButton
+						title="assign"
+						onClick={() =>
+							actionRow(setOpen, open, setInfo, row, "assign")
+						}
+					>
+						<RiAddFill />
+					</IconButton>
+				</TableCell>
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -104,10 +113,14 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 											סוג קופון
 										</TableCell>
 										<TableCell align="right">
-											תוקף - שעות
+											תוקף בשעות
 										</TableCell>
 										<TableCell align="right">
 											פעיל
+										</TableCell>
+
+										<TableCell align="right">
+											הסר שיוך
 										</TableCell>
 									</TableRow>
 								</TableHead>
@@ -140,6 +153,24 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 												{convertBoolean(
 													orderRow.isActive
 												)}
+											</TableCell>
+
+											<TableCell align="right">
+												<IconButton
+													title="Remove"
+													onClick={() =>
+														actionRow(
+															setOpen,
+															open,
+															setInfo,
+															row,
+															"delete-unassign",
+															orderRow.couponCode
+														)
+													}
+												>
+													<MdRemoveCircleOutline />
+												</IconButton>
 											</TableCell>
 										</TableRow>
 									))}

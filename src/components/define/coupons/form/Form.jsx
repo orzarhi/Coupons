@@ -123,7 +123,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isActive: radioButtons === "false" ? true : false,
 				};
 
-				console.log("🚀editCoupon:", editCoupon);
 				updateMutateCoupon(editCoupon);
 			} else if (
 				open.title === "assign" &&
@@ -160,7 +159,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			couponsTypes?.couponTypeName === selecteCouponType?.label &&
 			couponsTypes?.isMeal
 	);
-	console.log("🚀 selectedIsMeals:", selectedIsMeals);
 
 	return (
 		<>

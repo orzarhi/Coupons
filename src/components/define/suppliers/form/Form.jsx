@@ -6,6 +6,8 @@ import { PersonType } from "~/constants/PersonType";
 import * as toastMessages from "~/utils/notification/index";
 import InputText from "./InputText";
 import { RadioButtons } from "./RadioButtons";
+import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
+import { useAssignCouponToSupplier, useCoupons } from "~/hooks/useCoupons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState({
@@ -13,11 +15,12 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		isMeals: info?.isMeals?.toString(),
 		isVarious: info?.isVarious?.toString(),
 	});
-
 	const [addRadioButtons, setAddRadioButtons] = useState({
 		isMeals: "",
 		isVarious: "",
 	});
+
+	const [selectedCoupon, setSelectedCoupon] = useState("");
 
 	const emailInputRef = useRef();
 	const phoneNumberInputRef = useRef();
@@ -27,6 +30,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const passwordInputRef = useRef();
 	const supplierMealPriceInputRef = useRef();
 
+	const supplierPriceInputRef = useRef();
+
 	const clearInputs = () => {
 		emailInputRef.current.value = "";
 		phoneNumberInputRef.current.value = "";
@@ -35,6 +40,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		usernameInputRef.current.value = "";
 		passwordInputRef.current.value = "";
 		supplierMealPriceInputRef.current.value = "";
+		supplierPriceInputRef.current.value = "";
 	};
 	const { mutate: addMutateSupplier } = useAddSupplier(
 		setOpen,
@@ -42,12 +48,22 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		refetch,
 		clearInputs
 	);
+	const { data: dataCoupons, isLoading: isLoadingCoupons } = useCoupons();
 
 	const { mutate: updateMutateSupplier } = useUpdateSupplier(
 		setOpen,
 		open,
 		refetch
 	);
+
+	const { mutate: assignMutateCouponToSupplier } = useAssignCouponToSupplier(
+		setOpen,
+		open,
+		refetch
+	);
+	const onAssignSuplierToCoupon = (value) => {
+		setSelectedCoupon(value);
+	};
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -59,7 +75,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		const username = usernameInputRef?.current?.value;
 		const password = passwordInputRef?.current?.value;
 		const supplierMealPrice = supplierMealPriceInputRef?.current?.value;
-		console.log("🚀supplierMealPrice:", addRadioButtons);
+
+		const supplierPrice = supplierPriceInputRef?.current?.value;
 
 		try {
 			if (open.title === "add") {
@@ -106,6 +123,13 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				updateMutateSupplier(updateSupplier);
+			} else if (open.title === "assign") {
+				const assignSupplierToCoupon = {
+					supplierCode: info?.supplierCode,
+					couponCode: selectedCoupon?.id,
+					supplierPrice,
+				};
+				assignMutateCouponToSupplier(assignSupplierToCoupon);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;
@@ -118,13 +142,34 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.username}
-					originalText={"שם משתמש"}
-					ref={usernameInputRef}
-				/>
+				{open.title === "assign" && (
+					<>
+						<AutocompleteInput
+							options={dataCoupons?.map((coupon) => ({
+								label: coupon?.couponName,
+								id: coupon?.couponCode,
+							}))}
+							isLoading={isLoadingCoupons}
+							onChange={onAssignSuplierToCoupon}
+							label={"קופונים"}
+						/>
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							originalText={"מחיר ספק"}
+							ref={supplierPriceInputRef}
+						/>
+					</>
+				)}
+				{open.title !== "assign" && (
+					<InputText
+						title={title}
+						action={"עריכת נתונים"}
+						info={info?.username}
+						originalText={"שם משתמש"}
+						ref={usernameInputRef}
+					/>
+				)}
 				{open.title === "add" && (
 					<>
 						<InputText
@@ -136,34 +181,38 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						/>
 					</>
 				)}
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.supplierName}
-					originalText={"שם ספק"}
-					ref={supplierNameInputRef}
-				/>
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.email}
-					originalText={"מייל"}
-					ref={emailInputRef}
-				/>
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.phoneNumber}
-					originalText={"מספר פלאפון"}
-					ref={phoneNumberInputRef}
-				/>
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.businessNumber}
-					originalText={"ח.פ"}
-					ref={businessNumberInputRef}
-				/>
+				{open.title !== "assign" && (
+					<>
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.supplierName}
+							originalText={"שם ספק"}
+							ref={supplierNameInputRef}
+						/>
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.email}
+							originalText={"מייל"}
+							ref={emailInputRef}
+						/>
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.phoneNumber}
+							originalText={"מספר פלאפון"}
+							ref={phoneNumberInputRef}
+						/>
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.businessNumber}
+							originalText={"ח.פ"}
+							ref={businessNumberInputRef}
+						/>
+					</>
+				)}
 				{open.title === "add" && (
 					<InputText
 						title={title}
@@ -243,7 +292,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				</div>
 			</div>
 			<div className="flex items-end flex-col p-2">
-				{open.title === "add" && (
+				{open.title !== "edit" && (
 					<IconButton
 						className="!text-white !bg-green-700 !text-3xl"
 						onClick={submitHandler}

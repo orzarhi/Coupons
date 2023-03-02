@@ -44,6 +44,10 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">{row.email}</TableCell>
 				<TableCell align="right">{row.phoneNumber}</TableCell>
 				<TableCell align="right">{row.logoFile}</TableCell>
+
+				<TableCell align="right">
+					{convertBoolean(row.isActive)}
+				</TableCell>
 				<TableCell align="right">
 					<IconButton
 						title="assign"
@@ -54,10 +58,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 						<RiAddFill />
 					</IconButton>
 				</TableCell>
-				<TableCell align="right">
-					{convertBoolean(row.isActive)}
-				</TableCell>
-
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -89,7 +89,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								gutterBottom
 								component="div"
 							>
-								בנהלת - {row?.administrations?.length}
+								הנהלות משוכיות - {row?.administrations?.length}
+								<IconButton
+									title="assign"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assign"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 
 							<Table size="small" aria-label="purchases">
@@ -217,7 +231,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 											מחיר
 										</TableCell>
 										<TableCell align="right">
-											תוקף - שעות
+											תוקף בשעות
 										</TableCell>
 										<TableCell align="right">סוג</TableCell>
 										<TableCell align="right">

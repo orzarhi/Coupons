@@ -6,7 +6,7 @@ import {
 	RadioGroup,
 } from "@mui/material";
 
-export const RadioButtons = ({
+export const RadioButtonsThreeOptions = ({
 	title,
 	type,
 	setRadioButtons,
@@ -33,7 +33,8 @@ export const RadioButtons = ({
 				required
 				defaultValue={type === "edit" && defaultValue}
 			>
-				<FormControlLabel value="true" control={<Radio />} label="כן" />
+				<FormControlLabel value="1" control={<Radio />} label="כן" />
+				<FormControlLabel value="0" control={<Radio />} label="לא" />
 				<FormControlLabel
 					value="false"
 					control={<Radio />}

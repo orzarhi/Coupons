@@ -7,8 +7,6 @@ import {
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
-	console.log("🚀  info:", info);
-	console.log("🚀  open:", open);
 	const { mutate: deleteMutateCompany } = useDeleteCompany(
 		setOpen,
 		open,

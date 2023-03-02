@@ -72,8 +72,8 @@ const Companies = () => {
 										מספר טלפון
 									</TableCell>
 									<TableCell align="right">לוגו</TableCell>
-									<TableCell align="right">שיוך</TableCell>
 									<TableCell align="right">פעיל</TableCell>
+									<TableCell align="right">שיוך</TableCell>
 									<TableCell align="right">פעולות</TableCell>
 								</TableRow>
 							</TableHead>

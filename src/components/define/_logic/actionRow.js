@@ -28,6 +28,14 @@ export const actionRow = (setOpen, open, setInfo, row, title, code = "") => {
 			title: "delete-unassignToSupplier",
 			code: code,
 		});
+	} else if (title === "delete-unassignToEmployee") {
+		setOpen({
+			...open,
+			modalDialog: true,
+			action: true,
+			title: "delete-unassignToEmployee",
+			code: code,
+		});
 	}
 	setInfo(row);
 };

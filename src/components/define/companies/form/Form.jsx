@@ -10,8 +10,11 @@ import {
 } from "~/hooks/useCompanies";
 import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
+import { AutocompleteInput } from "../../_logic/AutocompleteInput";
 import { InputText } from "./InputText";
-import { RadioButtons } from "./RadioButtons";
+// import { RadioButtons } from "./RadioButtons";
+import { RadioButtons } from "~/components/define/_logic/RadioButtons";
+import { RadioButtonsThreeOptions } from "./RadioButtons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(
@@ -83,7 +86,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			} else if (open.title === "assign") {
 				const assignCompanyToAdministrations = {
 					companyCode: info?.companyCode,
-					administrationCode: selectedAdministrations,
+					administrationCode: selectedAdministrations.id,
 				};
 
 				assignMutateCompanyToAdministration(
@@ -96,15 +99,19 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			else toastMessages.errorMessage("שגיאה: בעיית התחברות לשרת");
 		}
 	};
+
+	const onAdministrationsAtuoCompleteChange = (value) => {
+		setSelectedAdministrations(value);
+	};
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2">
 				{open.title === "assign"
-					? `שיוך חברת ${info?.companyName} להנהלת:`
+					? `שיוך חברת - ${info?.companyName} `
 					: title}
 			</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				{open.title !== "report" && open.title !== "assign" && (
+				{open.title !== "assign" && (
 					<>
 						<InputText
 							title={title}
@@ -137,27 +144,32 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					</>
 				)}
 				{open.title === "assign" && (
-					<SelectInput
-						action={open.title}
-						type={"הנהלה"}
-						selectedValue={selectedAdministrations}
-						setSelectedValue={setSelectedAdministrations}
-						data={dataAdministrations?.map(({ code, name }) => ({
-							key: code,
-							code,
-							name,
-						}))}
-						isLoading={isLoadingAdministrations}
-					/>
+					<>
+						<RadioButtonsThreeOptions
+							title={"שיוך:"}
+							setRadioButtons={setRadioButtons}
+							type={info?.isActive}
+						/>
+						{/* <AutocompleteInput
+							options={dataAdministrations?.map(
+								(administrations) => ({
+									label: administrations.name,
+									id: administrations.code,
+								})
+							)}
+							onChange={onAdministrationsAtuoCompleteChange}
+							isLoading={isLoadingAdministrations}
+							label={"הנהלה"}
+						/> */}
+					</>
 				)}
 
 				<div className="grid justify-items-center w-full">
 					{open.title === "edit" && (
 						<RadioButtons
 							title={"פעיל:"}
-							type={open.title}
 							setRadioButtons={setRadioButtons}
-							defaultValue={info?.isActive}
+							type={info?.isActive}
 						/>
 					)}
 				</div>

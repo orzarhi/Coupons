@@ -106,6 +106,7 @@ const Suppliers = () => {
 									<TableCell align="right">
 										ספק שונות
 									</TableCell>
+									<TableCell align="right">שיוך</TableCell>
 									<TableCell align="right">פעולות</TableCell>
 								</TableRow>
 							</TableHead>

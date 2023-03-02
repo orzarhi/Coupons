@@ -7,14 +7,30 @@ import {
 } from "~/hooks/useAdministrations";
 import * as toastMessages from "~/utils/notification/index";
 import { InputText } from "./InputText";
-import { RadioButtons } from "./RadioButtons";
+// import { RadioButtons } from "./RadioButtons";
+import { RadioButtons } from "~/components/define/_logic/RadioButtons";
+import {
+	useAssignCompanyToAdministration,
+	useCompanies,
+} from "~/hooks/useCompanies";
+import { AutocompleteInput } from "../../_logic/AutocompleteInput";
+import {
+	useAssignAdminToAdministration,
+	useEmployees,
+} from "~/hooks/useEmployees";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
-
 	const nameInputRef = useRef();
+
+	const [assignRadioButtons, setAssignRadioButtons] = useState("");
+	const [selectedValueCompany, setSelectedValueCompany] = useState("");
+	const [selectedValueEmployee, setSelectedValueEmployee] = useState("");
+
+	const { data: dataEmployees, isLoading: isLoadingEmployees } =
+		useEmployees();
 
 	const clearInputs = () => {
 		nameInputRef.current.value = "";
@@ -31,6 +47,26 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		open,
 		refetch
 	);
+	const { mutate: assignMutateAdminToAdministration } =
+		useAssignAdminToAdministration(setOpen, open, clearInputs, refetch);
+
+	const { data: dataCompanies, isLoading: isLoadingCompanies } =
+		useCompanies();
+
+	const { mutate: assignMutateCompanyToAdministration } =
+		useAssignCompanyToAdministration(setOpen, open, refetch);
+
+	const employeeAdministrationAdmin = dataEmployees?.filter(
+		(employee) => employee.isAdministrationAdmin && employee
+	);
+
+	const onCompanyAtuoCompleteChange = (value) => {
+		setSelectedValueCompany(value);
+	};
+
+	const onEmployeeAtuoCompleteChange = (value) => {
+		setSelectedValueEmployee(value);
+	};
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -54,6 +90,27 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				updateMutateAdministration(updateAdministration);
+			} else if (
+				open.title === "assign" &&
+				assignRadioButtons == "true"
+			) {
+				const assignAdministrationToCompany = {
+					companyCode: selectedValueCompany?.id,
+					administrationCode: info?.code,
+				};
+
+				assignMutateCompanyToAdministration(
+					assignAdministrationToCompany
+				);
+			} else if (
+				open.title === "assign" &&
+				assignRadioButtons == "false"
+			) {
+				const assignAdminToAdministration = {
+					administrationCode: info?.code,
+					employeeCode: selectedValueEmployee?.id,
+				};
+				assignMutateAdminToAdministration(assignAdminToAdministration);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;
@@ -65,24 +122,59 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.name}
-					originalText={"שם"}
-					ref={nameInputRef}
-				/>
+				{open.title === "assign" && (
+					<RadioButtons
+						title={"שיוך:"}
+						setRadioButtons={setAssignRadioButtons}
+						labelTrue={"לחברה"}
+						labelFalse={"למנהל"}
+					/>
+				)}
+				{open.title !== "assign" && (
+					<InputText
+						title={title}
+						action={"עריכת נתונים"}
+						info={info?.name}
+						originalText={"שם"}
+						ref={nameInputRef}
+					/>
+				)}
 				<div className="grid justify-items-center w-full">
 					{open.title === "edit" && (
 						<RadioButtons
 							title={"פעיל:"}
-							type={open.title}
 							setRadioButtons={setRadioButtons}
-							defaultValue={info?.isActive}
+							type={info?.isActive}
 						/>
 					)}
 				</div>
+
+				{assignRadioButtons === "true" && (
+					<AutocompleteInput
+						options={dataCompanies?.map((companie) => ({
+							label: companie.companyName,
+							id: companie.companyCode,
+						}))}
+						onChange={onCompanyAtuoCompleteChange}
+						isLoading={isLoadingCompanies}
+						label={"חברות"}
+					/>
+				)}
+				{assignRadioButtons === "false" && (
+					<AutocompleteInput
+						options={employeeAdministrationAdmin?.map(
+							(employee) => ({
+								label: employee.employeeName,
+								id: employee.employeeCode,
+							})
+						)}
+						onChange={onEmployeeAtuoCompleteChange}
+						isLoading={isLoadingEmployees}
+						label={"עובדים"}
+					/>
+				)}
 			</div>
+
 			<div className="flex items-end flex-col p-2">
 				{open.title !== "edit" && (
 					<IconButton

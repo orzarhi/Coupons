@@ -14,7 +14,7 @@ const Header = () => {
 					src={avatar}
 				/> */}
 			<div className="flex justify-center m-3 text-xl text-gray-900 h-7 font-semibold sm:w-8/12 sm:text-sm">
-				ברוכים הבאים - {name}
+				{/* ברוכים הבאים - {name} */}
 			</div>
 			{/* <nav>
 					<ul className="flex">

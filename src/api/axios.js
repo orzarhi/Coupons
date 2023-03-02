@@ -1,8 +1,8 @@
 import axios from "axios";
-// baseURL: "http://10.90.0.55:5000/api",
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
-const token = cookies.get("auth");
+import { tokenCookies } from "~/services/cookiesService";
+
+const token = tokenCookies.get();
+
 console.log("🏡 token:", token);
 
 export default axios.create({
@@ -11,5 +11,6 @@ export default axios.create({
 		token,
 		"Content-type": "application/json",
 	},
-	// withCredentials: true,
 });
+
+// baseURL: "http://10.90.0.55:5000/api",

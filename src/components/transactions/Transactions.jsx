@@ -1,6 +1,7 @@
 import { Button, Switch } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { actionRow } from "~/components/define/_logic/actionRow";
+import { useCoupons } from "~/hooks/useCoupons";
 import {
 	useAddTransaction,
 	useEmployeeByUsername,
@@ -28,7 +29,6 @@ const Transactions = () => {
 
 	const { data: employee, isLoading: isLoadingEmployee } =
 		useEmployeeByUsername(username);
-	console.log("⛏ employee:", employee);
 
 	const {
 		data: transactions,
@@ -42,7 +42,11 @@ const Transactions = () => {
 		refetch
 	);
 
+	const { data: dataCoupons } = useCoupons();
 	const guest = transactions?.some((transaction) => transaction.isGuest);
+	const isMealTitle = dataCoupons?.map(
+		(coupons) => !!coupons.isMeal && coupons.couponTypeName
+	);
 
 	if (isLoadingTransactions || isLoadingEmployee) return <Spinner />;
 
@@ -82,7 +86,20 @@ const Transactions = () => {
 						})
 					}
 				>
-					הוספת קופון - אוכל
+					הוספת קופון - {isMealTitle}
+				</Button>
+				<Button
+					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm !m-3"
+					onClick={() =>
+						setOpen({
+							...open,
+							popUp: true,
+							action: true,
+							title: "add-forGuest",
+						})
+					}
+				>
+					הוספת קופון - אורח
 				</Button>
 				<Button
 					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
@@ -97,6 +114,7 @@ const Transactions = () => {
 				>
 					הוספת קופון - שונות
 				</Button>
+
 				<span className="text-xl mt-2">
 					{transactions?.length > 0
 						? `קופנים פעילים - ${transactions?.length}`
@@ -150,13 +168,13 @@ const Transactions = () => {
 						))}
 				</div>
 			) : (
-				<div className="flex justify-center items-center mt-10 lg:flex lg:flex-col">
+				<div className="grid grid-cols-4  gap-2 justify-between mt-10 lg:flex lg:flex-col">
 					{transactions
 						?.filter((transaction) => transaction.isGuest)
 						?.map((transaction) => (
 							<div
 								key={transaction.id}
-								className="max-w-sm p-6 m-3 w-1/5 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:w-11/12"
+								className=" max-w-sm p-6 m-3 w-4/5 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:w-11/12"
 							>
 								<span className="text-2xl font-bold tracking-tight text-red-700 dark:text-white">
 									{transaction?.isGuest && "אורח"}

@@ -25,7 +25,7 @@ export const SystemInfo = () => {
 		<>
 			<span className="block text-center text-2xl">הגדרות</span>
 
-			<div className="relative w-1/3 block m-auto p-5 xl:w-2/5 xl:relative ">
+			<div className="relative w-2/6 block m-auto p-5 xl:w-3/6 xl:relative ">
 				{data && (
 					<DataGrid
 						rows={data}

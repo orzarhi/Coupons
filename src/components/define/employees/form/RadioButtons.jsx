@@ -23,6 +23,8 @@ export const RadioButtons = ({
 			setRadioButtons({ ...radioButtons, isActive: value });
 		} else if (identification === "isAdministrationAdmin") {
 			setRadioButtons({ ...radioButtons, isAdministrationAdmin: value });
+		} else if (identification === "canCreateGuestCoupon") {
+			setRadioButtons({ ...radioButtons, canCreateGuestCoupon: value });
 		}
 	};
 	return (

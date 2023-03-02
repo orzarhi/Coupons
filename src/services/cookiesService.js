@@ -21,4 +21,4 @@ class cookiesService {
 		cookies.remove(this.name);
 	}
 }
-export const tokenCookies = new cookiesService("auth");
+export const tokenCookies = new cookiesService("token");

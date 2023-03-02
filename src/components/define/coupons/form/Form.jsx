@@ -8,6 +8,7 @@ import {
 	useAssignCouponToSupplier,
 	useUpdateCoupon,
 } from "~/hooks/useCoupons";
+import { useCouponsTypes } from "~/hooks/useCouponsTypes";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import * as toastMessages from "~/utils/notification/index";
 import { AutocompleteInput } from "../../_logic/AutocompleteInput";
@@ -22,6 +23,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtonsCouponType, setRadioButtonsCouponType] = useState("");
 	const [selectedValueSuppliers, setSelectedValueSuppliers] = useState("");
 	const [selectedValueCompany, setSelectedValueCompany] = useState("");
+
+	const [selecteCouponType, setSelecteCouponType] = useState("");
 
 	const couponNameInputRef = useRef();
 	const couponDescInputRef = useRef();
@@ -47,6 +50,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		clearInputs,
 		refetch
 	);
+	const { data: dataCouponsTypes } = useCouponsTypes();
 
 	const { mutate: updateMutateCoupon } = useUpdateCoupon(
 		setOpen,
@@ -71,6 +75,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	};
 	const onCompanyAtuoCompleteChange = (value) => {
 		setSelectedValueCompany(value);
+	};
+	const onCouponsTypes = (value) => {
+		setSelecteCouponType(value);
 	};
 	const submitAddHandler = async (e) => {
 		e.preventDefault();
@@ -116,6 +123,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					isActive: radioButtons === "false" ? true : false,
 				};
 
+				console.log("🚀editCoupon:", editCoupon);
 				updateMutateCoupon(editCoupon);
 			} else if (
 				open.title === "assign" &&
@@ -147,18 +155,26 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		(suppliers) => suppliers.isMeals.toString() !== radioButtonsCouponType
 	);
 
+	const selectedIsMeals = dataCouponsTypes?.find(
+		(couponsTypes) =>
+			couponsTypes?.couponTypeName === selecteCouponType?.label &&
+			couponsTypes?.isMeal
+	);
+	console.log("🚀 selectedIsMeals:", selectedIsMeals);
+
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
 
 			{open.title === "add" && (
-				<div className="w-full flex justify-center items-center">
-					<RadioButtons
-						defaultValue={null}
-						title={"קופון:"}
-						firstLabel={"שונות"}
-						secondeLabel={"אוכל"}
-						setRadioButtons={setRadioButtonsCouponType}
+				<div className="w-full flex justify-center items-center mt-5">
+					<AutocompleteInput
+						options={dataCouponsTypes?.map((couponsType) => ({
+							label: couponsType.couponTypeName,
+							id: couponsType.couponTypeCode,
+						}))}
+						onChange={onCouponsTypes}
+						label={"קופונים"}
 					/>
 				</div>
 			)}
@@ -224,35 +240,39 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}
-							info={info?.debitAmount}
-							originalText={"סכום החיוב"}
-							ref={debitAmountInputRef}
+							info={info?.experationHours}
+							originalText={"תוקף בשעות"}
+							ref={experationHoursInputRef}
 						/>
 						<InputText
 							title={title}
 							action={"עריכת נתונים"}
-							info={info?.experationHours}
-							originalText={"תוקף"}
-							ref={experationHoursInputRef}
+							info={info?.debitAmount}
+							originalText={"סכום החיוב לעובד"}
+							ref={debitAmountInputRef}
 						/>
 
 						{open.title === "add" && (
 							<>
-								<AutocompleteInput
-									options={dataResuls?.map((supplier) => ({
-										label: supplier.supplierName,
-										id: supplier.supplierCode,
-									}))}
-									onChange={onSupplierAtuoCompleteChange}
-									label={"ספקים"}
-								/>
 								<InputText
 									title={title}
 									action={"עריכת נתונים"}
 									info={info?.experationDays}
-									originalText={"מחיר ספק"}
+									originalText={"סכום זיכוי ספק"}
 									ref={supplierPriceInputRef}
 								/>
+								{!selectedIsMeals?.isMeal && (
+									<AutocompleteInput
+										options={dataResuls?.map(
+											(supplier) => ({
+												label: supplier.supplierName,
+												id: supplier.supplierCode,
+											})
+										)}
+										onChange={onSupplierAtuoCompleteChange}
+										label={"ספקים"}
+									/>
+								)}
 							</>
 						)}
 
@@ -261,7 +281,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 								<RadioButtons
 									defaultValue={info?.isActive}
 									title={"פעיל:"}
-									setRadioButtons={setRadioButtonsCouponType}
+									setRadioButtons={setRadioButtons}
 								/>
 							</div>
 						)}
@@ -290,22 +310,3 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 };
 
 export default Form;
-
-{
-	/* <InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.supplierPrice}
-					originalText={"מחיר ספק"}
-					ref={supplierPriceInputRef}
-				/> */
-}
-{
-	/* <InputText
-							title={title}
-							action={"עריכת נתונים"}
-							info={info?.couponTypeName}
-							originalText={"סוג"}
-							ref={couponTypeInputRef}
-						/> */
-}

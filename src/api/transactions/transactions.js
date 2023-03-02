@@ -20,6 +20,15 @@ export const addCouponQr = async (couponQr) => {
 	return data;
 };
 
+export const addCouponQrForGuest = async (couponType) => {
+	const { data } = await axios.post(
+		"/transactions/addNewGuestTransaction",
+		couponType
+	);
+
+	return data;
+};
+
 export const updateCouponQr = async (couponType) => {
 	const { data } = await axios.patch("/transactions/update", couponType);
 

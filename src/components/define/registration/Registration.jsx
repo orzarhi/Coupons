@@ -3,6 +3,7 @@ import { DataGrid, heIL } from "@mui/x-data-grid";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useUsers } from "~/hooks/useUsers";
+import { AutocompleteInput } from "../_logic/AutocompleteInput";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
@@ -58,6 +59,16 @@ const Registration = () => {
 				label="משתמש"
 				showBtn={false}
 			/>
+			<div className="flex justify-center">
+				<AutocompleteInput
+					options={dataUsers?.map((user) => ({
+						label: user.username,
+						id: user.username,
+					}))}
+					// onChange={onAdministrationsAtuoCompleteChange}
+					label={"פילטרים"}
+				/>
+			</div>
 			<div className="flex justify-center mt-4">
 				<FormControlLabel
 					control={<Checkbox defaultValue={false} />}

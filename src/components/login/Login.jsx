@@ -13,10 +13,12 @@ import picture from "~/assets/images/picture-login/man_login.png";
 import maxsoftIcon from "~/assets/images/picture-login/maxsoft.png";
 import { useLogin } from "~/hooks/useLogin";
 import { useEmployeeByUsername } from "~/hooks/useTransactions";
+import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 
 const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
+	const [iAgree, setIAgree] = useState(true);
 
 	const usernameInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -37,8 +39,12 @@ const Login = () => {
 			if (!username || !password)
 				toastMessages.infoMessage("נא למלא את כל השדות");
 			else {
-				const user = { username, password };
-				login(user);
+				if (!iAgree) {
+					toastMessages.infoMessage("נא לאשר שימוש");
+				} else {
+					const user = { username, password };
+					login(user);
+				}
 			}
 		} catch {
 			toastMessages.errorMessage("שגיאה: בעיית התחברות לשרת.");
@@ -106,7 +112,11 @@ const Login = () => {
 					// flexDirection="row-reverse"
 					sx={{ my: 2 }}
 				>
-					<Checkbox name="iAgree" />
+					<Checkbox
+						name="iAgree"
+						checked={iAgree}
+						onClick={() => setIAgree(!iAgree)}
+					/>
 					אני מאשר שימוש
 				</Stack>
 			</Stack>

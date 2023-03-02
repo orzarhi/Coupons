@@ -42,7 +42,7 @@ export const columns = (setOpen, open, setInfo) => [
 	{
 		field: "description",
 		headerName: "תאור",
-		width: 200,
+		width: 250,
 		headerAlign: "right",
 		align: "right",
 	},

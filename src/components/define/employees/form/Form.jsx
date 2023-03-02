@@ -21,10 +21,12 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		isActive: info?.isActive?.toString(),
 		allowed: info?.canUseInFreeShift?.toString(),
 		isAdministrationAdmin: info?.isAdministrationAdmin?.toString(),
+		canCreateGuestCoupon: info?.canCreateGuestCoupon?.toString(),
 	});
 	const [radioButtonsAdd, setRadioButtonsAdd] = useState({
 		allowed: "false",
 		isAdministrationAdmin: "false",
+		canCreateGuestCoupon: "false",
 	});
 
 	const [selectedValueCompany, setSelectedValueCompany] = useState("");
@@ -35,8 +37,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 
 	const { data: dataCompanies } = useCompanies();
 
-	const { data: dataAdministrations, isLoading: isLoadingAdministrations } =
-		useAdministrations();
+	const { data: dataAdministrations } = useAdministrations();
 
 	const usernameInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -311,9 +312,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										type={open?.title}
 									/>
 									<RadioButtons
-										title={
-											"זכאי למימוש קופונים במשמרת ערב ללא חיוב:"
-										}
+										title={"משמרת ללא חיוב:"}
 										identification={"allowed"}
 										setRadioButtons={setRadioButtons}
 										radioButtons={radioButtons}
@@ -330,14 +329,22 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										}
 										type={open?.title}
 									/>
+									<RadioButtons
+										title={"רשאי לקופון אורח:"}
+										identification={"canCreateGuestCoupon"}
+										setRadioButtons={setRadioButtons}
+										radioButtons={radioButtons}
+										defaultValue={
+											info?.canCreateGuestCoupon
+										}
+										type={open?.title}
+									/>
 								</>
 							)}
 							{open.title === "add" && (
 								<>
 									<RadioButtons
-										title={
-											"זכאי למימוש קופונים במשמרת ערב ללא חיוב:"
-										}
+										title={"משמרת ללא חיוב:"}
 										identification={"allowed"}
 										setRadioButtons={setRadioButtonsAdd}
 										radioButtons={radioButtonsAdd}
@@ -347,6 +354,14 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 									<RadioButtons
 										title={"מנהל מחלקה:"}
 										identification={"isAdministrationAdmin"}
+										setRadioButtons={setRadioButtonsAdd}
+										radioButtons={radioButtonsAdd}
+										defaultValue={radioButtonsAdd}
+										type={open?.title}
+									/>
+									<RadioButtons
+										title={"רשאי לקופון אורח:"}
+										identification={"canCreateGuestCoupon"}
 										setRadioButtons={setRadioButtonsAdd}
 										radioButtons={radioButtonsAdd}
 										defaultValue={radioButtonsAdd}

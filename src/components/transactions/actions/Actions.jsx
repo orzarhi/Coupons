@@ -25,6 +25,8 @@ const Actions = ({ setOpen, open, info, refetch, dataEmployee }) => {
 									? "הוספת קופון ארוחת צהריים חדש"
 									: open.title === "add-various"
 									? "הוספת קופון שונות חדש"
+									: open.title === "add-forGuest"
+									? "קופון אורח"
 									: "דוח קופונים"
 							}
 							info={info}

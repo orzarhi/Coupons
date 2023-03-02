@@ -1,12 +1,14 @@
-import { IconButton } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
+import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { InputDates } from "~/components/define/_logic/DatesInput";
 import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useCoupons } from "~/hooks/useCoupons";
+import { useEmployees } from "~/hooks/useEmployees";
 import { useEmployeeReport } from "~/hooks/useReport";
-import { useAddTransaction } from "~/hooks/useTransactions";
+import { useAddForGuest, useAddTransaction } from "~/hooks/useTransactions";
 import { useAuthStore } from "~/store/auth";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
@@ -15,11 +17,13 @@ import { Pdf } from "../report/Pdf";
 const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 	const [selectedValue, setSelectedValue] = useState("");
 	const [showReport, setShowReport] = useState(false);
+	const [forGuest, setForGuest] = useState("false");
 	const [dates, setDates] = useState({
 		fromDate: "",
 		toDate: "",
 	});
 
+	const qtyInputRef = useRef();
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
 
@@ -30,13 +34,33 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 		open,
 		refetch
 	);
+	const { mutate: addMutateTransactionForGuest } = useAddForGuest(
+		setOpen,
+		open,
+		refetch
+	);
+	const { data: dataAllEmployees } = useEmployees();
+
 	const [data, fetchReport] = useEmployeeReport();
+
+	const couponForGuest = dataAllEmployees?.map(
+		(employee) =>
+			employee.companyName === dataEmployee.companyName && {
+				name: employee.employeeName,
+				code: employee.employeeCode,
+			}
+	);
+
+	const onCouponForGuest = (value) => {
+		setForGuest(value);
+	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 
 		const fromDate = fromDateInputRef?.current?.value;
 		const toDate = toDateInputRef?.current?.value;
+		const qty = qtyInputRef?.current?.value;
 
 		setDates({ ...dates, fromDate, toDate });
 		try {
@@ -62,6 +86,14 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 					fetchReport(reportTransaction);
 					setShowReport(true);
 				}
+			} else if (open.title === "add-forGuest") {
+				const newTransactionForGuest = {
+					employeeCode: dataEmployee.employeeCode,
+					toEmployeeCode: forGuest?.id,
+					qty,
+				};
+
+				addMutateTransactionForGuest(newTransactionForGuest);
 			}
 		} catch (err) {
 			toastMessages.errorMessage(err);
@@ -115,10 +147,30 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 						</div>
 					</>
 				)}
+
+				{open.title === "add-forGuest" && (
+					<>
+						<AutocompleteInput
+							options={couponForGuest?.map((coupon) => ({
+								label: coupon.name,
+								id: coupon.code,
+							}))}
+							onChange={onCouponForGuest}
+							label={"קופון אורח לעובד"}
+						/>
+						<TextField
+							className="w-2/5"
+							autoComplete="false"
+							label="כמות קופונים"
+							required
+							inputRef={qtyInputRef}
+						/>
+					</>
+				)}
 			</div>
 
 			<div className="flex items-end flex-col p-2 sm:relative top-28">
-				{open.title === "add-various" && (
+				{open.title !== "report" && (
 					<IconButton
 						className="!text-white !bg-green-700 !text-3xl"
 						onClick={submitHandler}

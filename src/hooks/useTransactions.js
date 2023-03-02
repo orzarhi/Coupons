@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "react-query";
 import {
 	addCouponQr,
+	addCouponQrForGuest,
 	getEmployeeByUsername,
 	getTransactions,
 	updateCouponQr,
@@ -28,6 +29,16 @@ export const useEmployeeByUsername = (username) =>
 
 export const useAddTransaction = (setOpen, open, refetch) =>
 	useMutation(addCouponQr, {
+		onSuccess: (data) => {
+			success(data, setOpen, open, refetch);
+		},
+		onError: (data) => {
+			error(data);
+		},
+	});
+
+export const useAddForGuest = (setOpen, open, refetch) =>
+	useMutation(addCouponQrForGuest, {
 		onSuccess: (data) => {
 			success(data, setOpen, open, refetch);
 		},

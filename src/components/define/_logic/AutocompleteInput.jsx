@@ -7,6 +7,7 @@ export const AutocompleteInput = ({ options, onChange, label }) => {
 			disablePortal
 			id="combo-box-demo"
 			options={options}
+			getOptionLabel={(option) => option.label || ""}
 			onChange={(_, value) => onChange(value)}
 			isOptionEqualToValue={(option, value) => option.id === value.id}
 			sx={{ width: 200 }}

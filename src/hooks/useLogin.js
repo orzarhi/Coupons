@@ -19,9 +19,11 @@ export const useLogin = (employeeName) => {
 			const isSysAdmin = decodeToken(data.data)?.isSysAdmin;
 
 			if (type === PersonType.EMPLOYEE.label && isSysAdmin)
-				navigate("/employees");
-			else if (type === PersonType.EMPLOYEE.label) navigate("/employees");
-			else if (type === PersonType.SUPPLIER.label) navigate("/suppliers");
+				document.location.href = "/employees";
+			else if (type === PersonType.EMPLOYEE.label)
+				document.location.href = "/employees";
+			else if (type === PersonType.SUPPLIER.label)
+				document.location.href = "/suppliers";
 			else navigate("/");
 		},
 		onError: (data) => {

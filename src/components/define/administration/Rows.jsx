@@ -22,19 +22,17 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 		<Fragment>
 			<TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
 				<TableCell>
-					{row.companies.length > 0 && (
-						<IconButton
-							aria-label="expand row"
-							size="small"
-							onClick={() => setOpenTable(!openTable)}
-						>
-							{openTable ? (
-								<KeyboardArrowUpIcon />
-							) : (
-								<KeyboardArrowDownIcon />
-							)}
-						</IconButton>
-					)}
+					<IconButton
+						aria-label="expand row"
+						size="small"
+						onClick={() => setOpenTable(!openTable)}
+					>
+						{openTable ? (
+							<KeyboardArrowUpIcon />
+						) : (
+							<KeyboardArrowDownIcon />
+						)}
+					</IconButton>
 				</TableCell>
 
 				<TableCell align="right">{row.code}</TableCell>

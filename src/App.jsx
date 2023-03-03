@@ -8,8 +8,11 @@ import Header from "./components/header/Header";
 import Navigator from "./components/navigator/Navigator";
 import Routers from "./Routers";
 import { useAuthStore } from "./store/auth";
+import { tokenCookies } from "~/services/cookiesService";
 
 function App() {
+	const token = tokenCookies.get();
+
 	const navigate = useNavigate();
 
 	const { isLoggedIn, isSysAdmin } = useAuthStore();
@@ -41,9 +44,9 @@ function App() {
 			/>
 			{window.innerWidth > 700 && (
 				<>
-					{isSysAdmin && <Header />}
-					{isSysAdmin && <Navigator />}
-					{isSysAdmin && <Footer />}
+					{isSysAdmin && token && <Header />}
+					{isSysAdmin && token && <Navigator />}
+					{isSysAdmin && token && <Footer />}
 				</>
 			)}
 			<Routers />

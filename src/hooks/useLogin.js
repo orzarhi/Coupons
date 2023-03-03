@@ -16,11 +16,8 @@ export const useLogin = (employeeName) => {
 		onSuccess: async (data) => {
 			loginStore(data.data);
 			const type = decodeToken(data.data)?.type;
-			const isSysAdmin = decodeToken(data.data)?.isSysAdmin;
 
-			if (type === PersonType.EMPLOYEE.label && isSysAdmin)
-				document.location.href = "/employees";
-			else if (type === PersonType.EMPLOYEE.label)
+			if (type === PersonType.EMPLOYEE.label)
 				document.location.href = "/employees";
 			else if (type === PersonType.SUPPLIER.label)
 				document.location.href = "/suppliers";

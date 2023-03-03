@@ -4,6 +4,8 @@ import {
 	useDeleteCompany,
 	useUnassignCompanyFromAdministration,
 } from "~/hooks/useCompanies";
+import { useUnassignCouponToCompany } from "~/hooks/useCoupons";
+import { useUnassignDepartmentToCompanyt } from "~/hooks/useDepartments";
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
@@ -15,6 +17,13 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 
 	const { mutate: unassignMutateCompanyFromAdministration } =
 		useUnassignCompanyFromAdministration(setOpen, open, refetch);
+
+	const { mutate: unassignMutateDepartmentToCompanyt } =
+		useUnassignDepartmentToCompanyt(setOpen, open, refetch);
+
+	const { mutate: unassignMutateCouponToCompany } =
+		useUnassignCouponToCompany(setOpen, open, refetch);
+
 	const submitHandler = () => {
 		if (open.title === "delete") {
 			deleteMutateCompany(info.companyCode);
@@ -26,6 +35,18 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 			unassignMutateCompanyFromAdministration(
 				unassignCompanyFromAdministration
 			);
+		} else if (open.title === "delete-unassignToDepartment") {
+			const unassignCompanyFromDepartment = {
+				companyCode: info?.companyCode,
+				departmentCode: open?.code,
+			};
+			unassignMutateDepartmentToCompanyt(unassignCompanyFromDepartment);
+		} else if (open.title === "delete-unassignToCoupon") {
+			const unassignCompanyFromCoupon = {
+				companyCode: info?.companyCode,
+				couponCode: open?.code,
+			};
+			unassignMutateCouponToCompany(unassignCompanyFromCoupon);
 		}
 	};
 
@@ -46,6 +67,9 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 						title={
 							open.title === "edit"
 								? "עריכת נתונים"
+								: open.title ===
+								  "assignAdministrationToCompanies"
+								? `שיוך חברת - ${info.companyName}`
 								: "הוספת חברה חדשה"
 						}
 						refetch={refetch}

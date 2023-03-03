@@ -47,7 +47,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">
 					{convertBoolean(row.isActive)}
 				</TableCell>
-				<TableCell align="right">
+				{/* <TableCell align="right">
 					<IconButton
 						title="assign"
 						onClick={() =>
@@ -56,7 +56,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					>
 						<RiAddFill />
 					</IconButton>
-				</TableCell>
+				</TableCell> */}
 
 				<TableCell align="right">
 					<IconButton
@@ -90,6 +90,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								מחלקות - {row?.companies?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-700 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assignCompanieToCoupon"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>
@@ -175,6 +190,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								ספקים - {row?.suppliers?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-700 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assignSuppliersToCoupon"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>

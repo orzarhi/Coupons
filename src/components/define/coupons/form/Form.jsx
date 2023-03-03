@@ -124,19 +124,13 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				updateMutateCoupon(editCoupon);
-			} else if (
-				open.title === "assign" &&
-				radioButtonsAssign === "true"
-			) {
+			} else if (open.title === "assignCompanieToCoupon") {
 				const assignCouponToCompany = {
 					couponCode: info?.couponCode,
 					companyCode: selectedValueCompany?.id,
 				};
 				assignMutateCouponToCompany(assignCouponToCompany);
-			} else if (
-				open.title === "assign" &&
-				radioButtonsAssign === "false"
-			) {
+			} else if (open.title === "assignSuppliersToCoupon") {
 				const assignCouponToSupplier = {
 					supplierCode: selectedValueSuppliers.id,
 					couponCode: info?.couponCode,
@@ -177,48 +171,37 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				</div>
 			)}
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				{open.title === "assign" ? (
+				{open.title === "assignCompanieToCoupon" && (
+					<AutocompleteInput
+						options={dataCompanies?.map((companie) => ({
+							label: companie.companyName,
+							id: companie.companyCode,
+						}))}
+						onChange={onCompanyAtuoCompleteChange}
+						label={"חברות"}
+					/>
+				)}
+				{open.title === "assignSuppliersToCoupon" && (
 					<>
-						<div className="w-3/5 flex justify-center">
-							<RadioButtons
-								firstLabel={"לחברה"}
-								secondeLabel={"לספק"}
-								title={"שיוך:"}
-								setRadioButtons={setRadioButtonsAssign}
-							/>
-						</div>
-						{radioButtonsAssign === "true" && (
-							<AutocompleteInput
-								options={dataCompanies?.map((companie) => ({
-									label: companie.companyName,
-									id: companie.companyCode,
-								}))}
-								onChange={onCompanyAtuoCompleteChange}
-								label={"חברות"}
-							/>
-						)}
-						{radioButtonsAssign === "false" && (
-							<>
-								<AutocompleteInput
-									options={dataSuppliers?.map((supplier) => ({
-										label: supplier.supplierName,
-										id: supplier.supplierCode,
-									}))}
-									onChange={onSupplierAtuoCompleteChange}
-									label={"ספקים"}
-								/>
-
-								<InputText
-									title={title}
-									action={"עריכת נתונים"}
-									info={info?.debitAmount}
-									originalText={"סכום החיוב"}
-									ref={debitAmountInputRef}
-								/>
-							</>
-						)}
+						<AutocompleteInput
+							options={dataSuppliers?.map((supplier) => ({
+								label: supplier.supplierName,
+								id: supplier.supplierCode,
+							}))}
+							onChange={onSupplierAtuoCompleteChange}
+							label={"ספקים"}
+						/>
+						<InputText
+							title={title}
+							action={"עריכת נתונים"}
+							info={info?.debitAmount}
+							originalText={"סכום החיוב"}
+							ref={debitAmountInputRef}
+						/>
 					</>
-				) : (
+				)}
+
+				{open.title === "add" || open.title === "edit" ? (
 					<>
 						<InputText
 							title={title}
@@ -284,10 +267,10 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							</div>
 						)}
 					</>
-				)}
+				) : null}
 			</div>
 			<div className="flex items-end flex-col p-2">
-				{open.title === "add" ? (
+				{open.title !== "edit" ? (
 					<IconButton
 						className="!text-white !bg-green-700 !text-3xl"
 						onClick={submitAddHandler}

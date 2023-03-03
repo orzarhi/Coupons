@@ -37,10 +37,10 @@ const Login = () => {
 
 		try {
 			if (!username || !password)
-				toastMessages.infoMessage("נא למלא את כל השדות");
+				toastMessages.infoMessage("נא למלא את כל השדות.");
 			else {
 				if (!iAgree) {
-					toastMessages.infoMessage("נא לאשר שימוש");
+					toastMessages.infoMessage("נא לאשר תנאי שימוש.");
 				} else {
 					const user = { username, password };
 					login(user);
@@ -117,7 +117,7 @@ const Login = () => {
 						checked={iAgree}
 						onClick={() => setIAgree(!iAgree)}
 					/>
-					אני מאשר שימוש
+					אני מאשר/ת תנאי שימוש.
 				</Stack>
 			</Stack>
 

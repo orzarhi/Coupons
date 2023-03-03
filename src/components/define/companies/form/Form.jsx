@@ -1,29 +1,37 @@
 import { IconButton } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
-import { SelectInput } from "~/components/define/_logic/SelectInput";
 import { useAdministrations } from "~/hooks/useAdministrations";
 import {
 	useAddCompany,
 	useAssignCompanyToAdministration,
 	useUpdateCompany,
 } from "~/hooks/useCompanies";
-import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 import { AutocompleteInput } from "../../_logic/AutocompleteInput";
 import { InputText } from "./InputText";
-// import { RadioButtons } from "./RadioButtons";
 import { RadioButtons } from "~/components/define/_logic/RadioButtons";
-import { RadioButtonsThreeOptions } from "./RadioButtons";
+import {
+	useAssignDepartmentToCompany,
+	useDepartments,
+} from "~/hooks/useDepartments";
+import { useAssignCouponToCompany, useCoupons } from "~/hooks/useCoupons";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
 	const [selectedAdministrations, setSelectedAdministrations] = useState("");
+	const [selectedDepartments, setSelectedDepartments] = useState("");
+	const [selectedCoupons, setSelectedCoupons] = useState("");
 
-	const { data: dataAdministrations, isLoadingAdministrations } =
+	const { data: dataAdministrations, isLoading: isLoadingAdministrations } =
 		useAdministrations();
+
+	const { data: dataDepartments, isLoading: isLoadingDepartments } =
+		useDepartments();
+
+	const { data: dataCoupons, isLoading: isLoadingCoupons } = useCoupons();
 
 	const companyNameInputRef = useRef();
 	const emailInputRef = useRef();
@@ -50,6 +58,15 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	);
 	const { mutate: assignMutateCompanyToAdministration } =
 		useAssignCompanyToAdministration(setOpen, open, refetch);
+
+	const { mutate: assignMutateDepartmentToCompany } =
+		useAssignDepartmentToCompany(setOpen, open, refetch);
+
+	const { mutate: assignMutateCouponToCompany } = useAssignCouponToCompany(
+		setOpen,
+		open,
+		refetch
+	);
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -83,15 +100,29 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 				};
 
 				updateMutateCompany(updateCompany);
-			} else if (open.title === "assign") {
-				const assignCompanyToAdministrations = {
+			} else if (open.title === "assignAdministrationToCompanies") {
+				const assignCompanyToAdministration = {
 					companyCode: info?.companyCode,
 					administrationCode: selectedAdministrations.id,
 				};
 
 				assignMutateCompanyToAdministration(
-					assignCompanyToAdministrations
+					assignCompanyToAdministration
 				);
+			} else if (open.title === "assignCompanieToDepartment") {
+				const assignCompanyToDepartment = {
+					companyCode: info?.companyCode,
+					departmentCode: selectedDepartments.id,
+				};
+
+				assignMutateDepartmentToCompany(assignCompanyToDepartment);
+			} else if (open.title === "assignCompanieToCoupon") {
+				const assignCompanyToCoupon = {
+					companyCode: info?.companyCode,
+					couponCode: selectedCoupons.id,
+				};
+
+				assignMutateCouponToCompany(assignCompanyToCoupon);
 			}
 		} catch (err) {
 			const error = err?.response?.data?.message;
@@ -103,15 +134,17 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const onAdministrationsAtuoCompleteChange = (value) => {
 		setSelectedAdministrations(value);
 	};
+	const onDepartmentsAtuoCompleteChange = (value) => {
+		setSelectedDepartments(value);
+	};
+	const onCouponsAtuoCompleteChange = (value) => {
+		setSelectedCoupons(value);
+	};
 	return (
 		<>
-			<span className="block text-center text-2xl mb-2">
-				{open.title === "assign"
-					? `שיוך חברת - ${info?.companyName} `
-					: title}
-			</span>
+			<span className="block text-center text-2xl mb-2">{title}</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				{open.title !== "assign" && (
+				{open.title === "add" || open.title === "edit" ? (
 					<>
 						<InputText
 							title={title}
@@ -142,15 +175,10 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							ref={logoFileInputRef}
 						/>
 					</>
-				)}
-				{open.title === "assign" && (
+				) : null}
+				{open.title === "assignAdministrationToCompanies" && (
 					<>
-						<RadioButtonsThreeOptions
-							title={"שיוך:"}
-							setRadioButtons={setRadioButtons}
-							type={info?.isActive}
-						/>
-						{/* <AutocompleteInput
+						<AutocompleteInput
 							options={dataAdministrations?.map(
 								(administrations) => ({
 									label: administrations.name,
@@ -159,8 +187,34 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							)}
 							onChange={onAdministrationsAtuoCompleteChange}
 							isLoading={isLoadingAdministrations}
-							label={"הנהלה"}
-						/> */}
+							label={"הנהלות"}
+						/>
+					</>
+				)}
+				{open.title === "assignCompanieToDepartment" && (
+					<>
+						<AutocompleteInput
+							options={dataDepartments?.map((department) => ({
+								label: department.name,
+								id: department.code,
+							}))}
+							onChange={onDepartmentsAtuoCompleteChange}
+							isLoading={isLoadingDepartments}
+							label={"מחלקות"}
+						/>
+					</>
+				)}
+				{open.title === "assignCompanieToCoupon" && (
+					<>
+						<AutocompleteInput
+							options={dataCoupons?.map((coupon) => ({
+								label: coupon.couponName,
+								id: coupon.couponCode,
+							}))}
+							onChange={onCouponsAtuoCompleteChange}
+							isLoading={isLoadingCoupons}
+							label={"קופונים"}
+						/>
 					</>
 				)}
 

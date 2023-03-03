@@ -123,8 +123,6 @@ const Employees = () => {
 									<TableCell align="right">
 										רשאי לקופון אורח
 									</TableCell>
-
-									<TableCell align="right">שיוך</TableCell>
 									<TableCell align="right">פעיל</TableCell>
 									<TableCell align="right">
 										זכאי למימוש בערב

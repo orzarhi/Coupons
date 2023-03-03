@@ -51,16 +51,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					{convertBoolean(row.canCreateGuestCoupon)}
 				</TableCell>
 				<TableCell align="right">
-					<IconButton
-						title="assign"
-						onClick={() =>
-							actionRow(setOpen, open, setInfo, row, "assign")
-						}
-					>
-						<RiAddFill />
-					</IconButton>
-				</TableCell>
-				<TableCell align="right">
 					{convertBoolean(row.isActive)}
 				</TableCell>
 				<TableCell align="right">
@@ -102,6 +92,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								מנהלות משויכות - {row?.administrations?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-700 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assign"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>

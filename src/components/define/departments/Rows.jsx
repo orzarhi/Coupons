@@ -44,16 +44,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">
 					{convertBoolean(row.isActive)}
 				</TableCell>
-				<TableCell align="right">
-					<IconButton
-						title="assign"
-						onClick={() =>
-							actionRow(setOpen, open, setInfo, row, "assign")
-						}
-					>
-						<RiAddFill />
-					</IconButton>
-				</TableCell>
+
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -86,6 +77,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								חברות משויכות - {row?.companies?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-700 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assign"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>

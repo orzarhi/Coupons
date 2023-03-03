@@ -11,13 +11,14 @@ import {
 } from "~/hooks/useDepartments";
 import { useCompanies } from "~/hooks/useCompanies";
 import { SelectInput } from "../../_logic/SelectInput";
+import { AutocompleteInput } from "../../_logic/AutocompleteInput";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(
 		info?.isActive?.toString()
 	);
 
-	const [selectedValue, setSelectedValue] = useState("");
+	const [selectedCompany, setSelectedCompany] = useState("");
 	const { data: dataCompanies, isLoading: isLoadingCompanies } =
 		useCompanies();
 
@@ -66,7 +67,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			} else if (open.title === "assign") {
 				const assignDepartmentToCompany = {
 					departmentCode: info?.code,
-					companyCode: selectedValue,
+					companyCode: selectedCompany.id,
 				};
 
 				assignMutateDepartmentToCompany(assignDepartmentToCompany);
@@ -77,7 +78,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 			else toastMessages.errorMessage("שגיאה: בעיית התחברות לשרת");
 		}
 	};
-
+	const onCompanyAtuoCompleteChange = (value) => {
+		setSelectedCompany(value);
+	};
 	return (
 		<>
 			<span className="block text-center text-2xl mb-2">
@@ -97,19 +100,28 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					/>
 				)}
 				{open.title === "assign" && (
-					<SelectInput
-						action={open.title}
-						type={"חברות"}
-						selectedValue={selectedValue}
-						setSelectedValue={setSelectedValue}
-						data={dataCompanies?.map(
-							({ companyCode, companyName }) => ({
-								key: companyCode,
-								code: companyCode,
-								name: companyName,
-							})
-						)}
+					// <SelectInput
+					// 	action={open.title}
+					// 	type={"חברות"}
+					// 	selectedValue={selectedValue}
+					// 	setSelectedValue={setSelectedValue}
+					// 	data={dataCompanies?.map(
+					// 		({ companyCode, companyName }) => ({
+					// 			key: companyCode,
+					// 			code: companyCode,
+					// 			name: companyName,
+					// 		})
+					// 	)}
+					// 	isLoading={isLoadingCompanies}
+					// />
+					<AutocompleteInput
+						options={dataCompanies?.map((companie) => ({
+							label: companie.companyName,
+							id: companie.companyCode,
+						}))}
+						onChange={onCompanyAtuoCompleteChange}
 						isLoading={isLoadingCompanies}
+						label={"חברות"}
 					/>
 				)}
 				{open.title === "edit" && (

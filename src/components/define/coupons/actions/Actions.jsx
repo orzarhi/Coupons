@@ -54,8 +54,8 @@ const Actions = ({ setOpen, open, info, refetch }) => {
 						title={
 							open.title === "edit"
 								? "עריכת נתונים"
-								: open.title === "assign"
-								? "שיוך קופון"
+								: open.title !== "add"
+								? `שיוך קופון - ${info.couponName}`
 								: "הוספת קופון חדש"
 						}
 						info={info}

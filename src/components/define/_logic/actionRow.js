@@ -52,6 +52,46 @@ export const actionRow = (setOpen, open, setInfo, row, title, code = "") => {
 			title: "assignAdministrationToAdmin",
 			code: code,
 		});
+	} else if (title === "assignCompanieToDepartment") {
+		setOpen({
+			...open,
+			popUp: true,
+			action: true,
+			title: "assignCompanieToDepartment",
+			code: code,
+		});
+	} else if (title === "delete-unassignToDepartment") {
+		setOpen({
+			...open,
+			modalDialog: true,
+			action: true,
+			title: "delete-unassignToDepartment",
+			code: code,
+		});
+	} else if (title === "assignCompanieToCoupon") {
+		setOpen({
+			...open,
+			popUp: true,
+			action: true,
+			title: "assignCompanieToCoupon",
+			code: code,
+		});
+	} else if (title === "delete-unassignToCoupon") {
+		setOpen({
+			...open,
+			modalDialog: true,
+			action: true,
+			title: "delete-unassignToCoupon",
+			code: code,
+		});
+	} else if (title === "assignSuppliersToCoupon") {
+		setOpen({
+			...open,
+			popUp: true,
+			action: true,
+			title: "assignSuppliersToCoupon",
+			code: code,
+		});
 	}
 	setInfo(row);
 };

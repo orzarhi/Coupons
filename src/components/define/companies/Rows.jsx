@@ -48,7 +48,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">
 					{convertBoolean(row.isActive)}
 				</TableCell>
-				<TableCell align="right">
+				{/* <TableCell align="right">
 					<IconButton
 						title="assign"
 						onClick={() =>
@@ -57,7 +57,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					>
 						<RiAddFill />
 					</IconButton>
-				</TableCell>
+				</TableCell> */}
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -99,7 +99,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 											open,
 											setInfo,
 											row,
-											"assign"
+											"assignAdministrationToCompanies"
 										)
 									}
 								>
@@ -173,6 +173,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								מחלקות משויכות - {row?.departments?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-700 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assignCompanieToDepartment"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>
@@ -181,6 +196,9 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 										<TableCell align="right">שם</TableCell>
 										<TableCell align="right">
 											פעיל
+										</TableCell>
+										<TableCell align="right">
+											הסר שיוך
 										</TableCell>
 									</TableRow>
 								</TableHead>
@@ -197,6 +215,23 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 												{convertBoolean(
 													orderRow.isActive
 												)}
+											</TableCell>
+											<TableCell align="right">
+												<IconButton
+													title="Remove"
+													onClick={() =>
+														actionRow(
+															setOpen,
+															open,
+															setInfo,
+															row,
+															"delete-unassignToDepartment",
+															orderRow.code
+														)
+													}
+												>
+													<MdRemoveCircleOutline />
+												</IconButton>
 											</TableCell>
 										</TableRow>
 									))}
@@ -219,6 +254,21 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 								component="div"
 							>
 								קופונים משויכים - {row?.coupons?.length}
+								<IconButton
+									title="assign"
+									className="!text-green-700 !text-2xl"
+									onClick={() =>
+										actionRow(
+											setOpen,
+											open,
+											setInfo,
+											row,
+											"assignCompanieToCoupon"
+										)
+									}
+								>
+									<RiAddFill />
+								</IconButton>
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>
@@ -237,6 +287,9 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 										<TableCell align="right">סוג</TableCell>
 										<TableCell align="right">
 											פעיל
+										</TableCell>
+										<TableCell align="right">
+											הסר שיוך
 										</TableCell>
 									</TableRow>
 								</TableHead>
@@ -263,6 +316,23 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 												{convertBoolean(
 													orderRow.isActive
 												)}
+											</TableCell>
+											<TableCell align="right">
+												<IconButton
+													title="Remove"
+													onClick={() =>
+														actionRow(
+															setOpen,
+															open,
+															setInfo,
+															row,
+															"delete-unassignToCoupon",
+															orderRow.couponCode
+														)
+													}
+												>
+													<MdRemoveCircleOutline />
+												</IconButton>
 											</TableCell>
 										</TableRow>
 									))}

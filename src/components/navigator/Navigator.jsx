@@ -2,11 +2,11 @@ import { createElement, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import maxsoftIcon from "~/assets/images/picture-login/maxsoft.png";
+import { logout } from "~/services/authService";
 import { useAuthStore } from "~/store/auth";
 import { menus } from "./menus";
 
 const Navigator = () => {
-	const { logoutStore } = useAuthStore();
 	const [open, setOpen] = useState(true);
 
 	return (
@@ -41,7 +41,7 @@ const Navigator = () => {
 								menu?.margin && "mt-5 xl:mt-5"
 							} group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-400 rounded-md`}
 							onClick={() => {
-								menu?.onClick && logoutStore();
+								menu?.onClick?.();
 							}}
 						>
 							<div

@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 import { RiSettings4Line } from "react-icons/ri";
 import { TbReportAnalytics, TbReportSearch } from "react-icons/tb";
+import { logout } from "~/services/authService";
 
 export const menus = [
 	{
@@ -121,6 +122,6 @@ export const menus = [
 		title: "יציאה",
 		link: "/",
 		icon: ImExit,
-		onClick: "logout",
+		onClick: logout,
 	},
 ];

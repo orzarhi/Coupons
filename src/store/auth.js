@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { tokenCookies } from "~/services/cookiesService";
 import { decodeToken } from "react-jwt";
 import { nameCookies } from "~/services/nameService";
+import { useRef } from "react";
 
 export const mainStore = (set) => {
 	const token = tokenCookies.get();
@@ -44,4 +45,17 @@ export const mainStore = (set) => {
 	};
 };
 
-export const useAuthStore = create(mainStore);
+export const useAuthStore = () => {
+	const token = tokenCookies.get();
+	const decodedToken = decodeToken(token);
+	const authData = useRef({
+		token,
+		username: decodedToken?.username,
+		type: decodedToken?.type,
+		isLoggedIn: !!token,
+		isSysAdmin: decodedToken?.isSysAdmin,
+		name: nameCookies.get(),
+	});
+
+	return authData.current;
+};

@@ -1,5 +1,6 @@
 import { IconButton } from "@mui/material";
 import { MdDeleteForever, MdOutlineModeEdit } from "react-icons/md";
+import { FilterFields } from "~/constants/FilterFields";
 import { convertBoolean } from "~/utils/convertBoolean";
 import { actionRow } from "../_logic/actionRow";
 
@@ -49,7 +50,7 @@ export const columns = (setOpen, open, setInfo) => [
 	},
 	{
 		field: "isSysAdmin",
-		headerName: "הרשאת מנהל מערכת",
+		headerName: FilterFields.find((f) => f.id === "filterAdmin")?.name,
 		width: 150,
 		headerAlign: "right",
 		align: "right",

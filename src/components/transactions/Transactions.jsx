@@ -7,12 +7,13 @@ import {
 	useEmployeeByUsername,
 	useTransactions,
 } from "~/hooks/useTransactions";
+import { logout } from "~/services/authService";
 import { useAuthStore } from "~/store/auth";
 import Spinner from "../ui/spinner/Spinner";
 import Actions from "./actions/Actions";
 
 const Transactions = () => {
-	const { username, logoutStore } = useAuthStore();
+	const { username } = useAuthStore();
 
 	const [info, setInfo] = useState({});
 	const [checked, setChecked] = useState(true);
@@ -68,7 +69,7 @@ const Transactions = () => {
 				</Button>
 				<Button
 					className="!bg-slate-800 !text-white hover:!bg-slate-700 !w-40 !text-sm !m-2 sm:!w-24"
-					onClick={() => logoutStore()}
+					onClick={logout}
 				>
 					יציאה
 				</Button>

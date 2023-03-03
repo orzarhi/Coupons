@@ -11,7 +11,7 @@ export const getTransactions = async (employeeCode) => {
 export const getEmployeeByUsername = async (username) => {
 	const { data } = await axios.get(`/employees/${username}`);
 
-	return data.data;
+	return data;
 };
 
 export const addCouponQr = async (couponQr) => {

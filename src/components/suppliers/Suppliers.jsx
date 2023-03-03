@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useSupplierByUsername } from "~/hooks/useSuppliers";
 import { useUpdateTransaction } from "~/hooks/useTransactions";
+import { logout } from "~/services/authService";
 import { useAuthStore } from "~/store/auth";
 import { decrypt } from "~/utils/decrypt";
 import Spinner from "../ui/spinner/Spinner";
@@ -22,7 +23,7 @@ const Suppliers = () => {
 	});
 	const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-	const { username, logoutStore } = useAuthStore();
+	const { username } = useAuthStore();
 	const { data: dataSupplier, isLoading: isLoadingSupplier } =
 		useSupplierByUsername(username);
 
@@ -69,7 +70,7 @@ const Suppliers = () => {
 				</Button>
 				<Button
 					className="!bg-slate-800 !text-white hover:!bg-slate-700 !w-40 !text-sm !m-2 sm:!w-24"
-					onClick={() => logoutStore()}
+					onClick={logout}
 				>
 					יציאה
 				</Button>

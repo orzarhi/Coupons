@@ -1,15 +1,13 @@
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { DataGrid, heIL } from "@mui/x-data-grid";
-import { useMemo, useState } from "react";
+import { useMemo, useReducer, useState } from "react";
+import { FaFilter } from "react-icons/fa";
 import Spinner from "~/components/ui/spinner/Spinner";
+import { FilterFields } from "~/constants/users/FilterFields";
 import { useUsers } from "~/hooks/useUsers";
-import { AutocompleteInput } from "../_logic/AutocompleteInput";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
-import { FaFilter } from "react-icons/fa";
-import { useReducer } from "react";
-import { FilterFields } from "~/constants/users/FilterFields";
 
 const initialFiltersReducer = FilterFields.reduce(
 	(acc, curr) => ({ ...acc, [curr.id]: false }),
@@ -90,7 +88,7 @@ const Registration = () => {
 			{showFilters && (
 				<div className="flex justify-center mt-4">{Filters}</div>
 			)}
-			<div className="relative bottom-4 w-2/5 block m-auto p-5 xl:w-4/6 xl:relative xl:bottom-4 lg:w-4/6 md:w-5/6 sm:w-4/5">
+			<div className="relative bottom-4 w-2/5 block m-auto p-5 xl:w-3/6 xl:relative xl:bottom-4 lg:w-4/6 md:w-5/6 sm:w-4/5">
 				{dataUsers && (
 					<DataGrid
 						rows={data}

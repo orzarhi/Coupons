@@ -48,16 +48,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">
 					{convertBoolean(row.isActive)}
 				</TableCell>
-				{/* <TableCell align="right">
-					<IconButton
-						title="assign"
-						onClick={() =>
-							actionRow(setOpen, open, setInfo, row, "assign")
-						}
-					>
-						<RiAddFill />
-					</IconButton>
-				</TableCell> */}
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -91,7 +81,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								הנהלות משוכיות - {row?.administrations?.length}
 								<IconButton
-									title="assign"
+									title="שיוך הנהלה"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(
@@ -174,7 +164,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								מחלקות משויכות - {row?.departments?.length}
 								<IconButton
-									title="assign"
+									title="שיוך מחלקה"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(
@@ -255,7 +245,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								קופונים משויכים - {row?.coupons?.length}
 								<IconButton
-									title="assign"
+									title="שיוך קופון"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(

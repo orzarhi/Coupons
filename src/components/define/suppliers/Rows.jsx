@@ -88,7 +88,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								קופונים משויכים - {row?.coupons?.length}
 								<IconButton
-									title="assign"
+									title="שיוך קופון"
 									className="!text-green-500 !text-2xl"
 									onClick={() =>
 										actionRow(

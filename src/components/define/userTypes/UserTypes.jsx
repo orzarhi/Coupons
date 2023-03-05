@@ -31,7 +31,7 @@ const UserTypes = () => {
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
 
-			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2">
+			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2 lg:w-4/6">
 				{data && (
 					<DataGrid
 						rows={data}

@@ -72,7 +72,7 @@ export const ReportSuppliers = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-2/6 block m-auto p-5 xl:w-2/5 xl:relative xl:bottom-2 sm:w-10/12">
+			<div className="relative bottom-2 w-2/6 block m-auto p-5 xl:w-2/5 xl:relative xl:bottom-2 lg:w-3/5 sm:w-10/12">
 				{data && (
 					<DataGrid
 						rows={data}

@@ -73,7 +73,7 @@ export const ReportHilan = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2 sm:w-10/12">
+			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2 lg:w-8/12 sm:w-10/12">
 				{data && (
 					<DataGrid
 						rows={data}

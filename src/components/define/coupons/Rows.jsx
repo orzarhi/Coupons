@@ -47,17 +47,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 				<TableCell align="right">
 					{convertBoolean(row.isActive)}
 				</TableCell>
-				{/* <TableCell align="right">
-					<IconButton
-						title="assign"
-						onClick={() =>
-							actionRow(setOpen, open, setInfo, row, "assign")
-						}
-					>
-						<RiAddFill />
-					</IconButton>
-				</TableCell> */}
-
 				<TableCell align="right">
 					<IconButton
 						title="Remove"
@@ -91,7 +80,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								מחלקות - {row?.companies?.length}
 								<IconButton
-									title="assign"
+									title="שיוך מחלקה"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(
@@ -191,7 +180,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								ספקים - {row?.suppliers?.length}
 								<IconButton
-									title="assign"
+									title="שיוך ספקים"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(

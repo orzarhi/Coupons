@@ -78,7 +78,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								חברות - {row?.companies?.length}
 								<IconButton
-									title="assign"
+									title="שיוך חברות"
 									className="!text-green-500 !text-2xl"
 									onClick={() =>
 										actionRow(
@@ -176,7 +176,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								מנהלים - {row?.admins?.length}
 								<IconButton
-									title="assign"
+									title="שיוך מנהל"
 									className="!text-green-500 !text-2xl"
 									onClick={() =>
 										actionRow(

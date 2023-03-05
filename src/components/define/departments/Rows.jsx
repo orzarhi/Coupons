@@ -78,7 +78,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								חברות משויכות - {row?.companies?.length}
 								<IconButton
-									title="assign"
+									title="שיוך חברה"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(

@@ -48,7 +48,7 @@ export const columns = [
 	{
 		field: "employeeCode",
 		headerName: "קוד עובד",
-		width: 160,
+		width: 120,
 		headerAlign: "right",
 		align: "right",
 	},

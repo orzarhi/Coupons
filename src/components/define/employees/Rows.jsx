@@ -93,7 +93,7 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 							>
 								מנהלות משויכות - {row?.administrations?.length}
 								<IconButton
-									title="assign"
+									title="שיוך מנהלה"
 									className="!text-green-700 !text-2xl"
 									onClick={() =>
 										actionRow(

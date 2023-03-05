@@ -157,4 +157,11 @@ export const columns = (setOpen, open, setInfo) => [
 			return params.row.startTime.slice(11, 16);
 		},
 	},
+	{
+		field: "description",
+		headerName: "משמרת",
+		width: 150,
+		headerAlign: "right",
+		align: "right",
+	},
 ];

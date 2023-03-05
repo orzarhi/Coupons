@@ -9,7 +9,7 @@ import Actions from "./actions/Actions";
 import { columns } from "./columns";
 import { FaFilter } from "react-icons/fa";
 import { useReducer } from "react";
-import { FilterFields } from "~/constants/FilterFields";
+import { FilterFields } from "~/constants/users/FilterFields";
 
 const initialFiltersReducer = FilterFields.reduce(
 	(acc, curr) => ({ ...acc, [curr.id]: false }),
@@ -23,14 +23,12 @@ const filterReducer = (state, action) => {
 const Registration = () => {
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
+	const [showFilters, setShowFilters] = useState(false);
 
 	const [filters, dispatch] = useReducer(
 		filterReducer,
 		initialFiltersReducer
 	);
-	console.log("🚀 state:", filters);
-
-	const [showFilters, setShowFilters] = useState(false);
 
 	const [open, setOpen] = useState({
 		action: false,
@@ -85,14 +83,6 @@ const Registration = () => {
 			/>
 
 			<div className="flex justify-center">
-				{/* <AutocompleteInput
-					options={dataUsers?.map((user) => ({
-						label: user.username,
-						id: user.username,
-					}))}
-					// onChange={onAdministrationsAtuoCompleteChange}
-					label={"פילטרים"}
-				/> */}
 				<IconButton onClick={() => setShowFilters(!showFilters)}>
 					<FaFilter />
 				</IconButton>

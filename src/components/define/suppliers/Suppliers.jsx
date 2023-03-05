@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,20 +6,28 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useState } from "react";
+import { useMemo, useReducer, useState } from "react";
+import { FaFilter } from "react-icons/fa";
 import Spinner from "~/components/ui/spinner/Spinner";
+import { FilterFields } from "~/constants/suppliers/FilterFields";
 import { useSuppliers } from "~/hooks/useSuppliers";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
+const initialFiltersReducer = FilterFields.reduce(
+	(acc, curr) => ({ ...acc, [curr.id]: false }),
+	{}
+);
+
+const filterReducer = (state, action) => {
+	return { ...state, [action.id]: !state[action.id] };
+};
+
 const Suppliers = () => {
 	const [info, setInfo] = useState({});
 	const [inputSearch, setInputSearch] = useState("");
-	const [checkedboxIsActive, setCheckedboxIsActive] = useState(false);
-	const [checkedboxIsMeals, setCheckedboxIsMeals] = useState(false);
-	const [checkedboxIsVarious, setCheckedboxIsVarious] = useState(false);
-
+	const [showFilters, setShowFilters] = useState(false);
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -27,30 +35,42 @@ const Suppliers = () => {
 		title: "",
 	});
 
+	const [filters, dispatch] = useReducer(
+		filterReducer,
+		initialFiltersReducer
+	);
+
 	const { data: dataSuppliers, refetch, isLoading } = useSuppliers();
 
-	const data = dataSuppliers?.filter((supplier) =>
-		supplier.supplierName.toLowerCase().includes(inputSearch.toLowerCase())
+	const data = useMemo(() => {
+		let results = dataSuppliers?.filter((user) =>
+			user.supplierName.toLowerCase().includes(inputSearch.toLowerCase())
+		);
+		results = FilterFields.filter((f) => filters[f.id]).reduce(
+			(acc, curr) => curr.apply(acc),
+			results
+		);
+
+		return results;
+	}, [dataSuppliers, inputSearch, filters]);
+
+	const Filters = useMemo(
+		() =>
+			FilterFields.map((f) => (
+				<FormControlLabel
+					key={f.id}
+					control={
+						<Checkbox defaultValue={false} value={filters[f.id]} />
+					}
+					label={f.name}
+					onChange={() => {
+						dispatch(f);
+					}}
+				/>
+			)),
+		[filters]
 	);
 
-	const dataCheckedIsActive = dataSuppliers?.filter(
-		(supplier) => supplier.isActive
-	);
-
-	const dataCheckedIsMeals = dataSuppliers?.filter(
-		(supplier) => supplier.isMeals
-	);
-
-	const dataCheckedIsVarious = dataSuppliers?.filter(
-		(supplier) => supplier.isVarious
-	);
-	const dataResults = checkedboxIsActive
-		? dataCheckedIsActive
-		: checkedboxIsMeals
-		? dataCheckedIsMeals
-		: checkedboxIsVarious
-		? dataCheckedIsVarious
-		: data;
 	if (isLoading) return <Spinner />;
 
 	return (
@@ -64,23 +84,16 @@ const Suppliers = () => {
 				label="ספק"
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
-			<div className="flex justify-center mt-4">
-				<FormControlLabel
-					control={<Checkbox defaultValue={false} />}
-					label="פעיל"
-					onClick={() => setCheckedboxIsActive(!checkedboxIsActive)}
-				/>
-				<FormControlLabel
-					control={<Checkbox defaultValue={false} />}
-					label="ספק ארוחות"
-					onClick={() => setCheckedboxIsMeals(!checkedboxIsMeals)}
-				/>
-				<FormControlLabel
-					control={<Checkbox defaultValue={false} />}
-					label="ספק שונות"
-					onClick={() => setCheckedboxIsVarious(!checkedboxIsVarious)}
-				/>
+
+			<div className="flex justify-center">
+				<IconButton onClick={() => setShowFilters(!showFilters)}>
+					<FaFilter />
+				</IconButton>
 			</div>
+			{showFilters && (
+				<div className="flex justify-center mt-4">{Filters}</div>
+			)}
+
 			<div className="relative bottom-4 w-3/4 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-4">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
@@ -110,7 +123,7 @@ const Suppliers = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{dataResults?.map((row) => (
+								{data?.map((row) => (
 									<Rows
 										key={row.supplierCode}
 										row={row}

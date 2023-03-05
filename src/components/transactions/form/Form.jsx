@@ -46,8 +46,8 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 	const couponForGuest = dataAllEmployees?.map(
 		(employee) =>
 			employee.companyName === dataEmployee.companyName && {
-				name: employee.employeeName,
-				code: employee.employeeCode,
+				label: employee.employeeName,
+				id: employee.employeeCode,
 			}
 	);
 
@@ -151,9 +151,9 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 				{open.title === "add-forGuest" && (
 					<>
 						<AutocompleteInput
-							options={couponForGuest?.map((coupon) => ({
-								label: coupon.name,
-								id: coupon.code,
+							options={couponForGuest?.map((employee) => ({
+								label: employee.label,
+								id: employee.id,
 							}))}
 							onChange={onCouponForGuest}
 							label={"קופון אורח לעובד"}

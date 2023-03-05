@@ -1,4 +1,4 @@
-import { PersonType } from "./PersonType";
+import { PersonType } from "../PersonType";
 
 export const FilterFields = [
 	{

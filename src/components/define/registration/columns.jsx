@@ -1,6 +1,6 @@
 import { IconButton } from "@mui/material";
 import { MdDeleteForever, MdOutlineModeEdit } from "react-icons/md";
-import { FilterFields } from "~/constants/FilterFields";
+import { FilterFields } from "~/constants/users/FilterFields";
 import { convertBoolean } from "~/utils/convertBoolean";
 import { actionRow } from "../_logic/actionRow";
 
@@ -60,7 +60,7 @@ export const columns = (setOpen, open, setInfo) => [
 	},
 	{
 		field: "isActive",
-		headerName: "פעיל",
+		headerName: FilterFields.find((f) => f.id === "filterActive")?.name,
 		width: 100,
 		headerAlign: "right",
 		align: "right",

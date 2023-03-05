@@ -238,10 +238,10 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 												{orderRow.phoneNumber}
 											</TableCell>
 											<TableCell align="right">
-												{orderRow.companyCode}
+												{orderRow.companyName}
 											</TableCell>
 											<TableCell align="right">
-												{orderRow.departmentCode}
+												{orderRow.departmentName}
 											</TableCell>
 
 											<TableCell align="right">

@@ -4,7 +4,7 @@ import { nameCookies } from "~/services/nameService";
 import { useAuthStore } from "~/store/auth";
 
 const Header = () => {
-	const { name } = useAuthStore();
+	const { username } = useAuthStore();
 
 	return (
 		<header className="h-20 pl-9 text-3xl flex flex-row-reverse items-center justify-between bg-blue-50  mb-8 ltr:ml-3">
@@ -14,7 +14,7 @@ const Header = () => {
 					src={avatar}
 				/> */}
 			<div className="flex justify-center m-3 text-xl text-gray-900 h-7 font-semibold sm:w-8/12 sm:text-sm">
-				{/* ברוכים הבאים - {name} */}
+				ברוכים הבאים - {username}
 			</div>
 			{/* <nav>
 					<ul className="flex">

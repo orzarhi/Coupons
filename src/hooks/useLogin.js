@@ -14,7 +14,7 @@ export const useLogin = (employeeName) => {
 	return useMutation(login, {
 		onSuccess: async (data) => {
 			// loginStore(data.data);
-			loginService(data, employeeName);
+			loginService(data);
 			const type = decodeToken(data)?.type;
 
 			if (type === PersonType.EMPLOYEE.label)

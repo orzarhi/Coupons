@@ -35,7 +35,8 @@ const Transactions = () => {
 		data: transactions,
 		refetch,
 		isLoading: isLoadingTransactions,
-	} = useTransactions(employee?.employeeCode);
+	} = useTransactions(employee?.data?.employeeCode);
+	console.log("🚀 transactions:", transactions);
 
 	const { mutate: addMutateTransaction } = useAddTransaction(
 		setOpen,
@@ -44,7 +45,9 @@ const Transactions = () => {
 	);
 
 	const { data: dataCoupons } = useCoupons();
-	const guest = transactions?.some((transaction) => transaction.isGuest);
+
+	const guest = employee?.data?.canCreateGuestCoupon;
+
 	const isMealTitle = dataCoupons?.map(
 		(coupons) => !!coupons.isMeal && coupons.couponTypeName
 	);
@@ -75,33 +78,35 @@ const Transactions = () => {
 				</Button>
 			</div>
 			<span className="block text-center text-2xl mt-10">
-				ברוך הבא - {employee?.employeeName} 👋
+				ברוך הבא - {employee?.data?.employeeName} 👋
 			</span>
 			<div className="flex flex-col items-center mt-2">
 				<Button
 					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm !m-3"
 					onClick={() =>
 						addMutateTransaction({
-							employeeCode: employee?.employeeCode,
+							employeeCode: employee?.data?.employeeCode,
 							couponCode: 1,
 						})
 					}
 				>
 					הוספת קופון - {isMealTitle}
 				</Button>
-				<Button
-					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm !m-3"
-					onClick={() =>
-						setOpen({
-							...open,
-							popUp: true,
-							action: true,
-							title: "add-forGuest",
-						})
-					}
-				>
-					הוספת קופון - אורח
-				</Button>
+				{guest && (
+					<Button
+						className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm !m-3"
+						onClick={() =>
+							setOpen({
+								...open,
+								popUp: true,
+								action: true,
+								title: "add-forGuest",
+							})
+						}
+					>
+						הוספת קופון - אורח
+					</Button>
+				)}
 				<Button
 					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 					onClick={() =>
@@ -139,12 +144,15 @@ const Transactions = () => {
 								key={transaction.id}
 								className=" max-w-sm p-6 m-3 w-4/5 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 lg:w-11/12"
 							>
-								<span className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+								<span className="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 									{transaction?.couponName}
 								</span>
 
-								<p className="mb-3  font-normal text-gray-700 dark:text-gray-400">
+								<p className="mb-1 font-normal text-gray-700 dark:text-gray-400">
 									{transaction?.couponDesc}
+								</p>
+								<p className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+									₪{transaction?.debitAmount}
 								</p>
 								<p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
 									{new Date(
@@ -184,7 +192,9 @@ const Transactions = () => {
 								<span className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 									{transaction?.couponName}
 								</span>
-
+								<p className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+									₪{transaction?.debitAmount}
+								</p>
 								<p className="mb-3  font-normal text-gray-700 dark:text-gray-400">
 									{transaction?.couponDesc}
 								</p>
@@ -218,7 +228,7 @@ const Transactions = () => {
 					setOpen={setOpen}
 					info={info}
 					refetch={refetch}
-					dataEmployee={employee}
+					dataEmployee={employee.data}
 				/>
 			)}
 		</>

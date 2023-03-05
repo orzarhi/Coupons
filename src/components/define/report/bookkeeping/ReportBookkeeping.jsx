@@ -1,28 +1,42 @@
-import React, { useState } from "react";
+import { Button } from "@mui/material";
 import { DataGrid, heIL } from "@mui/x-data-grid";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import Details from "../../_logic/Details";
-import { columns } from "./columns";
-import Actions from "./actions/Actions";
+import { useState } from "react";
 import { useBookkeepingReport } from "~/hooks/useReport";
+import Details from "../../_logic/Details";
+import Actions from "./actions/Actions";
+import { columns } from "./columns";
 import { Pdf } from "./pdf/Pdf";
 import { Xls } from "./xls/Xls";
-import { Button } from "@mui/material";
-import { useAuthStore } from "~/store/auth";
 
 export const ReportBookkeeping = () => {
 	const [showReport, setShowReport] = useState(false);
 	const [year, setYear] = useState("");
 	const [month, setMonth] = useState("");
-
+	const [obj, setObj] = useState([]);
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
 		modalDialog: false,
 		title: "",
 	});
+
 	const [data, fetchReport] = useBookkeepingReport();
 
+	const companyName = data?.map((d) => d.companyName);
+	console.log("🚀companyName:", companyName);
+
+	const dataResult = data?.map((d) => ({
+		companyName: d.companyName,
+		departmentName: d.departmentName,
+		employeeCode: d.employeeCode,
+		employeeName: d.employeeName,
+		totalMeals: d.totalMeals,
+		totalMealsNoCharge: d.totalMealsNoCharge,
+		totalComanyMealsCharge: d.totalComanyMealsCharge,
+	}));
+
+	console.log("🚀  dataResult:", dataResult);
 	return (
 		<>
 			<Details
@@ -46,7 +60,7 @@ export const ReportBookkeeping = () => {
 					<PDFDownloadLink
 						document={
 							<Pdf
-								title={" דוח הנהלת חשבונות"}
+								title={"דוח הנהלת חשבונות"}
 								dates={`${year} - ${month}`}
 								data={data}
 							/>

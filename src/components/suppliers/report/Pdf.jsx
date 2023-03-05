@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		textAlign: "right",
 		direction: "rtl",
 		fontFamily: "Rubik",
-		fontSize: 12,
+		fontSize: 10,
 	},
 });
 
@@ -81,6 +81,10 @@ export const Pdf = ({ title, dates, data }) => {
 		src: RubikRegular,
 	});
 
+	const totalPrice = data
+		?.map((d) => d.price)
+		.reduce((partialSum, a) => partialSum + a, 0);
+
 	return (
 		<Document>
 			<Page size="A4" style={styles.page}>
@@ -88,17 +92,23 @@ export const Pdf = ({ title, dates, data }) => {
 					<Image style={styles.image} src={logo} />
 					<Text style={styles.heading}>{title}</Text>
 					<Text style={styles.headingDates}>{dates}</Text>
-					<Text style={styles.subtitle}>{data.length}סך הכל: </Text>
+					<Text style={styles.subtitle}>
+						{data.length} סך הכל מימושים:
+					</Text>
 
 					<View style={styles.table}>
-						<Text style={styles.tableHeader}>תאריך מימוש</Text>
+						<Text style={styles.tableHeader}>מימוש</Text>
 						<Text style={styles.tableHeader}>מחיר</Text>
 						<Text style={styles.tableHeader}>שם משתמש</Text>
 					</View>
 					{data?.map((report) => (
 						<View key={report.usedDate} style={styles.tableRow}>
 							<Text style={styles.tableRowCell}>
-								{new Date(report.usedDate).toLocaleDateString()}
+								{new Date(
+									report.usedDate
+								).toLocaleDateString() +
+									" | " +
+									report.usedDate.slice(11, 16)}
 							</Text>
 							<Text style={styles.tableRowCell}>
 								₪{report.price}
@@ -109,6 +119,8 @@ export const Pdf = ({ title, dates, data }) => {
 						</View>
 					))}
 					<Rect style={{ marginTop: 20 }} />
+
+					<Text style={styles.subtitle}>₪{totalPrice} סך הכל:</Text>
 				</View>
 			</Page>
 		</Document>

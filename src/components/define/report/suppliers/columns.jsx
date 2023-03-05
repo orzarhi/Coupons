@@ -1,12 +1,16 @@
 export const columns = [
 	{
 		field: "usedDate",
-		headerName: "תאריך מימוש",
+		headerName: "מימוש",
 		width: 180,
 		headerAlign: "right",
 		align: "right",
 		renderCell: (params) => {
-			return new Date(params.row.usedDate).toLocaleDateString();
+			return (
+				new Date(params.row.usedDate).toLocaleDateString() +
+				" | " +
+				params.row.usedDate.slice(11, 16)
+			);
 		},
 	},
 

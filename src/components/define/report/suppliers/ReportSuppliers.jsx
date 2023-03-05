@@ -26,7 +26,7 @@ export const ReportSuppliers = () => {
 	return (
 		<>
 			<Details
-				title="דוחות ספקים"
+				title="דוחות מימוש ספקים"
 				identification="report"
 				textBtn="בחר/י ספק להצגת הדוח"
 				setOpen={setOpen}

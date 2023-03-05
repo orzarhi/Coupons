@@ -11,6 +11,7 @@ export const columns = [
 			return convertBoolean(params.row.isUsed) && params.row.supplierName;
 		},
 	},
+
 	{
 		field: "usedDate",
 		headerName: "תאריך מימוש",
@@ -20,41 +21,46 @@ export const columns = [
 		renderCell: (params) => {
 			return (
 				new Date(params.row.usedDate).getFullYear() > 2000 &&
-				new Date(params.row.usedDate).toLocaleDateString()
+				new Date(params.row.usedDate).toLocaleDateString() +
+					" | " +
+					params.row.usedDate.slice(11, 16)
 			);
 		},
 	},
 	{
 		field: "isUsed",
 		headerName: "מומש",
-		width: 150,
+		width: 100,
 		headerAlign: "right",
 		align: "right",
 		renderCell: (params) => {
 			return convertBoolean(params.row.isUsed);
 		},
 	},
-	// {
-	// 	field: "expirationDate",
-	// 	headerName: "תאריך תפוגה",
-	// 	width: 150,
-	// 	headerAlign: "right",
-	// 	align: "right",
-	// 	renderCell: (params) => {
-	// 		return new Date(params.row.expirationDate).toLocaleDateString();
-	// 	},
-	// },
 	{
 		field: "issuedDate",
-		headerName: "תאריך הנפקה",
+		headerName: "הנפקה",
+		width: 180,
+		headerAlign: "right",
+		align: "right",
+		renderCell: (params) => {
+			return (
+				new Date(params.row.issuedDate).toLocaleDateString() +
+				" | " +
+				params.row.issuedDate.slice(11, 16)
+			);
+		},
+	},
+	{
+		field: "isGuest",
+		headerName: "קופון אורח",
 		width: 150,
 		headerAlign: "right",
 		align: "right",
 		renderCell: (params) => {
-			return new Date(params.row.issuedDate).toLocaleDateString();
+			return convertBoolean(params.row.isGuest);
 		},
 	},
-
 	{
 		field: "couponName",
 		headerName: "קופון",

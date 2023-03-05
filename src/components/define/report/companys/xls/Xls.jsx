@@ -5,19 +5,22 @@ import * as XLSX from "xlsx";
 export const Xls = ({ data, title, content }) => {
 	const handleExportXlsx = () => {
 		var Heading = [
-			[
-				"מומש",
-				"תאריך מימוש",
-				"קוד עובד",
-				"שם עובד",
-				"קוד חברה",
-				"חברה",
-				"קוד ספק",
-				"ספק",
-			],
+			["קוד עובד", "שם עובד", "מימוש", "עסק", "מחיר ספק", "מחיר עובד"],
 		];
+
+		const dataResult = data.map((d) => ({
+			employeeCode: d.employeeCode,
+			employeeName: d.employeeName,
+			usedDate:
+				new Date(d.usedDate).toLocaleDateString() +
+				" " +
+				d.usedDate.slice(11, 16),
+			supplierName: d.supplierName,
+			supplierPrice: d.supplierPrice,
+			debitAmount: d.debitAmount,
+		}));
 		var wb = XLSX.utils.book_new(),
-			ws = XLSX.utils.json_to_sheet(data);
+			ws = XLSX.utils.json_to_sheet(dataResult);
 
 		XLSX.utils.sheet_add_aoa(ws, Heading);
 		XLSX.utils.book_append_sheet(wb, ws, title);

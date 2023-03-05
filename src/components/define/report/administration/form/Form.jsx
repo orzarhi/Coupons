@@ -1,10 +1,12 @@
 import { IconButton } from "@mui/material";
+import { useState } from "react";
 import { useRef } from "react";
 import { MdDone } from "react-icons/md";
+import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { InputDates } from "~/components/define/_logic/DatesInput";
+import { useAdministrations } from "~/hooks/useAdministrations";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
-import { InputText } from "./InputText";
 
 export const Form = ({
 	title,
@@ -15,24 +17,31 @@ export const Form = ({
 	setDates,
 	dates,
 }) => {
-	const administrationCodeInputRef = useRef();
+	const [administration, setAdministration] = useState("");
+
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
+
+	const { data: dataAdministrations, isLoading: isLoadingAdministrations } =
+		useAdministrations();
+
+	const onAdministrationAtuoCompleteChange = (value) => {
+		setAdministration(value);
+	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		const administrationCode = administrationCodeInputRef?.current?.value;
 		const fromDate = fromDateInputRef?.current?.value;
 		const toDate = toDateInputRef?.current?.value;
 		setDates({ ...dates, fromDate, toDate });
 		try {
 			if (open.title === "report") {
-				if (!fromDate || !toDate || !administrationCode) {
+				if (!fromDate || !toDate || !administration) {
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportAdministration = {
-						administrationCode,
+						administrationCode: administration.id,
 						fromDate,
 						toDate,
 					};
@@ -55,11 +64,18 @@ export const Form = ({
 			</span>
 			{open.title === "report" && (
 				<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-					<InputText
-						title={title}
-						originalText={"קוד מנהלה"}
-						ref={administrationCodeInputRef}
+					<AutocompleteInput
+						options={dataAdministrations?.map(
+							(administrations) => ({
+								label: administrations.name,
+								id: administrations.code,
+							})
+						)}
+						onChange={onAdministrationAtuoCompleteChange}
+						isLoading={isLoadingAdministrations}
+						label={"הנהלות"}
 					/>
+
 					<div className="flex justify-center items-center ml-5 w-5/6 sm:grid sm:justify-center">
 						<label className="text-base ml-2">מתאריך:</label>
 						<InputDates

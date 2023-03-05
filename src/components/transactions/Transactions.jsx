@@ -36,6 +36,7 @@ const Transactions = () => {
 		refetch,
 		isLoading: isLoadingTransactions,
 	} = useTransactions(employee?.data?.employeeCode);
+
 	console.log("🚀 transactions:", transactions);
 
 	const { mutate: addMutateTransaction } = useAddTransaction(
@@ -46,6 +47,7 @@ const Transactions = () => {
 
 	const { data: dataCoupons } = useCoupons();
 
+	const foundGuset = transactions?.find((t) => t.isGuest);
 	const guest = employee?.data?.canCreateGuestCoupon;
 
 	const isMealTitle = dataCoupons?.map(
@@ -126,7 +128,7 @@ const Transactions = () => {
 						? `קופנים פעילים - ${transactions?.length}`
 						: `לא קיימים קופונים`}
 				</span>
-				{guest && (
+				{foundGuset && (
 					<Switch
 						checked={checked}
 						onChange={handleChange}

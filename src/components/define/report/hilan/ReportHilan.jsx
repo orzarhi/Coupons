@@ -47,7 +47,7 @@ export const ReportHilan = () => {
 					<PDFDownloadLink
 						document={
 							<Pdf
-								title={" דוח הנהלת חשבונות"}
+								title={"דוח חילן"}
 								dates={`${year} - ${month}`}
 								data={data}
 							/>

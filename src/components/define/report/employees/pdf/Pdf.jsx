@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderColor: "#bfbfbf",
 		alignItems: "center",
-		height: 24,
+		height: "auto",
 	},
 	tableRowCell: {
 		width: "25%",
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 		textAlign: "right",
 		direction: "rtl",
 		fontFamily: "Rubik",
-		fontSize: 12,
+		fontSize: 10,
 	},
 });
 
@@ -90,12 +90,14 @@ export const Pdf = ({ title, data, dates }) => {
 					<Text style={styles.heading}>{title}</Text>
 					<Text style={styles.headingDates}>{dates}</Text>
 					<Text style={styles.subtitle}>{data.length}סך הכל: </Text>
+
 					<View style={styles.table}>
 						<Text style={styles.tableHeader}>ספק</Text>
 						<Text style={styles.tableHeader}>מימוש</Text>
 						{/* <Text style={styles.tableHeader}>שומש</Text> */}
 						{/* <Text style={styles.tableHeader}>תפוגה</Text> */}
 						<Text style={styles.tableHeader}>הנפקה</Text>
+						<Text style={styles.tableHeader}>אורח</Text>
 						<Text style={styles.tableHeader}>קופון</Text>
 						<Text style={styles.tableHeader}>קוד עובד</Text>
 					</View>
@@ -110,7 +112,9 @@ export const Pdf = ({ title, data, dates }) => {
 									2000 &&
 									new Date(
 										report.usedDate
-									).toLocaleDateString()}
+									).toLocaleDateString() +
+										"\n" +
+										report.usedDate.slice(11, 16)}
 							</Text>
 
 							{/* <Text style={styles.tableRowCell}>
@@ -126,12 +130,19 @@ export const Pdf = ({ title, data, dates }) => {
 							<Text style={styles.tableRowCell}>
 								{new Date(
 									report.issuedDate
-								).toLocaleDateString()}
+								).toLocaleDateString() +
+									"\n" +
+									report.issuedDate.slice(11, 16)}
+							</Text>
+
+							<Text style={styles.tableRowCell}>
+								{convertBoolean(report.isGuest)}
 							</Text>
 
 							<Text style={styles.tableRowCell}>
 								{report.couponName}
 							</Text>
+
 							<Text style={styles.tableRowCell}>
 								{report.employeeCode}
 							</Text>

@@ -78,7 +78,7 @@ export const ReportEmployees = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-3/6 block m-auto p-5 xl:w-3/4 xl:relative xl:bottom-2 sm:w-10/12">
+			<div className="relative bottom-2 w-3/5 block m-auto p-5 xl:w-3/4 xl:relative xl:bottom-2 sm:w-10/12">
 				{data && (
 					<DataGrid
 						rows={data}

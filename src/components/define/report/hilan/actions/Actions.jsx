@@ -14,7 +14,7 @@ const Actions = ({
 			{open.popUp && (
 				<PopUp setOpen={setOpen} open={open}>
 					<Form
-						title={"דוח הנהלת חשבונות"}
+						title={"דוח חילן"}
 						setOpen={setOpen}
 						open={open}
 						fetchReport={fetchReport}

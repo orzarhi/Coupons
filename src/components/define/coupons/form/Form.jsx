@@ -40,9 +40,11 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		experationHoursInputRef.current.value = "";
 	};
 
-	const { data: dataSuppliers } = useSuppliers();
+	const { data: dataSuppliers, isLoading: isLoadingSuppliers } =
+		useSuppliers();
 
-	const { data: dataCompanies } = useCompanies();
+	const { data: dataCompanies, isLoading: isLoadingCompanies } =
+		useCompanies();
 
 	const { mutate: addMutateCoupon } = useAddCoupon(
 		setOpen,
@@ -50,7 +52,8 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		clearInputs,
 		refetch
 	);
-	const { data: dataCouponsTypes } = useCouponsTypes();
+	const { data: dataCouponsTypes, isLoading: isLoadingCouponsTypes } =
+		useCouponsTypes();
 
 	const { mutate: updateMutateCoupon } = useUpdateCoupon(
 		setOpen,
@@ -166,6 +169,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							id: couponsType.couponTypeCode,
 						}))}
 						onChange={onCouponsTypes}
+						isLoading={isLoadingCouponsTypes}
 						label={"קופונים"}
 					/>
 				</div>
@@ -178,6 +182,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							id: companie.companyCode,
 						}))}
 						onChange={onCompanyAtuoCompleteChange}
+						isLoading={isLoadingCompanies}
 						label={"חברות"}
 					/>
 				)}
@@ -251,6 +256,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 											})
 										)}
 										onChange={onSupplierAtuoCompleteChange}
+										isLoading={isLoadingSuppliers}
 										label={"ספקים"}
 									/>
 								)}

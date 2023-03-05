@@ -8,9 +8,9 @@ import {
 	Text,
 	View,
 } from "@react-pdf/renderer";
-import { useEffect, useState } from "react";
 import RubikRegular from "~/assets/fonts/Rubik-Regular.ttf";
 import logo from "~/assets/images/zemach-logo.jpg";
+import { convertBoolean } from "~/utils/convertBoolean";
 
 const styles = StyleSheet.create({
 	page: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderColor: "#bfbfbf",
 		alignItems: "center",
-		height: 24,
+		height: "auto",
 	},
 	tableRowCell: {
 		width: "25%",
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 		textAlign: "right",
 		direction: "rtl",
 		fontFamily: "Rubik",
-		fontSize: 12,
+		fontSize: 10,
 	},
 });
 
@@ -82,16 +82,6 @@ export const Pdf = ({ title, data, dates }) => {
 		src: RubikRegular,
 	});
 
-	const [countIsUsed, setCountIsUsed] = useState(0);
-
-	useEffect(() => {
-		data?.map((coupon) => {
-			if (coupon.isUsed) {
-				setCountIsUsed((prev) => prev + 1);
-			}
-		});
-	}, []);
-
 	return (
 		<Document>
 			<Page size="A4" style={styles.page}>
@@ -100,35 +90,59 @@ export const Pdf = ({ title, data, dates }) => {
 					<Text style={styles.heading}>{title}</Text>
 					<Text style={styles.headingDates}>{dates}</Text>
 					<Text style={styles.subtitle}>{data.length}סך הכל: </Text>
-					<Text style={styles.subtitle}>
-						{countIsUsed} סך הכל מימושים:
-					</Text>
+
 					<View style={styles.table}>
+						<Text style={styles.tableHeader}>ספק</Text>
 						<Text style={styles.tableHeader}>מימוש</Text>
-						<Text style={styles.tableHeader}>שם ספק</Text>
+						{/* <Text style={styles.tableHeader}>שומש</Text> */}
+						{/* <Text style={styles.tableHeader}>תפוגה</Text> */}
+						<Text style={styles.tableHeader}>הנפקה</Text>
+						<Text style={styles.tableHeader}>אורח</Text>
 						<Text style={styles.tableHeader}>קופון</Text>
 						<Text style={styles.tableHeader}>קוד עובד</Text>
 					</View>
 					{data?.map((report) => (
 						<View key={report.id} style={styles.tableRow}>
 							<Text style={styles.tableRowCell}>
+								{report.supplierName}
+							</Text>
+
+							<Text style={styles.tableRowCell}>
 								{new Date(report.usedDate).getFullYear() >
 									2000 &&
-									`${new Date(
+									new Date(
 										report.usedDate
-									).toLocaleDateString()}-${
-										report.usedDate !== null &&
-										report.usedDate?.slice(11, 19)
-									}`}
+									).toLocaleDateString() +
+										"\n" +
+										report.usedDate.slice(11, 16)}
 							</Text>
+
+							{/* <Text style={styles.tableRowCell}>
+								{convertBoolean(report.isUsed)}
+							</Text> */}
+
+							{/* <Text style={styles.tableRowCell}>
+								{new Date(
+									report.expirationDate
+								).toLocaleDateString()}
+							</Text> */}
+
 							<Text style={styles.tableRowCell}>
-								{report.supplierName
-									? report.supplierName
-									: "לא מומש"}
+								{new Date(
+									report.issuedDate
+								).toLocaleDateString() +
+									"\n" +
+									report.issuedDate.slice(11, 16)}
 							</Text>
+
+							<Text style={styles.tableRowCell}>
+								{convertBoolean(report.isGuest)}
+							</Text>
+
 							<Text style={styles.tableRowCell}>
 								{report.couponName}
 							</Text>
+
 							<Text style={styles.tableRowCell}>
 								{report.employeeCode}
 							</Text>

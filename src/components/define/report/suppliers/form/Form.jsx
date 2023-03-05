@@ -22,7 +22,8 @@ export const Form = ({
 
 	const monthAndYearInputRef = useRef();
 
-	const { data: dataSuppliers } = useSuppliers();
+	const { data: dataSuppliers, isLoading: isLoadingSuppliers } =
+		useSuppliers();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -73,6 +74,7 @@ export const Form = ({
 							id: supplier.supplierCode,
 						}))}
 						onChange={onSupplierAtuoCompleteChange}
+						isLoading={isLoadingSuppliers}
 						label={"ספקים"}
 					/>
 					<InputMonth

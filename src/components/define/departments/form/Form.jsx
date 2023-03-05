@@ -100,20 +100,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					/>
 				)}
 				{open.title === "assign" && (
-					// <SelectInput
-					// 	action={open.title}
-					// 	type={"חברות"}
-					// 	selectedValue={selectedValue}
-					// 	setSelectedValue={setSelectedValue}
-					// 	data={dataCompanies?.map(
-					// 		({ companyCode, companyName }) => ({
-					// 			key: companyCode,
-					// 			code: companyCode,
-					// 			name: companyName,
-					// 		})
-					// 	)}
-					// 	isLoading={isLoadingCompanies}
-					// />
 					<AutocompleteInput
 						options={dataCompanies?.map((companie) => ({
 							label: companie.companyName,

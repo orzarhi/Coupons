@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { forwardRef } from "react";
 
 export const InputText = forwardRef((props, ref) => {
@@ -14,3 +14,26 @@ export const InputText = forwardRef((props, ref) => {
 		</>
 	);
 });
+
+export const AutocompleteInput = ({
+	options,
+	onChange,
+	label,
+	isLoading = false,
+}) => {
+	return (
+		<Autocomplete
+			disablePortal
+			id="combo-box-demo"
+			options={options}
+			getOptionLabel={(option) =>
+				option && `${option?.label} - ${option?.id}`
+			}
+			onChange={(_, value) => onChange(value)}
+			isOptionEqualToValue={(option, value) => option?.id === value?.id}
+			sx={{ width: 230 }}
+			disabled={isLoading}
+			renderInput={(params) => <TextField {...params} label={label} />}
+		/>
+	);
+};

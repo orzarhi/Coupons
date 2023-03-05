@@ -1,10 +1,11 @@
 import { IconButton } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import { InputDates } from "~/components/define/_logic/DatesInput";
+import { useEmployees } from "~/hooks/useEmployees";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
-import { InputText } from "./InputText";
+import { AutocompleteInput } from "./InputText";
 
 export const Form = ({
 	title,
@@ -15,25 +16,32 @@ export const Form = ({
 	setDates,
 	dates,
 }) => {
-	const employeeCodeInputRef = useRef();
+	const [selectedEmployee, setSelectedEmployee] = useState("");
+
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
+
+	const { data: dataEmployees, isLoading: isLoadingEmployees } =
+		useEmployees();
+
+	const onEmployeeAtuoCompleteChange = (value) => {
+		setSelectedEmployee(value);
+	};
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		const employeeCode = employeeCodeInputRef?.current?.value;
 		const fromDate = fromDateInputRef?.current?.value;
 		const toDate = toDateInputRef?.current?.value;
 
 		setDates({ ...dates, fromDate, toDate });
 		try {
 			if (open.title === "report") {
-				if (!fromDate || !toDate || !employeeCode) {
+				if (!fromDate || !toDate || !selectedEmployee) {
 					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const reportEmployee = {
-						employeeCode,
+						employeeCode: selectedEmployee.id,
 						fromDate,
 						toDate,
 					};
@@ -55,10 +63,14 @@ export const Form = ({
 			</span>
 			{open.title === "report" && (
 				<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-					<InputText
-						title={title}
-						originalText={"קוד עובד"}
-						ref={employeeCodeInputRef}
+					<AutocompleteInput
+						options={dataEmployees?.map((employees) => ({
+							label: employees.employeeName,
+							id: employees.employeeCode,
+						}))}
+						onChange={onEmployeeAtuoCompleteChange}
+						isLoading={isLoadingEmployees}
+						label={"עובדים"}
 					/>
 					<div className="flex justify-center items-center ml-5 w-5/6 sm:grid sm:justify-center">
 						<label className="text-base ml-2">מתאריך:</label>

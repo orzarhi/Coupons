@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderColor: "#bfbfbf",
 		alignItems: "center",
-		height: 24,
+		height: "auto",
 	},
 	tableRowCell: {
 		width: "25%",
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 		textAlign: "right",
 		direction: "rtl",
 		fontFamily: "Rubik",
-		fontSize: 12,
+		fontSize: 10,
 	},
 });
 
@@ -81,6 +81,13 @@ export const Pdf = ({ title, data, dates }) => {
 		src: RubikRegular,
 	});
 
+	const totalPriceSupplier = data
+		?.map((d) => d.supplierPrice)
+		.reduce((partialSum, a) => partialSum + a, 0);
+
+	const totalPriceEmployee = data
+		?.map((d) => d.debitAmount)
+		.reduce((partialSum, a) => partialSum + a, 0);
 	return (
 		<Document>
 			<Page size="A4" style={styles.page}>
@@ -88,16 +95,24 @@ export const Pdf = ({ title, data, dates }) => {
 					<Image style={styles.image} src={logo} />
 					<Text style={styles.heading}>{title}</Text>
 					<Text style={styles.headingDates}>{dates}</Text>
-
 					<Text style={styles.subtitle}>{data.length}סך הכל: </Text>
 					<View style={styles.table}>
+						<Text style={styles.tableHeader}>מחיר עובד</Text>
+						<Text style={styles.tableHeader}>מחיר ספק</Text>
 						<Text style={styles.tableHeader}>ספק</Text>
-						<Text style={styles.tableHeader}>תאריך מימוש</Text>
-						<Text style={styles.tableHeader}>חברה</Text>
-						<Text style={styles.tableHeader}>עובד</Text>
+						<Text style={styles.tableHeader}>מימוש</Text>
+						<Text style={styles.tableHeader}>שם עובד</Text>
+						<Text style={styles.tableHeader}>קוד עובד</Text>
 					</View>
 					{data?.map((report) => (
 						<View key={report.usedDate} style={styles.tableRow}>
+							<Text style={styles.tableRowCell}>
+								₪{report.debitAmount}
+							</Text>
+							<Text style={styles.tableRowCell}>
+								₪{report.supplierPrice}
+							</Text>
+
 							<Text style={styles.tableRowCell}>
 								{report.supplierName}
 							</Text>
@@ -107,17 +122,27 @@ export const Pdf = ({ title, data, dates }) => {
 									2000 &&
 									new Date(
 										report.usedDate
-									).toLocaleDateString()}
+									).toLocaleDateString() +
+										"\n" +
+										report.usedDate.slice(11, 16)}
 							</Text>
-							<Text style={styles.tableRowCell}>
-								{report.companyName}
-							</Text>
+
 							<Text style={styles.tableRowCell}>
 								{report.employeeName}
+							</Text>
+
+							<Text style={styles.tableRowCell}>
+								{report.employeeCode}
 							</Text>
 						</View>
 					))}
 					<Rect style={{ marginTop: 20 }} />
+					<Text style={styles.subtitle}>
+						₪{totalPriceSupplier} סכום ספקים:
+					</Text>
+					<Text style={styles.subtitle}>
+						₪{totalPriceEmployee} סכום עובדים:
+					</Text>
 				</View>
 			</Page>
 		</Document>

@@ -25,10 +25,12 @@ export const ReportCompanys = () => {
 
 	const [data, fetchReport] = useCompanyReport();
 
+	// const CompanyName = ;
+
 	return (
 		<>
 			<Details
-				title="דוחות חברות"
+				title="דוחות מימוש קופונים - חברות"
 				identification="report"
 				textBtn="בחר/י חברה להצגת הדוח"
 				setOpen={setOpen}
@@ -36,6 +38,7 @@ export const ReportCompanys = () => {
 				className="!bg-blue-700 !text-white hover:!bg-blue-600 !w-60 !text-sm"
 				showTextField={false}
 			/>
+
 			{data && (
 				<Xls
 					data={data}
@@ -78,6 +81,13 @@ export const ReportCompanys = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
+			{data && (
+				<div className="flex justify-center mt-3">
+					<span className=" bg-yellow-200 text-lg font-bold">
+						דוח מימוש קופונים לחברת - {data[0]?.companyName}
+					</span>
+				</div>
+			)}
 			<div className="relative bottom-2 w-2/4 block m-auto p-5 xl:w-7/12 xl:relative xl:bottom-2 sm:w-10/12">
 				{data && (
 					<DataGrid
@@ -88,7 +98,7 @@ export const ReportCompanys = () => {
 							height: 550,
 							direction: "ltr",
 						}}
-						getRowId={(rows) => rows.employeeCode}
+						getRowId={(rows) => rows.usedDate}
 						localeText={
 							heIL.components.MuiDataGrid.defaultProps.localeText
 						}

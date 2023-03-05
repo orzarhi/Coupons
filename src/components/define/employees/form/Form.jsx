@@ -33,11 +33,14 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [selectedValueDepartment, setSelectedValueDepartment] = useState("");
 	const [selectedAdministration, setSelectedAdministration] = useState("");
 
-	const { data: dataDepartments } = useDepartments();
+	const { data: dataDepartments, isLoading: isLoadingDepartments } =
+		useDepartments();
 
-	const { data: dataCompanies } = useCompanies();
+	const { data: dataCompanies, isLoading: isLoadingCompanies } =
+		useCompanies();
 
-	const { data: dataAdministrations } = useAdministrations();
+	const { data: dataAdministrations, isLoading: isLoadingAdministrations } =
+		useAdministrations();
 
 	const usernameInputRef = useRef();
 	const passwordInputRef = useRef();
@@ -187,6 +190,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 							id: administration.code,
 						}))}
 						onChange={onAdministrationsAtuoCompleteChange}
+						isLoading={isLoadingAdministrations}
 						label={"מנהלה"}
 					/>
 				)}
@@ -236,8 +240,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										id: companie.companyCode,
 									}))}
 									onChange={onCompanyAtuoCompleteChange}
-									// defaultLabel={info?.companyName}
-									// defaultCode={info?.companyCode}
+									isLoading={isLoadingCompanies}
 									label={"חברות"}
 								/>
 
@@ -252,8 +255,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										onChange={
 											onDepartmentAtuoCompleteChange
 										}
-										// defaultLabel={info?.departmentName}
-										// defaultCode={info?.departmentCode}
 										label={"מחלקות"}
 									/>
 								)}
@@ -268,8 +269,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										id: companie.companyCode,
 									}))}
 									onChange={onCompanyAtuoCompleteChange}
-									// defaultLabel={info?.companyName}
-									// defaultCode={info?.companyCode}
+									isLoading={isLoadingCompanies}
 									label={info?.companyName}
 								/>
 								<AutocompleteInput
@@ -280,8 +280,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 										})
 									)}
 									onChange={onDepartmentAtuoCompleteChange}
-									// defaultLabel={info?.departmentName}
-									// defaultCode={info?.departmentCode}
+									isLoading={isLoadingDepartments}
 									label={info?.departmentName}
 								/>
 							</>

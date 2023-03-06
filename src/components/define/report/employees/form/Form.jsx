@@ -47,7 +47,12 @@ export const Form = ({
 					};
 					fetchReport(reportEmployee);
 					setShowReport(true);
-					setOpen({ ...open, popUp: false, action: false });
+					setOpen({
+						...open,
+						popUp: false,
+						action: false,
+						employeeName: selectedEmployee.label,
+					});
 				}
 			}
 		} catch (err) {

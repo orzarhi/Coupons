@@ -91,6 +91,7 @@ export const Pdf = ({ title, dates, data }) => {
 				<View>
 					<Image style={styles.image} src={logo} />
 					<Text style={styles.heading}>{title}</Text>
+					<Text style={styles.headingDates}>טווח תאריכים</Text>
 					<Text style={styles.headingDates}>{dates}</Text>
 					<Text style={styles.subtitle}>
 						{data.length} סך הכל מימושים:

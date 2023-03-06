@@ -1,5 +1,5 @@
 import { Button, Switch } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { actionRow } from "~/components/define/_logic/actionRow";
 import { useCoupons } from "~/hooks/useCoupons";
 import {
@@ -36,8 +36,6 @@ const Transactions = () => {
 		refetch,
 		isLoading: isLoadingTransactions,
 	} = useTransactions(employee?.data?.employeeCode);
-
-	console.log("🚀 transactions:", transactions);
 
 	const { mutate: addMutateTransaction } = useAddTransaction(
 		setOpen,

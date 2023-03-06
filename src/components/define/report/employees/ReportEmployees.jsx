@@ -1,12 +1,17 @@
-import { DataGrid, heIL } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useState } from "react";
 import Details from "~/components/define/_logic/Details";
 import { useEmployeeReport } from "~/hooks/useReport";
-import { useAuthStore } from "~/store/auth";
 import Actions from "./actions/Actions";
-import { columns } from "./columns";
 import { Pdf } from "./pdf/Pdf";
+import Rows from "./Rows";
 import { Xls } from "./xls/Xls";
 
 export const ReportEmployees = () => {
@@ -21,6 +26,7 @@ export const ReportEmployees = () => {
 		popUp: false,
 		modalDialog: false,
 		title: "",
+		employeeName: "",
 	});
 
 	const [data, fetchReport] = useEmployeeReport();
@@ -48,7 +54,7 @@ export const ReportEmployees = () => {
 					<PDFDownloadLink
 						document={
 							<Pdf
-								title={` ${data[0]?.employeeCode} - דוח קופונים לעובד `}
+								title={`דוח קופונים לעובד - ${open?.employeeName}`}
 								dates={`${new Date(
 									dates.toDate
 								).toLocaleDateString()} - ${new Date(
@@ -78,21 +84,35 @@ export const ReportEmployees = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-3/5 block m-auto p-5 xl:w-3/4 xl:relative xl:bottom-2 lg:w-11/12 sm:w-10/12">
+			<div className="relative top-2 w-9/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
-					<DataGrid
-						rows={data}
-						columns={columns}
-						pageSize={25}
-						sx={{
-							height: 550,
-							direction: "ltr",
-						}}
-						getRowId={(rows) => rows.id}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">
+										קוד עובד
+									</TableCell>
+									<TableCell align="right">קופון</TableCell>
+									<TableCell align="right">
+										קופון אורח
+									</TableCell>
+
+									<TableCell align="right">הנפקה</TableCell>
+									<TableCell align="right">מומש</TableCell>
+									<TableCell align="right">
+										תאריך מימוש
+									</TableCell>
+									<TableCell align="right">עסק</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{data.map((row, i) => (
+									<Rows key={i} row={row} />
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

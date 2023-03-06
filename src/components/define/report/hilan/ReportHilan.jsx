@@ -1,14 +1,19 @@
-import React, { useState } from "react";
-import { useHilanMonthlyReport } from "~/hooks/useReport";
-import { DataGrid, heIL } from "@mui/x-data-grid";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import Details from "../../_logic/Details";
-import { Pdf } from "./pdf/Pdf";
-import { Xls } from "./xls/Xls";
 import { Button } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { useState } from "react";
+import { useHilanMonthlyReport } from "~/hooks/useReport";
+import Details from "../../_logic/Details";
 import Actions from "./actions/Actions";
-import { columns } from "./columns";
-import { useAuthStore } from "~/store/auth";
+import { Pdf } from "./pdf/Pdf";
+import Rows from "./Rows";
+import { Xls } from "./xls/Xls";
 
 export const ReportHilan = () => {
 	const [showReport, setShowReport] = useState(false);
@@ -73,21 +78,31 @@ export const ReportHilan = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2 lg:w-8/12 sm:w-10/12">
+			<div className="relative top-2 w-7/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
-					<DataGrid
-						rows={data}
-						columns={columns}
-						pageSize={25}
-						sx={{
-							height: 550,
-							direction: "ltr",
-						}}
-						getRowId={(rows) => rows.employeeCode}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">
+										קוד עובד
+									</TableCell>
+									<TableCell align="right">שם עובד</TableCell>
+									<TableCell align="right">
+										סהכ ארוחות
+									</TableCell>
+									<TableCell align="right">
+										סהכ מחיר
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{data.map((row, i) => (
+									<Rows key={i} row={row} />
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

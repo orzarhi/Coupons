@@ -19,6 +19,7 @@ export const menus = [
 		title: "משתמשים",
 		link: "/registration-define",
 		icon: AiOutlineUser,
+		margin: true,
 	},
 	{
 		name: "הגדרת ספק",
@@ -75,41 +76,48 @@ export const menus = [
 		icon: GrUserSettings,
 	},
 	{
-		name: "ספקים",
+		name: "דוחות",
+		title: "דוחות",
+		// link: "/report-suppliers-define",
+		icon: TbReportSearch,
+		onClick: "openReport",
+	},
+];
+
+export const reports = [
+	{
+		name: "- ספקים",
 		title: "דוחות-ספקים",
 		link: "/report-suppliers-define",
-		icon: TbReportSearch,
 	},
 	{
-		name: "עובדים",
+		name: "- עובדים",
 		title: "דוחות-עובדים",
 		link: "/report-employees-define",
-		icon: TbReportSearch,
 	},
 	{
-		name: "חברות",
+		name: "- חברות",
 		title: "דוחות-חברות",
 		link: "/report-companys-define",
-		icon: TbReportSearch,
 	},
 	{
-		name: "הנהלת חשבונות",
+		name: "- הנהלת חשבונות",
 		title: "הנהלת-חשבונות",
 		link: "/report-bookkeeping-define",
-		icon: TbReportSearch,
 	},
 	{
-		name: "חילן",
+		name: "- חילן",
 		title: "דוחות-חילן",
 		link: "/report-hilan-define",
-		icon: TbReportSearch,
 	},
 	{
-		name: "מנהלה",
+		name: "- מנהלה",
 		title: "דוחות-מנהלה",
 		link: "/report-administration-define",
-		icon: TbReportSearch,
 	},
+];
+
+export const settings = [
 	{
 		name: "הגדרות",
 		title: "הגדרות",

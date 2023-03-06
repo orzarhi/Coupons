@@ -88,14 +88,13 @@ export const Pdf = ({ title, data, dates }) => {
 				<View>
 					<Image style={styles.image} src={logo} />
 					<Text style={styles.heading}>{title}</Text>
+					<Text style={styles.headingDates}>טווח תאריכים</Text>
 					<Text style={styles.headingDates}>{dates}</Text>
 					<Text style={styles.subtitle}>{data.length}סך הכל: </Text>
 
 					<View style={styles.table}>
 						<Text style={styles.tableHeader}>ספק</Text>
 						<Text style={styles.tableHeader}>מימוש</Text>
-						{/* <Text style={styles.tableHeader}>שומש</Text> */}
-						{/* <Text style={styles.tableHeader}>תפוגה</Text> */}
 						<Text style={styles.tableHeader}>הנפקה</Text>
 						<Text style={styles.tableHeader}>אורח</Text>
 						<Text style={styles.tableHeader}>קופון</Text>

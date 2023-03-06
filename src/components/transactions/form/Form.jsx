@@ -9,7 +9,6 @@ import { useCoupons } from "~/hooks/useCoupons";
 import { useEmployees } from "~/hooks/useEmployees";
 import { useEmployeeReport } from "~/hooks/useReport";
 import { useAddForGuest, useAddTransaction } from "~/hooks/useTransactions";
-import { useAuthStore } from "~/store/auth";
 import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 import { Pdf } from "../report/Pdf";
@@ -192,7 +191,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 					<PDFDownloadLink
 						document={
 							<Pdf
-								title={` ${data[0]?.employeeCode} - דוח קופונים לעובד `}
+								title={` דוח קופונים לעובד - ${dataEmployee?.employeeName}`}
 								data={data}
 								dates={`${new Date(
 									dates.toDate

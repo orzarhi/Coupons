@@ -13,7 +13,7 @@ class cookiesService {
 	set(token) {
 		cookies.set(this.name, token, {
 			path: "/",
-			expires: new Date(new Date().getTime() + 60 * 60 * 24000), // 24 Hours
+			expires: new Date(new Date().getTime() + 60 * 60 * 30000), // 24 Hours
 		});
 	}
 

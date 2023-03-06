@@ -1,10 +1,3 @@
-import { DataGrid, heIL } from "@mui/x-data-grid";
-import { useState } from "react";
-import Spinner from "~/components/ui/spinner/Spinner";
-import { useUsersTypes } from "~/hooks/useUsersTypes";
-import Details from "../_logic/Details";
-import Actions from "./actions/Actions";
-import { columns } from "./columns";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +5,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useState } from "react";
+import Spinner from "~/components/ui/spinner/Spinner";
+import { useUsersTypes } from "~/hooks/useUsersTypes";
+import Details from "../_logic/Details";
+import Actions from "./actions/Actions";
 import Rows from "./Rows";
 
 const UserTypes = () => {

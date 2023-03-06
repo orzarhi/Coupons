@@ -1,14 +1,18 @@
-import React from "react";
-import { useState } from "react";
-import { DataGrid, heIL } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import Details from "../../_logic/Details";
-import { columns } from "./columns";
+import { useState } from "react";
 import { useSupplierReport } from "~/hooks/useReport";
+import Details from "../../_logic/Details";
 import Actions from "./actions/Actions";
 import { Pdf } from "./pdf/Pdf";
+import Rows from "./Rows";
 import { Xls } from "./xls/Xls";
-import { useAuthStore } from "~/store/auth";
 
 export const ReportSuppliers = () => {
 	const [showReport, setShowReport] = useState(false);
@@ -72,21 +76,30 @@ export const ReportSuppliers = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
-			<div className="relative bottom-2 w-2/6 block m-auto p-5 xl:w-2/5 xl:relative xl:bottom-2 lg:w-3/5 sm:w-10/12">
+			<div className="relative top-2 w-7/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
-					<DataGrid
-						rows={data}
-						columns={columns}
-						pageSize={25}
-						sx={{
-							height: 550,
-							direction: "ltr",
-						}}
-						getRowId={(rows) => rows.usedDate}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">
+										שם משתמש
+									</TableCell>
+									<TableCell align="right">
+										מחיר ספק
+									</TableCell>
+									<TableCell align="right">
+										תאריך מימוש
+									</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{data.map((row) => (
+									<Rows key={row.usedDate} row={row} />
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

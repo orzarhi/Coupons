@@ -45,7 +45,7 @@ export const Xls = ({ data, title, content }) => {
 		XLSX.writeFile(wb, `${title}.xlsx`);
 	};
 	return (
-		<div className="mr-5 flex justify-center">
+		<div className="mt-3 flex justify-center">
 			<Button
 				variant="contained"
 				color="inherit"

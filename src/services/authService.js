@@ -9,5 +9,5 @@ export const login = (token) => {
 export const logout = () => {
 	tokenCookies.remove();
 	nameCookies.remove();
-	window.location.href = "/login";
+	window.location.href = "/";
 };

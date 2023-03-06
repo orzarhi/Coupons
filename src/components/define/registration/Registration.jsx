@@ -83,7 +83,6 @@ const Registration = () => {
 				label="משתמש"
 				showBtn={false}
 			/>
-
 			<div className="flex justify-center">
 				<IconButton onClick={() => setShowFilters(!showFilters)}>
 					<FaFilter />

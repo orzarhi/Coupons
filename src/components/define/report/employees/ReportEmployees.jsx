@@ -1,3 +1,4 @@
+import { Button, Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,21 +7,34 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import { useReducer } from "react";
+import { useMemo } from "react";
 import { useState } from "react";
+import { FaFilter } from "react-icons/fa";
 import Details from "~/components/define/_logic/Details";
+import { FilterFields } from "~/constants/reports/employees/FilterFields";
 import { useEmployeeReport } from "~/hooks/useReport";
 import Actions from "./actions/Actions";
 import { Pdf } from "./pdf/Pdf";
 import Rows from "./Rows";
 import { Xls } from "./xls/Xls";
 
+const initialFiltersReducer = FilterFields.reduce(
+	(acc, curr) => ({ ...acc, [curr.id]: false }),
+	{}
+);
+const filterReducer = (state, action) => {
+	return { ...state, [action.id]: !state[action.id] };
+};
+
 export const ReportEmployees = () => {
+	const [showFilters, setShowFilters] = useState(false);
 	const [showReport, setShowReport] = useState(false);
+	const [inputSearch, setInputSearch] = useState("");
 	const [dates, setDates] = useState({
 		fromDate: "",
 		toDate: "",
 	});
-
 	const [open, setOpen] = useState({
 		action: false,
 		popUp: false,
@@ -29,7 +43,41 @@ export const ReportEmployees = () => {
 		employeeName: "",
 	});
 
+	const [filters, dispatch] = useReducer(
+		filterReducer,
+		initialFiltersReducer
+	);
+
 	const [data, fetchReport] = useEmployeeReport();
+
+	const dataResult = useMemo(() => {
+		let results = data?.filter((user) =>
+			user.couponName.toLowerCase().includes(inputSearch.toLowerCase())
+		);
+		results = FilterFields.filter((f) => filters[f.id]).reduce(
+			(acc, curr) => curr.apply(acc),
+			results
+		);
+
+		return results;
+	}, [data, filters]);
+
+	const Filters = useMemo(
+		() =>
+			FilterFields.map((f) => (
+				<FormControlLabel
+					key={f.id}
+					control={
+						<Checkbox defaultValue={false} value={filters[f.id]} />
+					}
+					label={f.name}
+					onChange={() => {
+						dispatch(f);
+					}}
+				/>
+			)),
+		[filters]
+	);
 
 	return (
 		<>
@@ -42,9 +90,10 @@ export const ReportEmployees = () => {
 				className="!bg-blue-700 !text-white hover:!bg-blue-600 !w-60 !text-sm"
 				showTextField={false}
 			/>
+
 			{data && (
 				<Xls
-					data={data}
+					data={dataResult}
 					title={"EmployeesReport"}
 					content={"ייצא לקובץ לאקסל"}
 				/>
@@ -60,7 +109,7 @@ export const ReportEmployees = () => {
 								).toLocaleDateString()} - ${new Date(
 									dates.fromDate
 								).toLocaleDateString()}`}
-								data={data}
+								data={dataResult}
 							/>
 						}
 						filename="CouponReport.pdf"
@@ -68,12 +117,17 @@ export const ReportEmployees = () => {
 						{({ loading }) =>
 							loading ? (
 								<div className="flex justify-center text-xl capitalize mt-6">
-									<button>טוען...</button>
+									<Button>טוען...</Button>
 								</div>
 							) : (
 								<>
 									<div className="flex justify-center items-center text-xl mt-6">
-										<button>הורדת המסמך</button>
+										<Button
+											variant="contained"
+											color="inherit"
+										>
+											הורדת המסמך כ pdf
+										</Button>
 									</div>
 								</>
 							)
@@ -84,9 +138,19 @@ export const ReportEmployees = () => {
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}
+			{data && (
+				<div className="flex justify-center">
+					<IconButton onClick={() => setShowFilters(!showFilters)}>
+						<FaFilter />
+					</IconButton>
+				</div>
+			)}
+			{showFilters && (
+				<div className="flex justify-center mt-4">{Filters}</div>
+			)}
 			<div className="relative top-2 w-9/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
-				{data && (
-					<TableContainer component={Paper} sx={{ height: 550 }}>
+				{dataResult && (
+					<TableContainer component={Paper} sx={{ height: 500 }}>
 						<Table aria-label="collapsible table">
 							<TableHead>
 								<TableRow>
@@ -107,7 +171,7 @@ export const ReportEmployees = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{data.map((row, i) => (
+								{dataResult.map((row, i) => (
 									<Rows key={i} row={row} />
 								))}
 							</TableBody>

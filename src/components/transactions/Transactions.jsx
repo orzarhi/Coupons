@@ -80,9 +80,13 @@ const Transactions = () => {
 			<span className="block text-center text-2xl mt-10">
 				ברוך הבא - {employee?.data?.employeeName} 👋
 			</span>
+			<span className="block text-center text-xl mt-2">
+				קופונים פעילים - {transactions?.length}
+			</span>
+
 			<div className="flex flex-col items-center mt-2">
 				<Button
-					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm !m-3"
+					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm "
 					onClick={() =>
 						addMutateTransaction({
 							employeeCode: employee?.data?.employeeCode,
@@ -108,7 +112,7 @@ const Transactions = () => {
 					</Button>
 				)}
 				<Button
-					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
+					className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm !mt-3"
 					onClick={() =>
 						setOpen({
 							...open,
@@ -120,12 +124,24 @@ const Transactions = () => {
 				>
 					הוספת קופון - שונות
 				</Button>
+				{!checked && (
+					<span className="text-xl mt-2">
+						{transactions?.length > 0
+							? `קופנים פעילים לאורח`
+							: `לא קיימים קופונים`}
+					</span>
+				)}
 
-				<span className="text-xl mt-2">
-					{transactions?.length > 0
-						? `קופנים פעילים - ${transactions?.length}`
-						: `לא קיימים קופונים`}
-				</span>
+				{guest && checked && (
+					<span className="text-xl mt-2">
+						{transactions?.length > 0
+							? `קופנים פעילים ל${
+									employee?.data?.employeeName.split(" ")[0]
+							  }`
+							: `לא קיימים קופונים`}
+					</span>
+				)}
+
 				{foundGuset && (
 					<Switch
 						checked={checked}
@@ -134,7 +150,6 @@ const Transactions = () => {
 					/>
 				)}
 			</div>
-
 			{checked ? (
 				<div className="grid grid-cols-4 gap-2 justify-between mt-10 lg:flex lg:flex-col">
 					{transactions
@@ -221,7 +236,6 @@ const Transactions = () => {
 						))}
 				</div>
 			)}
-
 			{open.action && (
 				<Actions
 					open={open}

@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -60,12 +61,17 @@ export const ReportSuppliers = () => {
 						{({ loading }) =>
 							loading ? (
 								<div className="flex justify-center text-xl capitalize mt-6">
-									<button>טוען...</button>
+									<Button>טוען...</Button>
 								</div>
 							) : (
 								<>
 									<div className="flex justify-center items-center text-xl mt-6">
-										<button>הורדת המסמך</button>
+										<Button
+											variant="contained"
+											color="inherit"
+										>
+											הורדת המסמך כ pdf
+										</Button>
 									</div>
 								</>
 							)

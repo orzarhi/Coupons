@@ -5,6 +5,14 @@ import { useUsersTypes } from "~/hooks/useUsersTypes";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
 import { columns } from "./columns";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Rows from "./Rows";
 
 const UserTypes = () => {
 	const [info, setInfo] = useState({});
@@ -16,7 +24,6 @@ const UserTypes = () => {
 	});
 
 	const { data, refetch, isLoading } = useUsersTypes();
-	const columnsResult = columns(setOpen, open, setInfo);
 
 	if (isLoading) return <Spinner />;
 
@@ -31,21 +38,33 @@ const UserTypes = () => {
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
 
-			<div className="relative bottom-2 w-2/5 block m-auto p-5 xl:w-1/2 xl:relative xl:bottom-2 lg:w-4/6">
+			<div className="relative top-2 w-8/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
-					<DataGrid
-						rows={data}
-						columns={columnsResult}
-						pageSize={25}
-						sx={{
-							height: 550,
-							direction: "ltr",
-						}}
-						getRowId={(rows) => rows.code}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">שם</TableCell>
+									<TableCell align="right">
+										תוקף התחברות בשעות
+									</TableCell>
+									<TableCell align="right">פעיל</TableCell>
+									<TableCell align="right">פעולות</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{data.map((row) => (
+									<Rows
+										key={row.code}
+										row={row}
+										setOpen={setOpen}
+										open={open}
+										setInfo={setInfo}
+									/>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

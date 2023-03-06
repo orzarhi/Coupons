@@ -39,7 +39,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					</IconButton>
 				</TableCell>
 
-				<TableCell align="right">{row.supplierCode}</TableCell>
 				<TableCell align="right">{row.supplierName}</TableCell>
 				<TableCell align="right">{row.username}</TableCell>
 				<TableCell align="right">{row.email}</TableCell>

@@ -1,11 +1,16 @@
-import { Button } from "@mui/material";
-import { DataGrid, heIL } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useCouponsTypes } from "~/hooks/useCouponsTypes";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
-import { columns } from "./columns";
+import Rows from "./Rows";
 
 const CouponsTypes = () => {
 	const [info, setInfo] = useState({});
@@ -15,9 +20,7 @@ const CouponsTypes = () => {
 		modalDialog: false,
 		title: "",
 	});
-
 	const { data, refetch, isLoading } = useCouponsTypes();
-	const columnsResult = columns(setOpen, open, setInfo);
 
 	if (isLoading) return <Spinner />;
 
@@ -33,21 +36,30 @@ const CouponsTypes = () => {
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
 
-			<div className="relative bottom-2 w-1/3 block m-auto p-5 xl:w-2/5 xl:relative xl:bottom-2 lg:w-3/6 md:w-4/6">
+			<div className="relative bottom-4 w-9/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
-					<DataGrid
-						rows={data}
-						columns={columnsResult}
-						pageSize={25}
-						sx={{
-							height: 550,
-							direction: "ltr",
-						}}
-						getRowId={(row) => row.couponTypeCode}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">סוג</TableCell>
+									<TableCell align="right">ארוחה</TableCell>
+									<TableCell align="right">פעולות</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{data.map((row) => (
+									<Rows
+										key={row.couponTypeCode}
+										row={row}
+										setOpen={setOpen}
+										open={open}
+										setInfo={setInfo}
+									/>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

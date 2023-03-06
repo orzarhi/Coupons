@@ -1,5 +1,11 @@
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
-import { DataGrid, heIL } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { useMemo, useReducer, useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import Spinner from "~/components/ui/spinner/Spinner";
@@ -7,7 +13,7 @@ import { FilterFields } from "~/constants/users/FilterFields";
 import { useUsers } from "~/hooks/useUsers";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
-import { columns } from "./columns";
+import Rows from "./Rows";
 
 const initialFiltersReducer = FilterFields.reduce(
 	(acc, curr) => ({ ...acc, [curr.id]: false }),
@@ -65,8 +71,6 @@ const Registration = () => {
 		[filters]
 	);
 
-	const columnsResult = columns(setOpen, open, setInfo);
-
 	if (isLoading) return <Spinner />;
 
 	return (
@@ -88,22 +92,37 @@ const Registration = () => {
 			{showFilters && (
 				<div className="flex justify-center mt-4">{Filters}</div>
 			)}
-			<div className="relative bottom-4 w-2/5 block m-auto p-5 xl:w-3/6 xl:relative xl:bottom-4 lg:w-4/6 md:w-5/6 sm:w-4/5">
-				{dataUsers && (
-					<DataGrid
-						rows={data}
-						columns={columnsResult}
-						pageSize={25}
-						rowsPerPageOptions={[25]}
-						sx={{
-							height: 600,
-							direction: "ltr",
-						}}
-						getRowId={(row) => row.username}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+			<div className="relative bottom-4 w-9/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
+				{data && (
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">
+										שם משתמש
+									</TableCell>
+									<TableCell align="right">סוג</TableCell>
+									<TableCell align="right">פעיל</TableCell>
+
+									<TableCell align="right">
+										מנהל מערכת
+									</TableCell>
+									<TableCell align="right">פעולות</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{data.map((row) => (
+									<Rows
+										key={row.username}
+										row={row}
+										setOpen={setOpen}
+										open={open}
+										setInfo={setInfo}
+									/>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

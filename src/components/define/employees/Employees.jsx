@@ -96,7 +96,7 @@ const Employees = () => {
 			{showFilters && (
 				<div className="flex justify-center mt-4">{Filters}</div>
 			)}
-			<div className="relative bottom-4 w-5/6 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-4 lg:w-11/12">
+			<div className="relative bottom-4 w-full block m-auto p-5 xl:w-full xl:relative xl:bottom-4 lg:w-11/12">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
 						<Table aria-label="collapsible table">
@@ -121,14 +121,38 @@ const Employees = () => {
 										מספר ארוחות ביום
 									</TableCell>
 									<TableCell align="right">
-										רשאי לקופון אורח
+										{
+											FilterFields.find(
+												(f) =>
+													f.id ===
+													"filterCanCreateGuestCoupon"
+											)?.name
+										}
 									</TableCell>
-									<TableCell align="right">פעיל</TableCell>
 									<TableCell align="right">
-										זכאי למימוש בערב
+										{
+											FilterFields.find(
+												(f) => f.id === "filterActive"
+											)?.name
+										}
 									</TableCell>
 									<TableCell align="right">
-										מנהל מנהלה
+										{
+											FilterFields.find(
+												(f) =>
+													f.id ===
+													"filterCanUseInFreeShift"
+											)?.name
+										}
+									</TableCell>
+									<TableCell align="right">
+										{
+											FilterFields.find(
+												(f) =>
+													f.id ===
+													"filterAdministration"
+											)?.name
+										}
 									</TableCell>
 									<TableCell align="right">פעולות</TableCell>
 								</TableRow>

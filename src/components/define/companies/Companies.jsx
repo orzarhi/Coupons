@@ -71,14 +71,13 @@ const Companies = () => {
 				)}
 			</div>
 
-			<div className="relative bottom-4 w-4/5 block m-auto p-5 xl:w-9/12 xl:relative xl:bottom-4">
+			<div className="relative bottom-4 w-11/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
 						<Table aria-label="collapsible table">
 							<TableHead>
 								<TableRow>
 									<TableCell />
-									<TableCell align="right">קוד</TableCell>
 									<TableCell align="right">שם</TableCell>
 									<TableCell align="right">מייל</TableCell>
 									<TableCell align="right">

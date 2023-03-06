@@ -39,7 +39,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 					</IconButton>
 				</TableCell>
 
-				<TableCell align="right">{row.code}</TableCell>
 				<TableCell align="right">{row.name}</TableCell>
 				<TableCell align="right">
 					{convertBoolean(row.isActive)}

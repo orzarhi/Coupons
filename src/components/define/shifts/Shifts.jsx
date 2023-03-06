@@ -1,12 +1,18 @@
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
-import { DataGrid, heIL } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { useState } from "react";
 import { FaFilter } from "react-icons/fa";
 import Spinner from "~/components/ui/spinner/Spinner";
 import { useShifts } from "~/hooks/useShifts";
 import Details from "../_logic/Details";
 import Actions from "./actions/Actions";
-import { columns } from "./columns";
+import Rows from "./Rows";
 
 export const Shifts = () => {
 	const [info, setInfo] = useState({});
@@ -23,8 +29,7 @@ export const Shifts = () => {
 	const { data, refetch, isLoading } = useShifts();
 
 	const dataCheckedIsActive = data?.filter((shift) => shift.isActive);
-
-	const columnsResult = columns(setOpen, open, setInfo);
+	const dataResult = checkedboxIsActive ? dataCheckedIsActive : data;
 
 	if (isLoading) return <Spinner />;
 
@@ -55,21 +60,42 @@ export const Shifts = () => {
 				)}
 			</div>
 
-			<div className="relative bottom-2 w-10/12 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-2 lg:w-11/12 md:w-10/12">
+			<div className="relative bottom-4 w-full block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
-					<DataGrid
-						rows={checkedboxIsActive ? dataCheckedIsActive : data}
-						columns={columnsResult}
-						pageSize={25}
-						sx={{
-							height: 550,
-							direction: "ltr",
-						}}
-						getRowId={(rows) => rows.shiftCode}
-						localeText={
-							heIL.components.MuiDataGrid.defaultProps.localeText
-						}
-					/>
+					<TableContainer component={Paper} sx={{ height: 550 }}>
+						<Table aria-label="collapsible table">
+							<TableHead>
+								<TableRow>
+									<TableCell align="right">משמרת</TableCell>
+									<TableCell align="right">התחלה</TableCell>
+									<TableCell align="right">סיום</TableCell>
+									<TableCell align="right">ראשון</TableCell>
+									<TableCell align="right">שני</TableCell>
+									<TableCell align="right">שלישי</TableCell>
+									<TableCell align="right">רביעי</TableCell>
+									<TableCell align="right">חמישי</TableCell>
+									<TableCell align="right">שישי</TableCell>
+									<TableCell align="right">שבת</TableCell>
+									<TableCell align="right">
+										ללא גביה מעובד מורשה
+									</TableCell>
+									<TableCell align="right">פעיל</TableCell>
+									<TableCell align="right">פעולות</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
+								{dataResult.map((row) => (
+									<Rows
+										key={row.shiftCode}
+										row={row}
+										setOpen={setOpen}
+										open={open}
+										setInfo={setInfo}
+									/>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				)}
 			</div>
 			{open.action && (

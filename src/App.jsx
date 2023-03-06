@@ -9,6 +9,7 @@ import Navigator from "./components/navigator/Navigator";
 import Routers from "./Routers";
 import { useAuthStore } from "./store/auth";
 import { tokenCookies } from "~/services/cookiesService";
+import { NavigatorTest } from "./components/navigator/NavigatorTest";
 
 function App() {
 	const token = tokenCookies.get();
@@ -42,13 +43,14 @@ function App() {
 				pauseOnHover
 				theme="light"
 			/>
-			{window.innerWidth > 700 && (
+			{/* {window.innerWidth > 700 && (
 				<>
 					{isSysAdmin && token && <Header />}
 					{isSysAdmin && token && <Navigator />}
 					{isSysAdmin && token && <Footer />}
 				</>
-			)}
+			)} */}
+			<NavigatorTest />
 			<Routers />
 			<ReactQueryDevtools />
 		</QueryClientProvider>

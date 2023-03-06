@@ -94,14 +94,13 @@ const Suppliers = () => {
 				<div className="flex justify-center mt-4">{Filters}</div>
 			)}
 
-			<div className="relative bottom-4 w-3/4 block m-auto p-5 xl:w-11/12 xl:relative xl:bottom-4">
+			<div className="relative bottom-4 w-full block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 600 }}>
 						<Table aria-label="collapsible table">
 							<TableHead>
 								<TableRow>
 									<TableCell />
-									<TableCell align="right">קוד</TableCell>
 									<TableCell align="right">שם</TableCell>
 									<TableCell align="right">
 										שם משתמש
@@ -111,13 +110,27 @@ const Suppliers = () => {
 										מספר פלאפון
 									</TableCell>
 									<TableCell align="right">ח.פ</TableCell>
-									<TableCell align="right">פעיל</TableCell>
 									<TableCell align="right">
-										ספק ארוחות
+										{
+											FilterFields.find(
+												(f) => f.id === "filterActive"
+											)?.name
+										}
+									</TableCell>
+									<TableCell align="right">
+										{
+											FilterFields.find(
+												(f) => f.id === "filterMeals"
+											)?.name
+										}
 									</TableCell>
 
 									<TableCell align="right">
-										ספק שונות
+										{
+											FilterFields.find(
+												(f) => f.id === "filterVarious"
+											)?.name
+										}
 									</TableCell>
 									<TableCell align="right">פעולות</TableCell>
 								</TableRow>

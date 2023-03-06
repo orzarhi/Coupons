@@ -38,7 +38,6 @@ const Rows = ({ row, setOpen, open, setInfo }) => {
 						)}
 					</IconButton>
 				</TableCell>
-				<TableCell align="right">{row.couponCode}</TableCell>
 				<TableCell align="right">{row.couponName}</TableCell>
 				<TableCell align="right">{row.couponDesc}</TableCell>
 				<TableCell align="right">{row.couponTypeName}</TableCell>

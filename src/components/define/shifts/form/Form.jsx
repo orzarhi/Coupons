@@ -1,8 +1,8 @@
-import { IconButton } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import { useRef, useState } from "react";
 import { MdDone } from "react-icons/md";
 import * as toastMessages from "~/utils/notification/index";
-import InputText from "./InputText";
+import { InputText, InputTextTime } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 import { useAddShift, useUpdateShift } from "~/hooks/useShifts";
 
@@ -30,12 +30,14 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 		isWithoutCharge: "false",
 	});
 
+	const descriptionInputRef = useRef();
 	const startTimeInputRef = useRef();
 	const endTimeInputRef = useRef();
 
 	const clearInputs = () => {
 		startTimeInputRef.current.value = "";
 		endTimeInputRef.current.value = "";
+		descriptionInputRef.current.value = "";
 	};
 
 	const { mutate: addMutateShift } = useAddShift(
@@ -53,6 +55,7 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 	const submitHandler = async (e) => {
 		e.preventDefault();
 
+		const description = descriptionInputRef?.current?.value;
 		const startTime = startTimeInputRef?.current?.value;
 		const endTime = endTimeInputRef?.current?.value;
 
@@ -62,6 +65,7 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 					toastMessages.infoMessage("נא למלא את כל השדות");
 				} else {
 					const newShift = {
+						description,
 						startTime,
 						endTime,
 						isSunday:
@@ -94,6 +98,7 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 			} else if (open.title === "edit") {
 				const updateShift = {
 					shiftCode: info?.shiftCode,
+					description,
 					startTime,
 					endTime,
 					isSunday: radioButtons.isSunday === "true" ? true : false,
@@ -110,6 +115,7 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 						radioButtons.isWithoutCharge === "true" ? true : false,
 					isActive: radioButtons.isActive === "true" ? true : false,
 				};
+				console.log("🚀updateShift:", updateShift);
 				updateMutateShift(updateShift);
 			}
 		} catch (err) {
@@ -124,11 +130,18 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 				<InputText
 					title={title}
 					action={"עריכת נתונים"}
+					info={info?.description}
+					originalText={"משמרת"}
+					ref={descriptionInputRef}
+				/>
+				<InputTextTime
+					title={title}
+					action={"עריכת נתונים"}
 					info={info?.startTime}
 					originalText={"התחלת משמרת"}
 					ref={startTimeInputRef}
 				/>
-				<InputText
+				<InputTextTime
 					title={title}
 					action={"עריכת נתונים"}
 					info={info?.endTime}

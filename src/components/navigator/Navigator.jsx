@@ -6,13 +6,10 @@ import List from "@mui/material/List";
 import { createElement, Fragment, useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import { menus, reports, settings } from "./menus";
 import maxsoftIcon from "~/assets/images/picture-login/maxsoft.png";
-import { useAuthStore } from "~/store/auth";
+import { menus, reports, settings } from "./menus";
 
 export const Navigator = () => {
-	const { isSysAdmin } = useAuthStore();
-
 	const [openMenu, setOpenMenu] = useState(true);
 	const [openReport, setOpenReport] = useState(false);
 	const [state, setState] = useState({

@@ -82,7 +82,7 @@ export const menus = [
 	{
 		name: "דוחות",
 		title: "דוחות",
-		// link: "/report-suppliers-define",
+		link: null,
 		icon: TbReportSearch,
 		onClick: "openReport",
 	},

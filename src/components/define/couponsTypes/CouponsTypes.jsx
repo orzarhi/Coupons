@@ -36,7 +36,7 @@ const CouponsTypes = () => {
 				className="!bg-green-700 !text-white hover:!bg-green-600 !w-60 !text-sm"
 			/>
 
-			<div className="relative bottom-4 w-9/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
+			<div className="relative  w-9/12 block m-auto p-5 xl:w-8/12 xl:relative xl:bottom-4">
 				{data && (
 					<TableContainer component={Paper} sx={{ height: 550 }}>
 						<Table aria-label="collapsible table">

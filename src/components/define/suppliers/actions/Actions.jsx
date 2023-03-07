@@ -5,7 +5,6 @@ import { useDeleteSupplier } from "~/hooks/useSuppliers";
 import Form from "../form/Form";
 
 const Actions = ({ setOpen, open, info, refetch }) => {
-	console.log("🚀 info:", info);
 	const { mutate: deleteMutateSupplier } = useDeleteSupplier(
 		setOpen,
 		open,

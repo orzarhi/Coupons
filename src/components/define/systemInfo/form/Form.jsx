@@ -28,7 +28,6 @@ export const Form = ({ title, info, setOpen, open, refetch }) => {
 					value,
 					description,
 				};
-				console.log("🤞 updateSystemInfo", updateSystemInfo);
 				updateMutateSystemInfo(updateSystemInfo);
 			}
 		} catch (err) {

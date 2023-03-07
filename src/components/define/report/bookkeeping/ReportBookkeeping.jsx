@@ -27,19 +27,18 @@ export const ReportBookkeeping = () => {
 	});
 
 	const [data, fetchReport] = useBookkeepingReport();
-	console.log("🚀data:", data);
 
-	const companyName = data?.map((d) => d.companyName);
+	// const companyName = data?.map((d) => d.companyName);
 
-	const dataResult = data?.map((d) => ({
-		companyName: d.companyName,
-		departmentName: d.departmentName,
-		employeeCode: d.employeeCode,
-		employeeName: d.employeeName,
-		totalMeals: d.totalMeals,
-		totalMealsNoCharge: d.totalMealsNoCharge,
-		totalComanyMealsCharge: d.totalComanyMealsCharge,
-	}));
+	// const dataResult = data?.map((d) => ({
+	// 	companyName: d.companyName,
+	// 	departmentName: d.departmentName,
+	// 	employeeCode: d.employeeCode,
+	// 	employeeName: d.employeeName,
+	// 	totalMeals: d.totalMeals,
+	// 	totalMealsNoCharge: d.totalMealsNoCharge,
+	// 	totalComanyMealsCharge: d.totalComanyMealsCharge,
+	// }));
 
 	return (
 		<>

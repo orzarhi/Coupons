@@ -1,10 +1,17 @@
-import { IconButton, TextField } from "@mui/material";
+import {
+	Checkbox,
+	FormControlLabel,
+	IconButton,
+	TextField,
+} from "@mui/material";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { useRef, useState } from "react";
+import { useMemo, useReducer, useRef, useState } from "react";
+import { FaFilter } from "react-icons/fa";
 import { MdDone } from "react-icons/md";
 import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { InputDates } from "~/components/define/_logic/DatesInput";
 import { SelectInput } from "~/components/define/_logic/SelectInput";
+import { FilterFields } from "~/constants/reports/employees/FilterFields";
 import { useCoupons } from "~/hooks/useCoupons";
 import { useEmployees } from "~/hooks/useEmployees";
 import { useEmployeeReport } from "~/hooks/useReport";
@@ -13,15 +20,26 @@ import { getDates } from "~/utils/date";
 import * as toastMessages from "~/utils/notification/index";
 import { Pdf } from "../report/Pdf";
 
+const initialFiltersReducer = FilterFields.reduce(
+	(acc, curr) => ({ ...acc, [curr.id]: false }),
+	{}
+);
+const filterReducer = (state, action) => {
+	return { ...state, [action.id]: !state[action.id] };
+};
+
 const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 	const [selectedValue, setSelectedValue] = useState("");
+	const [showFilters, setShowFilters] = useState(false);
+
 	const [showReport, setShowReport] = useState(false);
 	const [forGuest, setForGuest] = useState("false");
+	const [inputSearch, setInputSearch] = useState("");
+
 	const [dates, setDates] = useState({
 		fromDate: "",
 		toDate: "",
 	});
-
 	const qtyInputRef = useRef();
 	const fromDateInputRef = useRef();
 	const toDateInputRef = useRef();
@@ -48,6 +66,40 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 				label: employee.employeeName,
 				id: employee.employeeCode,
 			}
+	);
+
+	const [filters, dispatch] = useReducer(
+		filterReducer,
+		initialFiltersReducer
+	);
+
+	const dataResult = useMemo(() => {
+		let results = data?.filter((user) =>
+			user?.couponName.toLowerCase().includes(inputSearch.toLowerCase())
+		);
+		results = FilterFields.filter((f) => filters[f.id]).reduce(
+			(acc, curr) => curr.apply(acc),
+			results
+		);
+
+		return results;
+	}, [data, filters]);
+
+	const Filters = useMemo(
+		() =>
+			FilterFields.map((f) => (
+				<FormControlLabel
+					key={f.id}
+					control={
+						<Checkbox defaultValue={false} value={filters[f.id]} />
+					}
+					label={f.name}
+					onChange={() => {
+						dispatch(f);
+					}}
+				/>
+			)),
+		[filters]
 	);
 
 	const onCouponForGuest = (value) => {
@@ -86,13 +138,21 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 					setShowReport(true);
 				}
 			} else if (open.title === "add-forGuest") {
-				const newTransactionForGuest = {
-					employeeCode: dataEmployee.employeeCode,
-					toEmployeeCode: forGuest?.id,
-					qty,
-				};
+				if (qty <= 0) {
+					toastMessages.infoMessage("נא לבחור מספר גדול מ - 0.");
+				} else if (qty > 10) {
+					toastMessages.infoMessage(
+						"לא ניתן להנפיק מעל 10 קופנים בפעלה אחת."
+					);
+				} else {
+					const newTransactionForGuest = {
+						employeeCode: dataEmployee.employeeCode,
+						toEmployeeCode: forGuest?.id,
+						qty,
+					};
 
-				addMutateTransactionForGuest(newTransactionForGuest);
+					addMutateTransactionForGuest(newTransactionForGuest);
+				}
 			}
 		} catch (err) {
 			toastMessages.errorMessage(err);
@@ -136,7 +196,9 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 								defaultValue={getDates(false, true)}
 							/>
 
-							<label className="text-base mr-5">עד תאריך:</label>
+							<label className="text-base mr-5 mt-5 sm:mr-0">
+								עד תאריך:
+							</label>
 							<InputDates
 								title={title}
 								action={"עריכת נתונים"}
@@ -146,7 +208,18 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 						</div>
 					</>
 				)}
-
+				{open.title === "report" && (
+					<div className="flex justify-center w-1/5 mt-5">
+						<IconButton
+							onClick={() => setShowFilters(!showFilters)}
+						>
+							<FaFilter />
+						</IconButton>
+					</div>
+				)}
+				{showFilters && (
+					<div className="flex justify-center w-4/5">{Filters}</div>
+				)}
 				{open.title === "add-forGuest" && (
 					<>
 						<AutocompleteInput
@@ -158,7 +231,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 							label={"קופון אורח לעובד"}
 						/>
 						<TextField
-							className="w-2/5"
+							className="w-2/5 sm:!w-11/12"
 							autoComplete="false"
 							label="כמות קופונים"
 							required
@@ -168,7 +241,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 				)}
 			</div>
 
-			<div className="flex items-end flex-col p-2 sm:relative top-28">
+			<div className="flex items-end flex-col p-2 sm:relative top-28 sm:top-0">
 				{open.title !== "report" && (
 					<IconButton
 						className="!text-white !bg-green-700 !text-3xl"
@@ -187,12 +260,12 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 				)}
 			</div>
 			{showReport &&
-				(data?.length > 0 ? (
+				(dataResult?.length > 0 ? (
 					<PDFDownloadLink
 						document={
 							<Pdf
 								title={` דוח קופונים לעובד - ${dataEmployee?.employeeName}`}
-								data={data}
+								data={dataResult}
 								dates={`${new Date(
 									dates.toDate
 								).toLocaleDateString()} - ${new Date(
@@ -209,7 +282,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 								</div>
 							) : (
 								<>
-									<div className="flex justify-center text-xl bg-gray-600 text-white">
+									<div className="flex justify-center text-xl bg-gray-600 text-white ">
 										<button>הורדת הדוח</button>
 									</div>
 								</>
@@ -217,7 +290,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 						}
 					</PDFDownloadLink>
 				) : (
-					<div className="flex justify-center text-xl bg-gray-600 text-white capitalize">
+					<div className="flex justify-center text-xl bg-gray-600 text-white capitalize ">
 						<span>לא קיימים נתונים</span>
 					</div>
 				))}

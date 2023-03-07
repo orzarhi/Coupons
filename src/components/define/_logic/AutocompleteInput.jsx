@@ -11,6 +11,7 @@ export const AutocompleteInput = ({
 		<Autocomplete
 			disablePortal
 			id="combo-box-demo"
+			className="sm:!w-11/12"
 			options={options}
 			getOptionLabel={(option) => option && option?.label}
 			onChange={(_, value) => onChange(value)}

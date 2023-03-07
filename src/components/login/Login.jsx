@@ -5,15 +5,12 @@ import {
 	InputAdornment,
 	Stack,
 	TextField,
-	Typography,
 } from "@mui/material";
 import { useRef, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import picture from "~/assets/images/picture-login/man_login.png";
 import maxsoftIcon from "~/assets/images/picture-login/maxsoft.png";
 import { useLogin } from "~/hooks/useLogin";
 import { useEmployeeByUsername } from "~/hooks/useTransactions";
-import { useAuthStore } from "~/store/auth";
 import * as toastMessages from "~/utils/notification/index";
 
 const Login = () => {
@@ -53,18 +50,6 @@ const Login = () => {
 
 	return (
 		<>
-			{/* <Typography
-				variant="h3"
-				sx={{ px: 5, mt: 2, mb: 5 }}
-				className="title-login"
-			>
-				ברוכים הבאים 👋
-			</Typography> */}
-			{/* <img
-				src={picture}
-				alt="login"
-				className="block ml-auto mr-auto w-28 rounded-lg p-4"
-			/> */}
 			<img
 				src={maxsoftIcon}
 				alt="maxsoft-icon"
@@ -105,13 +90,7 @@ const Login = () => {
 						),
 					}}
 				/>
-				<Stack
-					direction="row"
-					alignItems="center"
-					// justifyContent="space-between"
-					// flexDirection="row-reverse"
-					sx={{ my: 2 }}
-				>
+				<Stack direction="row" alignItems="center" sx={{ my: 2 }}>
 					<Checkbox
 						name="iAgree"
 						checked={iAgree}

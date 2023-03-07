@@ -2,6 +2,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { BiFoodMenu } from "react-icons/bi";
 import { BsFileEarmarkPost } from "react-icons/bs";
 import { GrUserSettings } from "react-icons/gr";
+import { HiOutlineDocumentAdd, HiOutlineFolderAdd } from "react-icons/hi";
 import { ImBarcode, ImExit } from "react-icons/im";
 import {
 	MdFastfood,
@@ -15,23 +16,11 @@ import { logout } from "~/services/authService";
 
 export const menus = [
 	{
-		name: "משתמשים",
-		title: "משתמשים",
-		link: "/registration-define",
-		icon: AiOutlineUser,
-		margin: true,
-	},
-	{
-		name: "הגדרת ספק",
-		title: "הגדרת ספק",
-		link: "/suppliers-define",
-		icon: MdFastfood,
-	},
-	{
-		name: "הגדרת מנהלה",
-		title: "הגדרת מנהלה",
+		name: "הגדרת מנהלות",
+		title: "הגדרת מנהלות",
 		link: "/administration-define",
 		icon: MdOutlineBusiness,
+		margin: true,
 	},
 	{
 		name: "הגדרת חברות",
@@ -46,18 +35,6 @@ export const menus = [
 		icon: TbReportAnalytics,
 	},
 	{
-		name: "הגדרת עובדים",
-		title: "הגדרת עובדים",
-		link: "/employees-define",
-		icon: MdOutlinePersonAddAlt,
-	},
-	{
-		name: "הגדרת משמרת",
-		title: "הגדרת משמרת",
-		link: "/shifts-define",
-		icon: BsFileEarmarkPost,
-	},
-	{
 		name: "הגדרת קופון",
 		title: "הגדרת קופון",
 		link: "/coupons-define",
@@ -69,6 +46,33 @@ export const menus = [
 		link: "/coupons-types-define",
 		icon: ImBarcode,
 	},
+	{
+		name: "הגדרת ספק",
+		title: "הגדרת ספק",
+		link: "/suppliers-define",
+		icon: MdFastfood,
+	},
+	{
+		name: "הגדרת עובדים",
+		title: "הגדרת עובדים",
+		link: "/employees-define",
+		icon: MdOutlinePersonAddAlt,
+	},
+
+	{
+		name: "הגדרת משמרת",
+		title: "הגדרת משמרת",
+		link: "/shifts-define",
+		icon: BsFileEarmarkPost,
+	},
+
+	{
+		name: "משתמשים",
+		title: "משתמשים",
+		link: "/registration-define",
+		icon: AiOutlineUser,
+	},
+
 	{
 		name: "סוגי משתמשים",
 		title: "סוגי משתמשים",
@@ -119,12 +123,19 @@ export const reports = [
 
 export const settings = [
 	{
+		name: "הנפקת קופון",
+		title: "הנפקת קופון",
+		link: "/employees",
+		icon: HiOutlineDocumentAdd,
+		margin: true,
+	},
+	{
 		name: "הגדרות",
 		title: "הגדרות",
 		link: "/settings-define",
 		icon: RiSettings4Line,
-		margin: true,
 	},
+
 	{
 		name: "יציאה",
 		title: "יציאה",

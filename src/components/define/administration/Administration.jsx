@@ -71,9 +71,9 @@ const Administration = () => {
 				)}
 			</div>
 
-			<div className="relative bottom-4 w-10/12 block m-auto p-5 xl:w-full xl:relative xl:bottom-4">
+			<div className="relative bottom-4 w-9/12 block m-auto p-5 xl:w-9/12 xl:relative xl:bottom-4">
 				{data && (
-					<TableContainer component={Paper} sx={{ height: 600 }}>
+					<TableContainer component={Paper} sx={{ height: 580 }}>
 						<Table aria-label="collapsible table">
 							<TableHead>
 								<TableRow>

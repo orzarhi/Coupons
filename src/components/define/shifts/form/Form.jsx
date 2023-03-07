@@ -115,7 +115,6 @@ const Form = ({ title, info, setOpen, open, refetch }) => {
 						radioButtons.isWithoutCharge === "true" ? true : false,
 					isActive: radioButtons.isActive === "true" ? true : false,
 				};
-				console.log("🚀updateShift:", updateShift);
 				updateMutateShift(updateShift);
 			}
 		} catch (err) {

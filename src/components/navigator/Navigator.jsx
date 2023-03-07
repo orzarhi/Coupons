@@ -40,13 +40,11 @@ export const Navigator = () => {
 			onKeyDown={toggleDrawer(anchor, false)}
 		>
 			{state.right && (
-				<Link to={isSysAdmin && "/employees"}>
-					<img
-						className="w-4/5 h-14 mt-5 mr-5 sm:w-4/5"
-						src={maxsoftIcon}
-						alt="maxsoft-icon"
-					/>
-				</Link>
+				<img
+					className="w-4/5 h-14 mt-5 mr-5 sm:w-4/5"
+					src={maxsoftIcon}
+					alt="maxsoft-icon"
+				/>
 			)}
 			<List>
 				{menus?.map((menu, i) => (

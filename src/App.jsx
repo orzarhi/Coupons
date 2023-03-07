@@ -48,7 +48,7 @@ function App() {
 				{/* {isSysAdmin && token && <Header />} */}
 				{/* {isSysAdmin && token && <Navigator />} */}
 				{isSysAdmin && token && <Navigator />}
-				{isSysAdmin && token && <Footer />}
+				{/* {isSysAdmin && token && <Footer />} */}
 			</>
 			{/* )} */}
 			<Routers />

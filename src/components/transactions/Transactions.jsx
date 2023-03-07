@@ -46,6 +46,7 @@ const Transactions = () => {
 	const { data: dataCoupons } = useCoupons();
 
 	const foundGuset = transactions?.find((t) => t.isGuest);
+
 	const guest = employee?.data?.canCreateGuestCoupon;
 
 	const isMealTitle = dataCoupons?.map(
@@ -80,9 +81,11 @@ const Transactions = () => {
 			<span className="block text-center text-2xl mt-10">
 				ברוך הבא - {employee?.data?.employeeName} 👋
 			</span>
-			<span className="block text-center text-xl mt-2">
-				קופונים פעילים - {transactions?.length}
-			</span>
+			{transactions && (
+				<span className="block text-center text-xl mt-2">
+					קופונים פעילים - {transactions?.length}
+				</span>
+			)}
 
 			<div className="flex flex-col items-center mt-2">
 				<Button
@@ -132,7 +135,7 @@ const Transactions = () => {
 					</span>
 				)}
 
-				{guest && checked && (
+				{foundGuset && checked && (
 					<span className="text-xl mt-2">
 						{transactions?.length > 0
 							? `קופנים פעילים ל${

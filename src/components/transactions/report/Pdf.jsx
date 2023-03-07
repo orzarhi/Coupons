@@ -100,7 +100,7 @@ export const Pdf = ({ title, data, dates }) => {
 						<Text style={styles.tableHeader}>הנפקה</Text>
 						<Text style={styles.tableHeader}>אורח</Text>
 						<Text style={styles.tableHeader}>קופון</Text>
-						<Text style={styles.tableHeader}>קוד עובד</Text>
+						{/* <Text style={styles.tableHeader}>קוד עובד</Text> */}
 					</View>
 					{data?.map((report) => (
 						<View key={report.id} style={styles.tableRow}>
@@ -144,9 +144,9 @@ export const Pdf = ({ title, data, dates }) => {
 								{report.couponName}
 							</Text>
 
-							<Text style={styles.tableRowCell}>
+							{/* <Text style={styles.tableRowCell}>
 								{report.employeeCode}
-							</Text>
+							</Text> */}
 						</View>
 					))}
 					<Rect style={{ marginTop: 20 }} />

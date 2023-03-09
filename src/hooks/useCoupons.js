@@ -12,6 +12,7 @@ import {
 import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
+import * as toastMessages from "~/utils/notification/index";
 
 export const useCoupons = () => useQuery([queryKeys.coupons], getCoupons);
 
@@ -40,8 +41,10 @@ export const useDeleteCoupon = (setOpen, open, refetch) =>
 		onSuccess: (data) => {
 			success(data, setOpen, open, refetch);
 		},
-		onError: (data) => {
-			error(data);
+		onError: () => {
+			toastMessages.errorMessage(
+				"לא ניתן למחוק, הקופון משויך למחלקה/ספקים."
+			);
 		},
 	});
 

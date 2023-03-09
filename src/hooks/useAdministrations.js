@@ -8,6 +8,7 @@ import {
 import { queryKeys } from "~/constants/queryKeys";
 import { error } from "~/utils/onError";
 import { success } from "~/utils/onSuccess";
+import * as toastMessages from "~/utils/notification/index";
 
 export const useAdministrations = () =>
 	useQuery([queryKeys.administrations], getAdministrations);
@@ -37,7 +38,9 @@ export const useDeleteAdministration = (setOpen, open, refetch) =>
 		onSuccess: (data) => {
 			success(data, setOpen, open, refetch);
 		},
-		onError: (data) => {
-			error(data);
+		onError: () => {
+			toastMessages.errorMessage(
+				"לא ניתן למחוק, המנהלה משויכת לחברות/מנהלים."
+			);
 		},
 	});

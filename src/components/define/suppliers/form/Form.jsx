@@ -4,10 +4,11 @@ import { MdDone } from "react-icons/md";
 import { useAddSupplier, useUpdateSupplier } from "~/hooks/useSuppliers";
 import { PersonType } from "~/constants/PersonType";
 import * as toastMessages from "~/utils/notification/index";
-import InputText from "./InputText";
+import { InputText } from "./InputText";
 import { RadioButtons } from "./RadioButtons";
 import { AutocompleteInput } from "~/components/define/_logic/AutocompleteInput";
 import { useAssignCouponToSupplier, useCoupons } from "~/hooks/useCoupons";
+import { validateEmail } from "~/utils/validation";
 
 const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState({
@@ -80,6 +81,10 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 
 		try {
 			if (open.title === "add") {
+				if (!validateEmail(email)) {
+					toastMessages.infoMessage("נא להזין מייל תקין.");
+					return;
+				}
 				if (
 					!email ||
 					!phoneNumber ||
@@ -91,7 +96,7 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 					!supplierMealPrice ||
 					!addRadioButtons.isVarious
 				) {
-					toastMessages.infoMessage("נא למלא את כל השדות");
+					toastMessages.infoMessage("נא למלא את כל השדות.");
 				} else {
 					const newSupplier = {
 						email,

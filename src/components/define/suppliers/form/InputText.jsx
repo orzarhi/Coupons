@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React, { forwardRef } from "react";
 
-const InputText = forwardRef((props, ref) => {
+export const InputText = forwardRef((props, ref) => {
 	return (
 		<>
 			{props.title === props.action ? (
@@ -42,5 +42,3 @@ const InputText = forwardRef((props, ref) => {
 		</>
 	);
 });
-
-export default InputText;

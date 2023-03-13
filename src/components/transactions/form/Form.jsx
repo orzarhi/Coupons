@@ -142,7 +142,7 @@ const Form = ({ title, info, setOpen, open, refetch, dataEmployee }) => {
 					toastMessages.infoMessage("נא לבחור מספר גדול מ - 0.");
 				} else if (qty > 10) {
 					toastMessages.infoMessage(
-						"לא ניתן להנפיק מעל 10 קופנים בפעלה אחת."
+						"לא ניתן להנפיק מעל 10 קופנים בפעולה אחת."
 					);
 				} else {
 					const newTransactionForGuest = {

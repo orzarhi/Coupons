@@ -10,11 +10,9 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const [radioButtons, setRadioButtons] = useState(info?.isMeal?.toString());
 	const [newRadioButtons, setNewRadioButtons] = useState("true");
 
-	const couponTypeCodeInputRef = useRef();
 	const couponTypeNameInputRef = useRef();
 
 	const clearInputs = () => {
-		couponTypeCodeInputRef.current.value = "";
 		couponTypeNameInputRef.current.value = "";
 	};
 
@@ -34,23 +32,23 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		const couponTypeCode = couponTypeCodeInputRef?.current?.value;
 		const couponTypeName = couponTypeNameInputRef?.current?.value;
 
 		try {
-			if (!couponTypeCode || !couponTypeName) {
-				infoMessage("נא למלא את כל השדות");
-			} else if (open.title === "add") {
-				const newCoupon = {
-					couponTypeCode,
-					couponTypeName,
-					isMeal: newRadioButtons === "true" ? true : false,
-				};
+			if (open.title === "add") {
+				if (!couponTypeName) {
+					infoMessage("נא למלא את כל השדות");
+				} else {
+					const newCoupon = {
+						couponTypeName,
+						isMeal: newRadioButtons === "true" ? true : false,
+					};
 
-				addMutateCouponType(newCoupon);
+					addMutateCouponType(newCoupon);
+				}
 			} else if (open.title === "edit") {
 				const editCouponType = {
-					couponTypeCode,
+					couponTypeCode: info?.couponTypeCode,
 					couponTypeName,
 					isMeal: radioButtons === "true" ? true : false,
 				};
@@ -68,13 +66,6 @@ const Form = ({ title, refetch, info, setOpen, open }) => {
 		<>
 			<span className="block text-center text-2xl mb-2">{title}</span>
 			<div className="flex flex-wrap justify-center m-4 p-4 gap-x-5 gap-y-3">
-				<InputText
-					title={title}
-					action={"עריכת נתונים"}
-					info={info?.couponTypeCode}
-					originalText={"סוג"}
-					ref={couponTypeCodeInputRef}
-				/>
 				<InputText
 					title={title}
 					action={"עריכת נתונים"}
